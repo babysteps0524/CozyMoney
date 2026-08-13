@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="주식, 부동산, 세테크, 보험, 전산세무 정보를 쉽고 편하게 알아보는 COZYMONEY"
+    />
     <script type="module" src="/src/main.js"></script>
     <script
       async
@@ -14,7 +18,14 @@
     ></script>
     <title>COZYTAX</title>
   </head>
-  <body bg="[url(/images/bg/bg-04.svg)]" class="bodyText" relative>
+  <body
+    bg="[url(/images/bg/bg-04.svg)]"
+    class="bodyText"
+    relative
+    min-h="100vh"
+    flex
+    flex-col
+  >
     <!-- 왼쪽 구글 애드센스 -->
     <aside
       fixed
@@ -88,7 +99,7 @@
         </li>
       </ul>
     </nav>
-    <div w="1240px" mx="auto" mb="50px" flex justify-between>
+    <div w="1240px" mx="auto" mb="50px" flex justify-between flex-1>
       <main
         id="page-content"
         basis="920px"
@@ -200,9 +211,23 @@
         </div>
       </aside>
     </div>
-    <footer bg="#523f2e" text="center #ffffff" py="14px 10px" px="20px">
+    <footer bg="#523f2e" text="center #ffffff" py="20px 10px" px="20px">
+      <div flex justify="center" items="center" gap="16px" mb="10px">
+        <a
+          href="/pages/privacy.html"
+          text="14px #ffffff"
+          hover="text-[#F5DFD3]"
+        >
+          개인정보처리방침
+        </a>
+      </div>
+
       <p>
-        <small><i class="i-mdi-copyright text-16px"></i>2026 COZYMONEY</small>
+        <small
+          >Copyright
+          <i class="i-mdi-copyright text-16px"></i>
+          2026.CozyMoney All rights reserved.
+        </small>
       </p>
     </footer>
   </body>

@@ -451,13 +451,13 @@ export function showPost(board, postId) {
         >
           ${post.category}
         </p>
-        <p
+        <h1
           text="14px #999"
           leading="1.4"
           mb="14px"
         >
           ${post.title}
-        </p>
+        </h1>
         <p
           text="14px #999"
         >

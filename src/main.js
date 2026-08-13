@@ -239,3 +239,13 @@ window.addEventListener("popstate", async () => {
     console.error(error);
   }
 });
+
+// ========================================
+// 최초 페이지 접속 시 현재 URL 처리
+// ========================================
+
+const currentPath = window.location.pathname;
+
+if (currentPath.startsWith("/posts/")) {
+  handlePostRoute(currentPath);
+}
