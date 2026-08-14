@@ -152,7 +152,9 @@ window.addEventListener("popstate", async () => {
 
   const board = boardMap[path];
 
-  if (!board) return;
+  if (board) {
+    await initBoard(board);
+  }
 
   try {
     const content = await getPage(path);

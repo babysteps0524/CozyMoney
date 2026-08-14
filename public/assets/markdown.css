@@ -30,7 +30,10 @@ body {
 
 .site-header {
   width: 100%;
-  background: #f7f0eb;
+  background-color: #f7f0eb;
+  background-image: url("/images/bg/bg-04.svg");
+  background-repeat: repeat;
+  background-position: top center;
 }
 
 .site-header-inner {
@@ -42,12 +45,16 @@ body {
 
 .site-logo {
   display: inline-block;
+  line-height: 0;
 }
 
 .site-logo img {
   width: 240px;
   max-width: 80vw;
   height: auto;
+  display: block;
+  margin: 0 auto;
+  pointer-events: none;
 }
 
 /* ========================================
