@@ -8,17 +8,24 @@
     "dev": "vite",
     "build:posts": "bun scripts/build-posts.js",
     "generate:sitemap": "bun scripts/generate-sitemap.js",
-    "build": "bun run build:posts && bun run generate:sitemap && vite build",
+    "build": "bun run build:posts && bun run generate:sitemap && bunx vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
+    "@types/bun": "latest",
     "@unocss/preset-attributify": "^66.7.5",
     "@unocss/preset-icons": "^66.7.5",
+    "@unocss/preset-legacy-compat": "^66.7.5",
+    "@unocss/preset-rem-to-px": "^66.7.5",
+    "@unocss/preset-tagify": "^66.7.5",
     "@unocss/preset-typography": "^66.7.5",
     "@unocss/preset-web-fonts": "^66.7.5",
     "@unocss/preset-wind3": "^66.7.5",
+    "@unocss/preset-wind4": "^66.7.5",
     "@unocss/reset": "^66.7.5",
+    "@unocss/transformer-attributify-jsx": "^66.7.5",
+    "@unocss/transformer-compile-class": "^66.7.5",
     "@unocss/transformer-directives": "^66.7.5",
     "@unocss/transformer-variant-group": "^66.7.5",
     "unocss": "^66.7.5"
@@ -28,5 +35,8 @@
     "katex": "^0.18.4",
     "marked": "^18.0.9",
     "vite": "^8.2.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

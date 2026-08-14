@@ -14,6 +14,7 @@ export default defineConfig({
         taxSaving: resolve("pages/taxSaving.html"),
         insurance: resolve("pages/insurance.html"),
         computertax: resolve("pages/computertax.html"),
+        privacy: resolve("pages/privacy.html"),
       },
     },
   },
