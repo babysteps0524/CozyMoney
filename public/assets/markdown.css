@@ -9,13 +9,19 @@
 html {
   margin: 0;
   padding: 0;
+  overflow-y: scroll;
 }
 
 body {
   margin: 0;
-  background: #f7f0eb;
+  background-color: #f7f0eb;
+  background-image: url("/images/bg/bg-04.svg");
+  background-repeat: repeat;
+  background-position: top center;
   color: #333;
   font-family: "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 /* ========================================
@@ -56,7 +62,9 @@ body {
   width: min(1240px, calc(100% - 32px));
   margin: 0 auto 40px;
 
-  background: #f7f0eb;
+  background-color: #f7f0eb;
+  background-image: url("/images/bg/bg-04.svg");
+  background-repeat: repeat;
 
   border-top: 2px solid #c76b08;
   border-bottom: 2px solid #c76b08;
@@ -75,13 +83,18 @@ body {
 
 .site-nav a {
   color: #7c5d48;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 22px; /* 메인과 동일 */
+  font-weight: 700; /* 메인과 동일 */
   text-decoration: none;
+  display: inline-block;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .site-nav a:hover {
   color: #a67c52;
+  transform: scale(1.1); /* 메인 hover 효과 */
 }
 
 /* ========================================
@@ -359,7 +372,7 @@ body {
   }
 
   .site-nav a {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .post-layout {

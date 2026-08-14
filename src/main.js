@@ -1,7 +1,7 @@
 import "virtual:uno.css";
 import "@unocss/reset/tailwind.css";
 
-import { initBoard } from "./board.js";
+import { initBoard, loadPosts } from "./board.js";
 
 // ========================================
 // 기본 요소
@@ -9,24 +9,23 @@ import { initBoard } from "./board.js";
 
 const pageContent = document.querySelector("#page-content");
 
-// ========================================
-// 메인 화면 저장
-// ========================================
+// 홈 내용은 "진짜 홈"일 때만 저장
+let homeContent = "";
 
-const homeContent = pageContent.innerHTML;
+const boardMap = {
+  "/pages/stock.html": "stock",
+  "/pages/realestate.html": "realestate",
+  "/pages/taxSaving.html": "taxSaving",
+  "/pages/insurance.html": "insurance",
+  "/pages/computertax.html": "computertax",
+};
 
 // ========================================
-// 페이지 URL
+// 페이지 URL 정리
 // ========================================
 
 function getPageUrl(href) {
-  if (!href) {
-    return "/";
-  }
-
-  if (href === "#") {
-    return "/";
-  }
+  if (!href || href === "#") return "/";
 
   if (href.startsWith("./")) {
     return "/" + href.slice(2);
@@ -36,7 +35,7 @@ function getPageUrl(href) {
 }
 
 // ========================================
-// HTML 페이지 가져오기
+// HTML에서 #page-content만 가져오기
 // ========================================
 
 async function getPage(url) {
@@ -47,12 +46,9 @@ async function getPage(url) {
   }
 
   const html = await response.text();
-
   const parser = new DOMParser();
-
-  const document = parser.parseFromString(html, "text/html");
-
-  const newPageContent = document.querySelector("#page-content");
+  const doc = parser.parseFromString(html, "text/html");
+  const newPageContent = doc.querySelector("#page-content");
 
   if (!newPageContent) {
     throw new Error(`${url}에 #page-content가 없습니다.`);
@@ -62,18 +58,25 @@ async function getPage(url) {
 }
 
 // ========================================
+// 스크롤 (흔들림 줄이기)
+// ========================================
+
+function scrollTopSmooth() {
+  // smooth 대신 instant로 해서 흔들림 줄임
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+// ========================================
 // Home
 // ========================================
 
 function showHome() {
+  if (!homeContent) return;
+
   pageContent.innerHTML = homeContent;
-
   history.pushState({ page: "home" }, "", "/");
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+  document.title = "CozyMoney";
+  scrollTopSmooth();
 }
 
 // ========================================
@@ -83,48 +86,39 @@ function showHome() {
 async function showPage(url) {
   try {
     const content = await getPage(url);
-
     pageContent.innerHTML = content;
-
-    const boardMap = {
-      "/pages/stock.html": "stock",
-
-      "/pages/realestate.html": "realestate",
-
-      "/pages/taxSaving.html": "taxSaving",
-
-      "/pages/insurance.html": "insurance",
-
-      "/pages/computertax.html": "computertax",
-    };
 
     const board = boardMap[url];
 
     if (board) {
       await initBoard(board);
+
+      const titles = {
+        stock: "주식 | COZYMONEY",
+        realestate: "부동산 | COZYMONEY",
+        taxSaving: "세테크 | COZYMONEY",
+        insurance: "보험 | COZYMONEY",
+        computertax: "전산세무 | COZYMONEY",
+      };
+
+      document.title = titles[board] || "COZYMONEY";
     }
 
     history.pushState({ url }, "", url);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollTopSmooth();
   } catch (error) {
     console.error(error);
   }
 }
 
 // ========================================
-// SPA 링크
+// SPA 링크 클릭
 // ========================================
 
 document.addEventListener("click", (event) => {
   const link = event.target.closest("a[data-page]");
 
-  if (!link) {
-    return;
-  }
+  if (!link) return;
 
   event.preventDefault();
 
@@ -132,13 +126,14 @@ document.addEventListener("click", (event) => {
 
   if (page === "home") {
     showHome();
-
     return;
   }
 
   const href = link.getAttribute("href");
-
   const url = getPageUrl(href);
+
+  // 이미 같은 페이지면 무시
+  if (window.location.pathname === url) return;
 
   showPage(url);
 });
@@ -150,55 +145,54 @@ document.addEventListener("click", (event) => {
 window.addEventListener("popstate", async () => {
   const path = window.location.pathname;
 
-  // ====================================
-  // Home
-  // ====================================
-
   if (path === "/" || path === "/index.html") {
-    pageContent.innerHTML = homeContent;
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
+    showHome();
     return;
   }
-
-  // ====================================
-  // 게시판
-  // ====================================
-
-  const boardMap = {
-    "/pages/stock.html": "stock",
-
-    "/pages/realestate.html": "realestate",
-
-    "/pages/taxSaving.html": "taxSaving",
-
-    "/pages/insurance.html": "insurance",
-
-    "/pages/computertax.html": "computertax",
-  };
 
   const board = boardMap[path];
 
-  if (!board) {
-    return;
-  }
+  if (!board) return;
 
   try {
     const content = await getPage(path);
-
     pageContent.innerHTML = content;
-
     await initBoard(board);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollTopSmooth();
   } catch (error) {
     console.error(error);
   }
 });
+
+// ========================================
+// 처음 페이지 열렸을 때
+// ========================================
+
+async function boot() {
+  const path = window.location.pathname;
+
+  // 스크롤바 때문에 화면 너비가 흔들리는 것 방지
+  document.documentElement.style.overflowY = "scroll";
+
+  // 최신 글은 항상 미리 로드
+  try {
+    await loadPosts();
+  } catch (e) {
+    console.error(e);
+  }
+
+  // 홈에서 시작한 경우만 홈 내용 저장
+  if (path === "/" || path === "/index.html" || path === "") {
+    homeContent = pageContent.innerHTML;
+    return;
+  }
+
+  // 게시판 페이지로 직접 들어온 경우
+  const board = boardMap[path];
+
+  if (board) {
+    await initBoard(board);
+  }
+}
+
+boot();
