@@ -10,10 +10,7 @@
     <script type="module" src="/src/main.js"></script>
     <script
       async
-      src="https://pagead2
-    .googlesyndication.com
-    /pagead/js/adsbygoogle.js
-    ?client=ca-pub-XXXXXXXXXXXXXXXX"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
       crossorigin="anonymous"
     ></script>
     <title>COZYTAX</title>
@@ -28,6 +25,8 @@
   >
     <!-- 왼쪽 구글 애드센스 -->
     <aside
+      hidden
+      lg:block
       fixed
       z-10
       top="170px"
@@ -43,8 +42,10 @@
           <img
             src="/images/logo/cozymoney_01.svg"
             alt="코지머니"
-            w="240px"
-            h="60px"
+            w="180px"
+            md:w="220px"
+            lg:w="240px"
+            h="auto"
             mx="auto"
           />
         </a>
@@ -99,14 +100,28 @@
         </li>
       </ul>
     </nav>
-    <div w="1240px" mx="auto" mb="50px" flex justify-between flex-1>
+    <div
+      w="full"
+      max-w="1240px"
+      mx="auto"
+      px="16px"
+      mb="40px"
+      flex
+      flex-col
+      lg:flex-row
+      gap="24px"
+      flex-1
+    >
       <main
         id="page-content"
-        basis="920px"
+        w="full"
+        lg:flex-1
         bg="#ffffff"
         rounded="16px"
-        py="30px"
-        px="72px"
+        py="24px"
+        px="16px"
+        md:px="32px"
+        lg:px="72px"
         shadow="xl"
       >
         <article>
@@ -194,7 +209,14 @@
           </section>
         </article>
       </main>
-      <aside basis="284px" sticky top="100px" h="fit">
+      <aside
+        w="full"
+        lg:basis="284px"
+        lg:flex-shrink-0
+        lg:sticky
+        lg:top="100px"
+        h="fit"
+      >
         <nav class="asideNav" shadow="xl">
           <h2 class="asideNavH2">최신 글</h2>
           <ul id="latestPosts" list-none p="0" m="0"></ul>

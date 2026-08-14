@@ -1,197 +1,77 @@
-import { marked } from "marked";
-import katex from "katex";
-import "katex/dist/katex.min.css";
-
 // ========================================
-// Markdown → HTML → KaTeX
-// ========================================
-
-function renderMarkdown(markdown) {
-  const html = marked.parse(markdown);
-
-  return html.replace(/\$\$([\s\S]*?)\$\$/g, (_, formula) => {
-    return katex.renderToString(formula.trim(), {
-      displayMode: true,
-      throwOnError: false,
-    });
-  });
-}
-
-// ========================================
-// 1. Markdown 파일 가져오기
-// ========================================
-
-const markdownFiles = import.meta.glob("./data/posts/**/*.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
-
-// ========================================
-// 2. 게시판 설정
+// 게시판
 // ========================================
 
 const postsPerPage = 15;
 
+let allPosts = [];
+
 let currentPage = 1;
+
 let currentBoard = "";
 
 // ========================================
-// 3. Markdown 분석
+// 게시글 데이터 가져오기
 // ========================================
 
-function parseMarkdown(markdown) {
-  const match = markdown.match(/^---\s*([\s\S]*?)\s*---\s*([\s\S]*)$/);
+async function loadPosts() {
+  const response = await fetch("/data/posts.json");
 
-  // Front Matter가 없는 경우
-
-  if (!match) {
-    return {
-      metadata: {},
-      content: markdown,
-    };
+  if (!response.ok) {
+    throw new Error("게시글 데이터를 불러올 수 없습니다.");
   }
 
-  const frontMatter = match[1];
-  const content = match[2];
+  allPosts = await response.json();
 
-  const metadata = {};
+  renderLatestPosts();
 
-  frontMatter.split("\n").forEach((line) => {
-    const index = line.indexOf(":");
-
-    if (index === -1) {
-      return;
-    }
-
-    const key = line.slice(0, index).trim();
-
-    const value = line.slice(index + 1).trim();
-
-    metadata[key] = value;
-  });
-
-  return {
-    metadata,
-    content,
-  };
+  return allPosts;
 }
 
 // ========================================
-// 4. 모든 게시글 가져오기
+// 게시판 게시글 가져오기
 // ========================================
 
 function getPosts(board) {
-  const posts = [];
+  return allPosts
+    .filter((post) => post.board === board)
+    .sort((a, b) => {
+      const dateCompare = new Date(b.date) - new Date(a.date);
 
-  for (const [path, markdown] of Object.entries(markdownFiles)) {
-    if (!path.includes(`/posts/${board}/`)) {
-      continue;
-    }
+      if (dateCompare !== 0) {
+        return dateCompare;
+      }
 
-    const { metadata, content } = parseMarkdown(markdown);
-
-    posts.push({
-      path,
-
-      title: metadata.title || "제목 없음",
-
-      date: metadata.date || "",
-
-      category: metadata.category || board,
-
-      description: metadata.description || "",
-
-      content,
+      return b.id.localeCompare(a.id, undefined, {
+        numeric: true,
+        sensitivity: "base",
+      });
     });
-  }
-
-  // 날짜 기준 최신순 정렬
-
-  posts.sort((a, b) => {
-    // 1순위: 날짜 최신순
-    const dateCompare = new Date(b.date) - new Date(a.date);
-
-    if (dateCompare !== 0) {
-      return dateCompare;
-    }
-
-    // 2순위: 게시글 번호 큰 순서
-    const fileNameA = a.path.split("/").pop().replace(".md", "");
-    const fileNameB = b.path.split("/").pop().replace(".md", "");
-
-    return fileNameB.localeCompare(fileNameA, undefined, {
-      numeric: true,
-      sensitivity: "base",
-    });
-  });
-
-  return posts;
 }
 
 // ========================================
-// 최신글 5개 가져오기
+// 최신글
 // ========================================
 
 export function getLatestPosts(limit = 5) {
-  const posts = [];
+  return [...allPosts]
+    .sort((a, b) => {
+      const dateCompare = new Date(b.date) - new Date(a.date);
 
-  for (const [path, markdown] of Object.entries(markdownFiles)) {
-    const { metadata, content } = parseMarkdown(markdown);
+      if (dateCompare !== 0) {
+        return dateCompare;
+      }
 
-    // 파일 경로에서 파일의 게시판 이름 가져오기
-    // 예:
-    // ./data/posts/stock/260812-1.md
-    //                 ↓
-    //               stock
-    const pathParts = path.split("/");
-    const boardIndex = pathParts.indexOf("posts");
-
-    if (boardIndex === -1) {
-      continue;
-    }
-
-    const board = pathParts[boardIndex + 1];
-
-    posts.push({
-      path,
-      board,
-
-      title: metadata.title || "제목 없음",
-
-      date: metadata.date || "",
-
-      category: metadata.category || board,
-
-      description: metadata.description || "",
-
-      content,
-    });
-  }
-
-  // 날짜 최신순 정렬
-  posts.sort((a, b) => {
-    const dateCompare = new Date(b.date) - new Date(a.date);
-
-    if (dateCompare !== 0) {
-      return dateCompare;
-    }
-
-    const fileNameA = a.path.split("/").pop().replace(".md", "");
-
-    const fileNameB = b.path.split("/").pop().replace(".md", "");
-
-    return fileNameB.localeCompare(fileNameA, undefined, {
-      numeric: true,
-      sensitivity: "base",
-    });
-  });
-
-  return posts.slice(0, limit);
+      return b.id.localeCompare(a.id, undefined, {
+        numeric: true,
+        sensitivity: "base",
+      });
+    })
+    .slice(0, limit);
 }
 
 // ========================================
-// 오른쪽 Aside 최신글 출력
+// 최신글 출력
 // ========================================
 
 export function renderLatestPosts() {
@@ -204,27 +84,26 @@ export function renderLatestPosts() {
   const posts = getLatestPosts(5);
 
   latestPosts.innerHTML = posts
-    .map((post) => {
-      const postId = post.path.split("/").pop().replace(".md", "");
+    .map(
+      (post) => `
+          <li mb="10px">
 
-      return `
-    <li mb="10px">
-    <a
-    href="/posts/${post.board}/${postId}"
-    data-post-id="${postId}"
-    data-board="${post.board}"
-    text="14px #555"
-    hover="text-[#9b8069]">
-    ${post.title}
-    </a>
-    </li>
-    `;
-    })
+            <a
+              href="${post.url}"
+              text="14px #555"
+              hover="text-[#9b8069]"
+            >
+              ${post.title}
+            </a>
+
+          </li>
+        `,
+    )
     .join("");
 }
 
 // ========================================
-// 5. 게시판 목록 출력
+// 게시글 목록 출력
 // ========================================
 
 function renderPosts() {
@@ -244,63 +123,56 @@ function renderPosts() {
 
   const currentPosts = posts.slice(startIndex, endIndex);
 
-  // ======================================
-  // 게시글 목록
-  // ======================================
-
   postList.innerHTML = currentPosts
-    .map((post, index) => {
-      const postId = post.path.split("/").pop().replace(".md", "");
-
-      return `
-
-        <article
-        bg="[#F7F0EBFF] hover:[#f5dfd3ff]"
-        shadow="md"
-        border="1px solid [#F5DFD3FF]"
-        rounded="12px"
-        mb="12px"
-        >
-          <a
-            href="/posts/${currentBoard}/${postId}"
-            data-post-id="${postId}"
-            data-board="${currentBoard}"
+    .map(
+      (post) => `
+          <article
+            bg="[#F7F0EBFF]"
+            shadow="md"
+            border="1px solid [#F5DFD3FF]"
+            rounded="12px"
+            mb="12px"
           >
-            <h2
-              text="18px"
-              font="600"
-              pt="8px"
-              pl="12px"
-            >
-              ${post.title}
-            </h2>
-            <p
-              text="14px #777"
-              pl="12px"
-            >
-              ${post.description}
-            </p>
-            <p
-              text="13px #999"
-              pl="12px"
-              pb="12px"
-            >
-              ${post.date}
-            </p>
-          </a>
-        </article>
 
-      `;
-    })
+            <a
+              href="${post.url}"
+              block
+              p="16px"
+            >
+
+              <h2
+                text="18px"
+                font="600"
+                mb="8px"
+              >
+                ${post.title}
+              </h2>
+
+              <p
+                text="14px #777"
+                mb="8px"
+              >
+                ${post.description}
+              </p>
+
+              <p
+                text="13px #999"
+              >
+                ${post.date}
+              </p>
+
+            </a>
+
+          </article>
+        `,
+    )
     .join("");
-
-  // 페이지네이션
 
   renderPagination(posts.length);
 }
 
 // ========================================
-// 6. 페이지네이션
+// 페이지네이션
 // ========================================
 
 function renderPagination(totalPosts) {
@@ -314,7 +186,7 @@ function renderPagination(totalPosts) {
     return;
   }
 
-  // 이전 버튼
+  // 이전
 
   const previousButton = document.createElement("button");
 
@@ -348,12 +220,7 @@ function renderPagination(totalPosts) {
 
     button.textContent = page;
 
-    button.className = "pageBtn";
-
-    // 현재 페이지
-    if (page === currentPage) {
-      button.className = "pageBtnActive";
-    }
+    button.className = page === currentPage ? "pageBtnActive" : "pageBtn";
 
     button.addEventListener("click", () => {
       currentPage = page;
@@ -369,7 +236,7 @@ function renderPagination(totalPosts) {
     pagination.appendChild(button);
   }
 
-  // 다음 버튼
+  // 다음
 
   const nextButton = document.createElement("button");
 
@@ -398,166 +265,29 @@ function renderPagination(totalPosts) {
 }
 
 // ========================================
-// 7. 게시글 본문 표시
+// 게시판 초기화
 // ========================================
 
-export function showPost(board, postId) {
-  const pageContent = document.querySelector("#page-content");
-
-  if (!pageContent) {
-    return;
-  }
-
-  const posts = getPosts(board);
-
-  // 게시글 번호로 게시글 찾기
-
-  const post = posts.find((item) => {
-    const id = item.path.split("/").pop().replace(".md", "");
-
-    return id === postId;
-  });
-
-  // 게시글을 찾지 못한 경우
-
-  if (!post) {
-    pageContent.innerHTML = `
-      <section p="20px">
-        <h1 text="24px" font="600">
-          게시글을 찾을 수 없습니다.
-        </h1>
-      </section>
-    `;
-
-    return;
-  }
-
-  // Markdown → HTML → kaTeX 수식 렌더링
-
-  const html = renderMarkdown(post.content);
-
-  // ======================================
-  // 게시글 본문 출력
-  // ======================================
-
-  pageContent.innerHTML = `
-
-    <article>
-      <header mb="40px">
-        <p
-          text="14px #9b8069"
-          font="600"
-          mb="10px"
-        >
-          ${post.category}
-        </p>
-        <h1
-          text="14px #999"
-          leading="1.4"
-          mb="14px"
-        >
-          ${post.title}
-        </h1>
-        <p
-          text="14px #999"
-        >
-          ${post.date}
-        </p>
-      </header>
-      <div
-        prose
-        max-w="none"
-        mb="20px"
-      >
-        ${html}
-      </div>
-      <div mt="40px">
-      <a
-          inline-block
-          rounded="4px"
-          href="/pages/${board}.html"
-          data-page="${board}"
-          text="16px #777"
-          p="8px"
-          hover="bg-blue-300"
-        >
-          ← ${post.category} 게시판 목록으로 돌아가기
-        </a>
-        </div>
-    </article>
-
-  `;
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
-
-// ========================================
-// 8. 게시글 제목 클릭 처리
-// ========================================
-
-document.addEventListener("click", (event) => {
-  // 게시글 제목/링크인지 확인
-
-  const postLink = event.target.closest("a[data-post-id]");
-
-  if (!postLink) {
-    return;
-  }
-
-  // 기본 링크 이동 막기
-
-  event.preventDefault();
-
-  const board = postLink.dataset.board;
-
-  const postId = postLink.dataset.postId;
-
-  // 주소창 변경
-
-  history.pushState(
-    {
-      board,
-      postId,
-    },
-    "",
-    `/posts/${board}/${postId}`,
-  );
-
-  // 게시글 출력
-
-  showPost(board, postId);
-});
-
-// ========================================
-// 9. 게시판 초기화
-// ========================================
-
-export function initBoard(board) {
+export async function initBoard(board) {
   currentBoard = board;
 
   currentPage = 1;
 
-  renderPosts();
-}
+  try {
+    await loadPosts();
 
-// ========================================
-// 10. 게시글 주소 처리
-// ========================================
+    renderPosts();
+  } catch (error) {
+    console.error(error);
 
-export function handlePostRoute(path) {
-  const match = path.match(/^\/posts\/([^/]+)\/([^/]+)$/);
+    const postList = document.querySelector("#postList");
 
-  if (!match) {
-    return false;
+    if (postList) {
+      postList.innerHTML = `
+        <p text="14px #999">
+          게시글을 불러오지 못했습니다.
+        </p>
+      `;
+    }
   }
-
-  const board = match[1];
-  const postId = match[2];
-
-  showPost(board, postId);
-
-  return true;
 }

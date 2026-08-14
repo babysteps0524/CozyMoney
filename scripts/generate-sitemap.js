@@ -1,4 +1,5 @@
 import { readdir, writeFile, mkdir } from "node:fs/promises";
+
 import path from "node:path";
 
 // ========================================
@@ -72,14 +73,14 @@ async function getMarkdownFiles(directory) {
   for (const entry of entries) {
     const fullPath = path.join(directory, entry.name);
 
-    // 폴더인 경우 재귀적으로 검색
     if (entry.isDirectory()) {
       const childFiles = await getMarkdownFiles(fullPath);
 
       files.push(...childFiles);
+
+      continue;
     }
 
-    // Markdown 파일인 경우
     if (entry.isFile() && entry.name.toLowerCase().endsWith(".md")) {
       files.push(fullPath);
     }
@@ -89,41 +90,29 @@ async function getMarkdownFiles(directory) {
 }
 
 // ========================================
-// Markdown 파일 검색
+// 게시글 URL 생성
 // ========================================
 
 const markdownFiles = await getMarkdownFiles(POSTS_DIR);
-
-// ========================================
-// Markdown → 게시글 URL
-// ========================================
 
 for (const filePath of markdownFiles) {
   const relativePath = path.relative(POSTS_DIR, filePath);
 
   const pathParts = relativePath.split(path.sep);
 
-  // 예:
-  //
-  // stock/260812-1.md
-  //
-  // ↓
-  //
-  // stock
-  // 260812-1.md
-
   const board = pathParts[0];
 
   const postId = path.basename(filePath, ".md");
 
   urls.push({
-    loc: `${DOMAIN}/posts/${board}/${postId}`,
+    loc: `${DOMAIN}/${board}/${postId}/`,
+
     priority: "0.6",
   });
 }
 
 // ========================================
-// sitemap.xml 생성
+// sitemap XML
 // ========================================
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -145,7 +134,7 @@ ${urls
 `;
 
 // ========================================
-// public 폴더 확인
+// public 폴더
 // ========================================
 
 await mkdir(path.dirname(OUTPUT_FILE), {
@@ -153,7 +142,7 @@ await mkdir(path.dirname(OUTPUT_FILE), {
 });
 
 // ========================================
-// sitemap.xml 저장
+// 저장
 // ========================================
 
 await writeFile(OUTPUT_FILE, xml, "utf-8");
