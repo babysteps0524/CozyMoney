@@ -1,10 +1,6 @@
 import { defineConfig } from "vite";
 import UnoCSS from "unocss/vite";
 import { resolve } from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = resolve(__filename, "..");
 
 export default defineConfig({
   plugins: [UnoCSS()],
@@ -12,12 +8,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        stock: resolve(__dirname, "pages/stock.html"),
-        realestate: resolve(__dirname, "pages/realestate.html"),
-        taxSaving: resolve(__dirname, "pages/taxSaving.html"),
-        insurance: resolve(__dirname, "pages/insurance.html"),
-        computertax: resolve(__dirname, "pages/computertax.html"),
+        main: resolve("index.html"),
+        stock: resolve("pages/stock.html"),
+        realestate: resolve("pages/realestate.html"),
+        taxSaving: resolve("pages/taxSaving.html"),
+        insurance: resolve("pages/insurance.html"),
+        computertax: resolve("pages/computertax.html"),
       },
     },
   },
