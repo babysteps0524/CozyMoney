@@ -8,6 +8,7 @@
         "gray-matter": "^4.0.3",
         "katex": "^0.18.4",
         "marked": "^18.0.9",
+        "vite": "^8.2.1",
       },
       "devDependencies": {
         "@iconify-json/mdi": "^1.2.3",
@@ -20,7 +21,6 @@
         "@unocss/transformer-directives": "^66.7.5",
         "@unocss/transformer-variant-group": "^66.7.5",
         "unocss": "^66.7.5",
-        "vite": "^8.2.0",
       },
     },
   },
