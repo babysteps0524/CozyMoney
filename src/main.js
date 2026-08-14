@@ -171,29 +171,32 @@ window.addEventListener("popstate", async () => {
 // ========================================
 
 async function boot() {
-  const path = window.location.pathname;
-
-  // 스크롤바 때문에 화면 너비가 흔들리는 것 방지
   document.documentElement.style.overflowY = "scroll";
 
-  // 최신 글은 항상 미리 로드
   try {
-    await loadPosts();
+    await loadPosts(); // 최신 글
   } catch (e) {
     console.error(e);
   }
 
-  // 홈에서 시작한 경우만 홈 내용 저장
+  const path = window.location.pathname;
+
   if (path === "/" || path === "/index.html" || path === "") {
     homeContent = pageContent.innerHTML;
     return;
   }
 
-  // 게시판 페이지로 직접 들어온 경우
-  const board = boardMap[path];
+  const boardMap = {
+    "/pages/stock.html": "stock",
+    "/pages/realestate.html": "realestate",
+    "/pages/taxSaving.html": "taxSaving",
+    "/pages/insurance.html": "insurance",
+    "/pages/computertax.html": "computertax",
+  };
 
+  const board = boardMap[path];
   if (board) {
-    await initBoard(board);
+    await initBoard(board); // ← 이게 있어야 목록이 채워짐
   }
 }
 

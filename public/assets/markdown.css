@@ -39,7 +39,7 @@ body {
 .site-header-inner {
   width: min(1240px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 16px;
+  padding: 10px 16px 16px;
   text-align: center;
 }
 
@@ -54,7 +54,6 @@ body {
   height: auto;
   display: block;
   margin: 0 auto;
-  pointer-events: none;
 }
 
 /* ========================================
@@ -115,7 +114,7 @@ body {
 }
 
 .markdown-body {
-  padding: 48px 64px;
+  padding: 24px 16px;
 
   background: #fff;
 
@@ -410,6 +409,18 @@ body {
   }
 }
 
+@media (min-width: 768px) {
+  .markdown-body {
+    padding: 24px 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .markdown-body {
+    padding: 24px 72px; /* 메인 main과 맞춤 */
+  }
+}
+
 /* ========================================
    페이지 전체 레이아웃 (개별 글)
 ======================================== */
@@ -420,12 +431,13 @@ body {
   display: flex;
   gap: 24px;
   align-items: flex-start;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .post-layout {
   flex: 1;
   min-width: 0;
-  width: auto;
   margin: 0;
 }
 
