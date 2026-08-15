@@ -1,111 +1,84 @@
 [
   {
-    "id": "260814-19",
-    "board": "stock",
-    "title": "주식 투자에서 분산투자란",
-    "description": "분산투자가 무엇이고 왜 중요한지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-19/"
+    "id": "260813-15",
+    "board": "taxSaving",
+    "title": "원천징수란? 월급과 프리랜서 수입에서 빠지는 세금의 정체",
+    "description": "원천징수의 뜻과 근로소득·사업소득·기타소득별 원천징수 방법을 알아보고 3.3% 원천징수와 최근 이슈까지 쉽게 정리합니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-15/"
   },
   {
-    "id": "260814-18",
-    "board": "stock",
-    "title": "장기투자와 단기투자의 차이",
-    "description": "장기투자와 단기투자가 무엇이 다른지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-18/"
+    "id": "260813-13",
+    "board": "taxSaving",
+    "title": "기부금 세액공제 비교하기, 정치자금·고향사랑·일반기부금 차이",
+    "description": "정치자금기부금, 고향사랑기부금, 일반기부금의 세액공제율과 한도, 이월공제 여부를 비교하고 2026년 달라진 고향사랑기부금 제도까지 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-13/"
   },
   {
-    "id": "260814-17",
-    "board": "stock",
-    "title": "ETF란 무엇인가",
-    "description": "ETF가 무엇이고 왜 초보자에게 자주 추천되는지 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-17/"
+    "id": "260813-11",
+    "board": "taxSaving",
+    "title": "부양가족 공제(인적공제), 가족 한 명당 얼마나 공제받을 수 있을까?",
+    "description": "연말정산의 기본이 되는 인적공제의 금액과 부양가족의 소득·나이 요건, 중복공제 주의사항까지 쉽게 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-11/"
   },
   {
-    "id": "260814-16",
-    "board": "stock",
-    "title": "주식 분할이란 무엇인가",
-    "description": "주식 분할이 무엇이고 왜 하는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-16/"
+    "id": "260813-10",
+    "board": "taxSaving",
+    "title": "종합소득세 신고서류와 홈택스 입력 순서, 사업자·프리랜서가 꼭 확인할 것",
+    "description": "종합소득세 신고를 앞두고 사업자와 프리랜서가 준비해야 할 신고서류와 홈택스 신고 순서를 쉽게 정리하고 최근 달라진 신고 환경까지 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-10/"
   },
   {
-    "id": "260814-15",
-    "board": "stock",
-    "title": "주식 액면가와 주가의 차이",
-    "description": "액면가와 주가가 어떻게 다른지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-15/"
+    "id": "260813-9",
+    "board": "taxSaving",
+    "title": "종합소득세란? 사업자와 프리랜서가 5월에 꼭 확인해야 하는 세금",
+    "description": "종합소득세의 개념부터 신고 대상, 과세표준과 누진세율, 필요경비, 신고 방법까지 초보자도 이해하기 쉽게 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-9/"
   },
   {
-    "id": "260814-14",
-    "board": "stock",
-    "title": "ROE란 무엇인가",
-    "description": "ROE가 무엇이고 왜 중요한지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-14/"
+    "id": "260813-8",
+    "board": "taxSaving",
+    "title": "월세 세액공제 계산법, 실제 환급액은 왜 다를까?",
+    "description": "총급여 5,000만원에 월세 70만원을 내는 경우를 통해 월세 세액공제액과 실제 환급액이 왜 다른지 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-8/"
   },
   {
-    "id": "260814-13",
-    "board": "stock",
-    "title": "매출과 영업이익의 차이",
-    "description": "매출과 영업이익이 어떻게 다른지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-13/"
+    "id": "260813-7",
+    "board": "taxSaving",
+    "title": "총급여 5,000만원에 월세 70만원이라면? 월세 세액공제 실제 계산과 준비서류",
+    "description": "총급여 5,000만원인 직장인이 매달 월세 70만원을 납부할 때 받을 수 있는 월세 세액공제 금액과 소득·무주택·주택 요건, 준비 서류를 실제 사례로 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-7/"
   },
   {
-    "id": "260814-12",
-    "board": "stock",
-    "title": "재무제표를 처음 보는 방법",
-    "description": "재무제표가 무엇이고 처음 보시는 분들이 어떻게 접근하면 좋을지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-12/"
+    "id": "260813-6",
+    "board": "taxSaving",
+    "title": "월세 세액공제, 무주택 직장인이라면 꼭 확인하세요",
+    "description": "월세 세액공제의 대상 조건과 공제율, 계산 방법부터 2026년 달라진 주말부부·다자녀 가구 혜택까지 쉽게 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-6/"
   },
   {
-    "id": "260814-11",
-    "board": "stock",
-    "title": "주가와 기업 실적의 관계",
-    "description": "주가와 기업 실적이 어떤 관계를 가지는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-11/"
-  },
-  {
-    "id": "260814-10",
-    "board": "stock",
-    "title": "주식 거래량이 중요한 이유",
-    "description": "주식 거래량이 무엇이고 왜 중요한지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-10/"
-  },
-  {
-    "id": "260814-9",
-    "board": "stock",
-    "title": "배당수익률 계산하는 방법",
-    "description": "배당수익률이 무엇이고 어떻게 계산하는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-9/"
-  },
-  {
-    "id": "260814-8",
-    "board": "stock",
-    "title": "PER이 낮으면 좋은 주식일까",
-    "description": "PER이 낮은 주식이 정말 좋은 주식인지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-8/"
+    "id": "260813-5",
+    "board": "taxSaving",
+    "title": "신용카드 소득공제, 왜 나는 혜택이 없을까?",
+    "description": "신용카드 소득공제의 25% 기준과 결제수단별 공제율, 공제한도를 실제 사례와 함께 알아보고 최근 달라진 연말정산 내용을 정리합니다.",
+    "category": "세테크",
+    "date": "2026-08-16",
+    "url": "/taxSaving/260813-5/"
   },
   {
     "id": "260814-7",
@@ -117,58 +90,13 @@
     "url": "/stock/260814-7/"
   },
   {
-    "id": "260814-6",
-    "board": "stock",
-    "title": "우량주란 무엇인가",
-    "description": "우량주가 무엇인지, 어떤 특징을 가지고 있는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-6/"
-  },
-  {
-    "id": "260814-5",
-    "board": "stock",
-    "title": "주식 매수와 매도란",
-    "description": "주식 투자에서 가장 기본이 되는 매수와 매도가 무엇인지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-5/"
-  },
-  {
-    "id": "260814-4",
-    "board": "stock",
-    "title": "코스피와 코스닥의 차이",
-    "description": "코스피와 코스닥이 무엇이 다른지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-4/"
-  },
-  {
-    "id": "260814-3",
-    "board": "stock",
-    "title": "시가총액이란 무엇인가",
-    "description": "시가총액이 무엇인지, 왜 중요한지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-3/"
-  },
-  {
-    "id": "260814-2",
-    "board": "stock",
-    "title": "배당주 투자란 무엇인가",
-    "description": "배당주 투자가 무엇인지, 왜 많은 분들이 배당주에 관심을 갖는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-2/"
-  },
-  {
-    "id": "260814-1",
-    "board": "stock",
-    "title": "PER과 PBR 쉽게 이해하기",
-    "description": "주식 투자할 때 자주 나오는 PER, PBR이 무엇인지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
-    "category": "주식",
-    "date": "2026-08-14",
-    "url": "/stock/260814-1/"
+    "id": "260813-12",
+    "board": "taxSaving",
+    "title": "기부금 세액공제란? 연말정산에서 놓치기 쉬운 공제 혜택",
+    "description": "기부금 세액공제의 기본 원리와 기부금 종류별 공제율, 한도와 증빙서류까지 쉽게 알아봅니다.",
+    "category": "세테크",
+    "date": "2026-08-13",
+    "url": "/taxSaving/260813-12/"
   },
   {
     "id": "260813-10",
@@ -180,15 +108,6 @@
     "url": "/insurance/260813-10/"
   },
   {
-    "id": "260813-10",
-    "board": "taxSaving",
-    "title": "기부금 세액공제, 나눔이 절세가 되는 방법",
-    "description": "기부하면서 세금도 줄이는 기부금 세액공제의 원리와 공제율을 예시와 함께 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-10/"
-  },
-  {
     "id": "260813-9",
     "board": "insurance",
     "title": "고지의무란? 보험 가입 전 반드시 알려야 하는 것",
@@ -196,15 +115,6 @@
     "category": "보험",
     "date": "2026-08-13",
     "url": "/insurance/260813-9/"
-  },
-  {
-    "id": "260813-9",
-    "board": "taxSaving",
-    "title": "부양가족 공제(인적공제), 가족 한 명당 얼마나 줄어들까?",
-    "description": "연말정산의 기본이 되는 인적공제, 부양가족 공제 조건과 금액을 예시와 함께 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-9/"
   },
   {
     "id": "260813-8",
@@ -216,15 +126,6 @@
     "url": "/insurance/260813-8/"
   },
   {
-    "id": "260813-8",
-    "board": "taxSaving",
-    "title": "원천징수란? 월급명세서 속 세금의 정체",
-    "description": "월급에서 매달 빠지는 세금, 원천징수가 무엇이고 왜 필요한지 쉽게 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-8/"
-  },
-  {
     "id": "260813-7",
     "board": "insurance",
     "title": "해지환급금이란? 보험 중도 해지 시 돌려받는 돈",
@@ -232,15 +133,6 @@
     "category": "보험",
     "date": "2026-08-13",
     "url": "/insurance/260813-7/"
-  },
-  {
-    "id": "260813-7",
-    "board": "taxSaving",
-    "title": "종합소득세란? 5월이면 챙겨야 하는 이유",
-    "description": "사업자, 프리랜서라면 꼭 알아야 할 종합소득세의 개념과 세율 구조를 쉽게 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-7/"
   },
   {
     "id": "260813-6",
@@ -252,15 +144,6 @@
     "url": "/insurance/260813-6/"
   },
   {
-    "id": "260813-6",
-    "board": "taxSaving",
-    "title": "월세 세액공제, 무주택 직장인이라면 꼭 챙기세요",
-    "description": "매달 나가는 월세, 세금으로 돌려받을 수 있는 월세 세액공제를 예시와 함께 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-6/"
-  },
-  {
     "id": "260813-5",
     "board": "insurance",
     "title": "자기부담금이란? 보험금이 예상보다 적은 이유",
@@ -268,15 +151,6 @@
     "category": "보험",
     "date": "2026-08-13",
     "url": "/insurance/260813-5/"
-  },
-  {
-    "id": "260813-5",
-    "board": "taxSaving",
-    "title": "신용카드 소득공제, 왜 나는 혜택이 없을까?",
-    "description": "카드를 많이 썼는데 왜 공제가 없는지, 신용카드 소득공제의 원리를 쉽게 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-5/"
   },
   {
     "id": "260813-4",
@@ -288,15 +162,6 @@
     "url": "/insurance/260813-4/"
   },
   {
-    "id": "260813-4",
-    "board": "taxSaving",
-    "title": "ISA 계좌란? 만능 절세 통장 쉽게 이해하기",
-    "description": "하나의 계좌로 다양한 금융상품을 담고 비과세 혜택까지 받는 ISA 계좌를 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-4/"
-  },
-  {
     "id": "260813-3",
     "board": "insurance",
     "title": "종신보험이란? 평생 보장의 의미",
@@ -304,15 +169,6 @@
     "category": "보험",
     "date": "2026-08-13",
     "url": "/insurance/260813-3/"
-  },
-  {
-    "id": "260813-3",
-    "board": "taxSaving",
-    "title": "연금저축·IRP 세액공제, 최대 148만원 돌려받는 법",
-    "description": "노후 준비와 절세를 동시에 잡는 연금저축과 IRP 세액공제를 예시와 함께 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-3/"
   },
   {
     "id": "260813-2",
@@ -324,15 +180,6 @@
     "url": "/insurance/260813-2/"
   },
   {
-    "id": "260813-2",
-    "board": "taxSaving",
-    "title": "소득공제와 세액공제, 뭐가 다를까?",
-    "description": "연말정산의 핵심, 소득공제와 세액공제의 차이를 예시와 함께 쉽게 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-2/"
-  },
-  {
     "id": "260813-1",
     "board": "insurance",
     "title": "실손의료보험(실비보험)이란? 국민 보험의 정체",
@@ -340,15 +187,6 @@
     "category": "보험",
     "date": "2026-08-13",
     "url": "/insurance/260813-1/"
-  },
-  {
-    "id": "260813-1",
-    "board": "taxSaving",
-    "title": "연말정산이란? 13월의 월급 완전 정복",
-    "description": "연말정산이 무엇인지, 왜 어떤 사람은 돈을 돌려받고 어떤 사람은 더 내는지 쉽게 알아봅니다.",
-    "category": "세테크",
-    "date": "2026-08-13",
-    "url": "/taxSaving/260813-1/"
   },
   {
     "id": "260812-15",
@@ -488,10 +326,217 @@
   {
     "id": "260812-1",
     "board": "stock",
-    "title": "주식은 무엇인가?",
-    "description": "주식이 무엇인지, 주식을 사면 어떤 의미가 있는지 초보자도 쉽게 이해할 수 있도록 알아봅니다.",
+    "title": "제목 없음",
+    "description": "",
     "category": "주식",
-    "date": "2026-08-12",
+    "date": "",
     "url": "/stock/260812-1/"
+  },
+  {
+    "id": "260814-1",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-1/"
+  },
+  {
+    "id": "260814-11",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-11/"
+  },
+  {
+    "id": "260814-12",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-12/"
+  },
+  {
+    "id": "260814-13",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-13/"
+  },
+  {
+    "id": "260814-14",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-14/"
+  },
+  {
+    "id": "260814-15",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-15/"
+  },
+  {
+    "id": "260814-16",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-16/"
+  },
+  {
+    "id": "260814-17",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-17/"
+  },
+  {
+    "id": "260814-18",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-18/"
+  },
+  {
+    "id": "260814-19",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-19/"
+  },
+  {
+    "id": "260814-2",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-2/"
+  },
+  {
+    "id": "260814-20",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-20/"
+  },
+  {
+    "id": "260814-3",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-3/"
+  },
+  {
+    "id": "260814-4",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-4/"
+  },
+  {
+    "id": "260814-5",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-5/"
+  },
+  {
+    "id": "260814-6",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-6/"
+  },
+  {
+    "id": "260814-8",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-8/"
+  },
+  {
+    "id": "260814-9",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260814-9/"
+  },
+  {
+    "id": "260816-1",
+    "board": "stock",
+    "title": "제목 없음",
+    "description": "",
+    "category": "주식",
+    "date": "",
+    "url": "/stock/260816-1/"
+  },
+  {
+    "id": "260813-1",
+    "board": "taxSaving",
+    "title": "제목 없음",
+    "description": "",
+    "category": "세테크",
+    "date": "",
+    "url": "/taxSaving/260813-1/"
+  },
+  {
+    "id": "260813-2",
+    "board": "taxSaving",
+    "title": "제목 없음",
+    "description": "",
+    "category": "세테크",
+    "date": "",
+    "url": "/taxSaving/260813-2/"
+  },
+  {
+    "id": "260813-3",
+    "board": "taxSaving",
+    "title": "제목 없음",
+    "description": "",
+    "category": "세테크",
+    "date": "",
+    "url": "/taxSaving/260813-3/"
+  },
+  {
+    "id": "260813-4",
+    "board": "taxSaving",
+    "title": "제목 없음",
+    "description": "",
+    "category": "세테크",
+    "date": "",
+    "url": "/taxSaving/260813-4/"
   }
 ]
