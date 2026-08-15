@@ -1,31 +1,61 @@
 import { defineConfig } from "vite";
 import UnoCSS from "unocss/vite";
-import { resolve } from "path";
+import path from "node:path";
+import fs from "node:fs";
+
+const BOARDS = [
+  "stock",
+  "realestate",
+  "taxSaving",
+  "insurance",
+  "computertax",
+];
+
+function getHtmlInputs() {
+  const inputs = {
+    main: path.resolve("index.html"),
+    privacy: path.resolve("pages/privacy.html"),
+  };
+
+  for (const board of BOARDS) {
+    const categoryFile = path.resolve(board, "index.html");
+
+    if (fs.existsSync(categoryFile)) {
+      inputs[board] = categoryFile;
+    }
+
+    const boardDir = path.resolve(board);
+
+    if (!fs.existsSync(boardDir)) continue;
+
+    for (const entry of fs.readdirSync(boardDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+
+      const postFile = path.join(boardDir, entry.name, "index.html");
+
+      if (fs.existsSync(postFile)) {
+        inputs[`${board}-${entry.name}`] = postFile;
+      }
+    }
+  }
+
+  return inputs;
+}
 
 export default defineConfig({
   plugins: [UnoCSS()],
 
   build: {
     rollupOptions: {
-      input: {
-        main: resolve("index.html"),
-        stock: resolve("pages/stock.html"),
-        realestate: resolve("pages/realestate.html"),
-        taxSaving: resolve("pages/taxSaving.html"),
-        insurance: resolve("pages/insurance.html"),
-        computertax: resolve("pages/computertax.html"),
-        privacy: resolve("pages/privacy.html"),
-      },
+      input: getHtmlInputs(),
     },
   },
 
   server: {
     open: true,
-
     watch: {
       usePolling: true,
     },
-
     hmr: true,
   },
 });

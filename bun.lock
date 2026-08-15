@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "cozytax",
+      "name": "cozymoney",
       "dependencies": {
         "gray-matter": "^4.0.3",
         "katex": "^0.18.4",

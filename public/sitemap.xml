@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
->
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://cozymoney.kr/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/pages/stock.html</loc>
+    <loc>https://cozymoney.kr/stock/</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/pages/realestate.html</loc>
+    <loc>https://cozymoney.kr/realestate/</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/pages/taxSaving.html</loc>
+    <loc>https://cozymoney.kr/taxSaving/</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/pages/insurance.html</loc>
+    <loc>https://cozymoney.kr/insurance/</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/pages/computertax.html</loc>
+    <loc>https://cozymoney.kr/computertax/</loc>
     <priority>0.8</priority>
   </url>
   <url>
@@ -252,5 +248,4 @@
     <loc>https://cozymoney.kr/taxSaving/260813-9/</loc>
     <priority>0.6</priority>
   </url>
-
 </urlset>

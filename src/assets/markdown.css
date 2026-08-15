@@ -1,0 +1,532 @@
+/* ========================================
+   기본
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+}
+
+body {
+  margin: 0;
+  color: #333;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   게시글 페이지
+======================================== */
+
+/*
+  개별 게시글은 main 자체가
+  흰색 박스가 되지 않도록 한다.
+*/
+
+.post-page-content {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ========================================
+   게시글
+======================================== */
+
+.markdown-body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ========================================
+   게시글 Header
+======================================== */
+
+.post-header {
+  margin: 0 0 48px;
+  padding: 0;
+}
+
+.post-category {
+  margin: 0 0 10px;
+
+  color: #9b8069;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.post-header h1 {
+  margin: 0 0 16px;
+
+  color: #333;
+
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.post-header time {
+  color: #999;
+  font-size: 14px;
+}
+
+/* ========================================
+   본문
+======================================== */
+
+.post-content {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  color: #333;
+
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.post-content p {
+  margin: 0 0 18px;
+}
+
+/* ========================================
+   제목
+======================================== */
+
+.post-content h1 {
+  margin-top: 48px;
+  margin-bottom: 20px;
+
+  font-size: 30px;
+  line-height: 1.5;
+}
+
+.post-content h2 {
+  margin-top: 48px;
+  margin-bottom: 18px;
+
+  color: #523f2e;
+
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.post-content h3 {
+  margin-top: 32px;
+  margin-bottom: 14px;
+
+  color: #523f2e;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+/* ========================================
+   링크
+======================================== */
+
+.post-content a {
+  color: #8b6248;
+  text-decoration: underline;
+}
+
+.post-content a:hover {
+  color: #523f2e;
+}
+
+/* ========================================
+   목록
+======================================== */
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 20px;
+  padding-left: 28px;
+}
+
+.post-content li {
+  margin-bottom: 6px;
+}
+
+/* ========================================
+   인용문
+======================================== */
+
+.post-content blockquote {
+  margin: 24px 0;
+  padding: 16px 20px;
+
+  background: #f7f0eb;
+
+  border-left: 4px solid #c76b08;
+
+  color: #555;
+}
+
+/* ========================================
+   구분선
+======================================== */
+
+.post-content hr {
+  margin: 40px 0;
+
+  border: 0;
+  border-top: 1px solid #e5ddd7;
+}
+
+/* ========================================
+   표
+======================================== */
+
+.post-content table {
+  width: 100%;
+
+  margin: 24px 0;
+
+  border-collapse: collapse;
+
+  font-size: 15px;
+}
+
+.post-content th,
+.post-content td {
+  padding: 12px;
+
+  border: 1px solid #e5ddd7;
+
+  text-align: left;
+}
+
+.post-content th {
+  background: #f7f0eb;
+  font-weight: 700;
+}
+
+/* ========================================
+   이미지
+======================================== */
+
+.post-content img {
+  display: block;
+
+  max-width: 100%;
+  height: auto;
+
+  margin: 28px auto;
+}
+
+/* ========================================
+   코드
+======================================== */
+
+.post-content code {
+  padding: 2px 5px;
+
+  background: #f5f0ec;
+
+  border-radius: 4px;
+
+  font-family: Consolas, "Courier New", monospace;
+
+  font-size: 0.9em;
+}
+
+.post-content pre {
+  margin: 24px 0;
+  padding: 18px;
+
+  overflow-x: auto;
+
+  background: #2f2925;
+
+  border-radius: 8px;
+
+  color: #fff;
+
+  line-height: 1.6;
+}
+
+.post-content pre code {
+  padding: 0;
+
+  background: transparent;
+
+  color: inherit;
+}
+
+/* ========================================
+   KaTeX
+======================================== */
+
+.katex-display {
+  margin: 28px 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ========================================
+   게시글 하단
+======================================== */
+
+.post-footer {
+  margin-top: 60px;
+  padding-top: 28px;
+
+  border-top: 1px solid #e5ddd7;
+}
+
+.post-back {
+  display: inline-block;
+
+  color: #8b6248;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.post-back:hover {
+  color: #523f2e;
+}
+
+/* ========================================
+   게시판 목록
+======================================== */
+
+.post-card {
+  margin-bottom: 12px;
+
+  background: #f7f0eb;
+
+  border: 1px solid #f5dfd3;
+
+  border-radius: 12px;
+
+  transition:
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.post-card:hover {
+  background: #f1e2d8;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  transform: translateY(-1px);
+}
+
+.post-card-link {
+  display: block;
+
+  padding: 18px 20px;
+
+  color: inherit;
+
+  text-decoration: none;
+}
+
+.post-card-title-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.post-card-title {
+  margin: 0;
+
+  color: #333;
+
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.post-card-date {
+  flex-shrink: 0;
+
+  color: #999;
+
+  font-size: 13px;
+}
+
+.post-card-description {
+  margin: 8px 0 0;
+
+  color: #777;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* ========================================
+   최신글
+======================================== */
+
+.latest-post-item {
+  margin-bottom: 10px;
+
+  list-style: none;
+}
+
+.latest-post-link {
+  display: block;
+
+  color: #555;
+
+  font-size: 14px;
+
+  text-decoration: none;
+
+  transition:
+    color 0.15s ease,
+    padding-left 0.15s ease;
+}
+
+.latest-post-link:hover {
+  padding-left: 4px;
+
+  color: #9b8069;
+}
+
+/* ========================================
+   페이지네이션
+======================================== */
+
+#pagination {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.page-btn,
+.page-arrow-btn {
+  display: inline-flex;
+
+  justify-content: center;
+  align-items: center;
+
+  min-width: 36px;
+  height: 36px;
+
+  padding: 0 10px;
+
+  background: #fff;
+
+  border: 1px solid #dfd1c7;
+  border-radius: 6px;
+
+  color: #523f2e;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.page-btn:hover,
+.page-arrow-btn:hover {
+  background: #f5dfd3;
+
+  border-color: #cda88d;
+}
+
+.page-btn-active {
+  background: #523f2e;
+
+  border-color: #523f2e;
+
+  color: #fff;
+}
+
+.page-btn-active:hover {
+  background: #523f2e;
+
+  color: #fff;
+}
+
+.page-btn:disabled,
+.page-arrow-btn:disabled {
+  opacity: 0.4;
+
+  cursor: default;
+}
+
+.page-btn:disabled:hover,
+.page-arrow-btn:disabled:hover {
+  background: #fff;
+
+  border-color: #dfd1c7;
+}
+
+/* ========================================
+   모바일
+======================================== */
+
+@media (max-width: 767px) {
+  .post-header h1 {
+    font-size: 28px;
+  }
+
+  .post-content {
+    font-size: 15px;
+  }
+
+  .post-content h2 {
+    font-size: 22px;
+  }
+
+  .post-content h3 {
+    font-size: 19px;
+  }
+
+  .post-card-title-row {
+    display: block;
+  }
+
+  .post-card-date {
+    display: block;
+
+    margin-top: 6px;
+  }
+
+  .post-content table {
+    display: block;
+
+    overflow-x: auto;
+
+    white-space: nowrap;
+  }
+}

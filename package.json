@@ -5,10 +5,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "bun run build:posts && vite",
     "build:posts": "bun scripts/build-posts.js",
     "generate:sitemap": "bun scripts/generate-sitemap.js",
-    "build": "bun run build:posts && bun run generate:sitemap && bunx vite build",
+    "build": "bun run build:posts && bun run generate:sitemap && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
