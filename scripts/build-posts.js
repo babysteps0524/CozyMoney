@@ -276,7 +276,7 @@ function commonHead({ title, description, canonical, ogType = "website" }) {
 
 function createCategoryHtml({ board, posts, allPosts }) {
   const info = BOARDS[board];
-  const title = `${info.name} | COZYMONEY`;
+  const title = `${info.name} | CozyMoney`;
   const canonical = `${DOMAIN}/${board}/`;
 
   return `<!doctype html>
@@ -303,7 +303,7 @@ function createCategoryHtml({ board, posts, allPosts }) {
     <header w="1240px" mx="auto">
       <h1 py="10px 16px">
         <a href="/">
-          <img src="/images/logo/cozymoney_01.svg" alt="COZYMONEY" w="240px" h="auto" mx="auto" />
+          <img src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" w="240px" h="auto" mx="auto" />
         </a>
       </h1>
     </header>
@@ -374,7 +374,7 @@ function createCategoryHtml({ board, posts, allPosts }) {
 }
 
 function createPostHtml(post, allPosts) {
-  const title = `${post.title} | COZYMONEY`;
+  const title = `${post.title} | CozyMoney`;
   const canonical = `${DOMAIN}${post.url}`;
   const contentHtml = renderMarkdown(post.content);
 
@@ -405,7 +405,7 @@ function createPostHtml(post, allPosts) {
     <header w="1240px" mx="auto">
       <h1 py="10px 16px">
         <a href="/">
-          <img src="/images/logo/cozymoney_01.svg" alt="COZYMONEY" w="240px" h="auto" mx="auto" />
+          <img src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" w="240px" h="auto" mx="auto" />
         </a>
       </h1>
     </header>
@@ -444,7 +444,7 @@ function createPostHtml(post, allPosts) {
           <div class="post-footer">
             <a
               href="/${post.board}/"
-              class="inline-block px-16px py-10px rounded-8px text-14px text-gray-600 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900"
+              class="inline-block px-16px py-10px rounded-8px text-14px text-gray-600 transition-colors duration-150 hover:blue-500 hover:text-white"
               data-spa="true"
             >
               ← ${escapeHtml(post.category)} 게시판 돌아가기
