@@ -442,8 +442,12 @@ function createPostHtml(post, allPosts) {
           </div>
 
           <div class="post-footer">
-            <a href="/${post.board}/" class="post-back">
-              ← ${escapeHtml(post.category)} 게시판으로 돌아가기
+            <a
+              href="/${post.board}/"
+              class="inline-block px-16px py-10px rounded-8px text-14px text-gray-600 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900"
+              data-spa="true"
+            >
+              ← ${escapeHtml(post.category)} 게시판 돌아가기
             </a>
           </div>
         </article>
