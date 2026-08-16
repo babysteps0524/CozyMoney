@@ -361,16 +361,16 @@ async function prepareHomeCache() {
 // ========================================
 
 function refreshAds() {
-  if (!window.adsbygoogle) {
-    return;
-  }
+  /*
+    AdSense 스크립트가 아직 비동기로 로드되지 않았더라도
+    전역 배열을 먼저 만들어 두면 push() 요청이 대기열에 들어간다.
+  */
+  window.adsbygoogle = window.adsbygoogle || [];
 
   document.querySelectorAll("ins.adsbygoogle").forEach((ad) => {
     /*
-        이미 초기화된 광고는
-        다시 push하지 않는다.
-      */
-
+      이미 초기화된 광고는 다시 push하지 않는다.
+    */
     if (ad.getAttribute("data-adsbygoogle-status")) {
       return;
     }

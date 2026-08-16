@@ -346,18 +346,41 @@ a {
   position: fixed;
   z-index: 20;
   top: 140px;
-  left: 12px;
+  left: max(12px, calc(50% - 804px));
   width: 160px;
-  min-height: 280px;
+  height: 600px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px dashed #d8c7bb;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(60, 40, 25, 0.06);
   text-align: center;
+  overflow: hidden;
+}
+
+.ad-left .adsbygoogle {
+  display: block !important;
+  width: 160px !important;
+  height: 600px !important;
 }
 
 .ad-right {
   width: 100%;
   min-height: 120px;
   margin-top: 24px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px dashed #d8c7bb;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(60, 40, 25, 0.05);
   text-align: center;
   overflow: hidden;
+}
+
+.ad-right .adsbygoogle {
+  display: block !important;
+  width: 100% !important;
+  height: 120px !important;
 }
 
 .ad-label {
