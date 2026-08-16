@@ -3,42 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <meta
       name="description"
-      content="주식, 부동산, 세테크, 보험, 전산세무 정보를 쉽고 편하게 알아보는 COZYMONEY"
+      content="코지머니는 주식, 세금, 부동산, 보험, 전산세무 정보를 쉽고 편하게 정리하는 금융·세무 정보 사이트입니다."
     />
+
     <link rel="canonical" href="https://cozymoney.kr/" />
+
+    <meta name="naver-site-verification" content="naver7f06142203a9755573e7649c4aa368a2" />
+
+    <meta property="og:site_name" content="CozyMoney" />
     <meta
       property="og:title"
       content="CozyMoney | 주식·부동산·세테크·보험·전산세무"
     />
     <meta
       property="og:description"
-      content="주식, 부동산, 세테크, 보험, 전산세무 정보를 쉽고 편하게 알아보는 COZYMONEY"
+      content="주식, 세금, 부동산, 보험, 전산세무 정보를 쉽고 편하게 정리하는 CozyMoney"
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cozymoney.kr/" />
+
+    <title>CozyMoney | 주식·부동산·세테크·보험·전산세무</title>
+
     <script type="module" src="/src/main.js"></script>
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
       crossorigin="anonymous"
     ></script>
-    <meta
-      name="naver-site-verification"
-      content="naver7f06142203a9755573e7649c4aa368a2"
-    />
-    <title>CozyMoney</title>
   </head>
-  <body
-    bg="[url(/images/bg/bg-04.svg)]"
-    class="bodyText"
-    relative
-    min-h="100vh"
-    flex
-    flex-col
-  >
-    <!-- 왼쪽 구글 애드센스 -->
+
+  <body class="bodyText">
     <aside class="ad-left" aria-label="Google AdSense 광고 영역">
       <div class="ad-label">Google AdSense</div>
       <ins
@@ -50,165 +47,136 @@
       ></ins>
     </aside>
 
-    <!-- 헤더 -->
-    <header w="1240px" mx="auto">
-      <h1 py="10px 16px">
+    <header class="site-header">
+      <h1>
         <a href="/" data-spa="true" aria-label="CozyMoney 홈">
           <img
+            class="site-logo"
             src="/images/logo/cozymoney_01.svg"
             alt="CozyMoney 로고"
-            w="180px"
-            md:w="220px"
-            lg:w="240px"
-            h="auto"
-            mx="auto"
           />
         </a>
       </h1>
     </header>
-    <nav
-      sticky
-      top="0"
-      z="100"
-      mb="40px"
-      bg="[url(/images/bg/bg-04.svg)]"
-      w="1240px"
-      mx="auto"
-    >
-      <ul
-        flex
-        justify="center"
-        border-y="2px solid #C76B08FF"
-        pt="12px"
-        pb="10px"
-      >
-        <li mx="20px">
-          <a href="/stock/" data-page="stock" class="navText">주식</a>
-        </li>
-        <li mx="20px">
-          <a href="/realestate/" data-page="realestate" class="navText"
-            >부동산</a
-          >
-        </li>
-        <li mx="20px">
-          <a href="/taxSaving/" data-page="taxSaving" class="navText">세테크</a>
-        </li>
-        <li mx="20px">
-          <a href="/insurance/" data-page="insurance" class="navText">보험</a>
-        </li>
-        <li mx="20px">
-          <a href="/computertax/" data-page="computertax" class="navText"
-            >전산세무</a
-          >
-        </li>
-      </ul>
+
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <div class="site-nav-inner">
+        <button
+          type="button"
+          class="mobile-menu-toggle"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          <span>메뉴</span>
+          <span class="mobile-menu-toggle-icon" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+
+        <ul id="primary-navigation" class="site-nav-list">
+          <li class="site-nav-item">
+            <a href="/stock/" data-page="stock" class="site-nav-link" data-spa="true">주식</a>
+          </li>
+          <li class="site-nav-item">
+            <a href="/realestate/" data-page="realestate" class="site-nav-link" data-spa="true">부동산</a>
+          </li>
+          <li class="site-nav-item">
+            <a href="/taxSaving/" data-page="taxSaving" class="site-nav-link" data-spa="true">세테크</a>
+          </li>
+          <li class="site-nav-item">
+            <a href="/insurance/" data-page="insurance" class="site-nav-link" data-spa="true">보험</a>
+          </li>
+          <li class="site-nav-item">
+            <a href="/computertax/" data-page="computertax" class="site-nav-link" data-spa="true">전산세무</a>
+          </li>
+        </ul>
+      </div>
     </nav>
-    <div
-      w="full"
-      max-w="1240px"
-      mx="auto"
-      px="16px"
-      mb="40px"
-      flex
-      flex-col
-      lg:flex-row
-      gap="24px"
-      flex-1
-    >
-      <main
-        id="page-content"
-        w="full"
-        lg:flex-1
-        bg="#ffffff"
-        rounded="16px"
-        py="24px"
-        px="16px"
-        md:px="32px"
-        lg:px="72px"
-        shadow="xl"
-      >
+
+    <div class="site-main-layout">
+      <main id="page-content" class="site-main">
         <article>
-          <section mb="54px">
-            <p text="14px #9b8069" font="600" mb="12px">CozyMoney</p>
-            <h2 text="38px" font="600" mb="16px">
-              내 돈을 이해하는 가장 쉬운 방법
-            </h2>
-            <p text="18px #777" mb="28px" leading="8">
+          <section class="home-intro">
+            <p class="home-eyebrow">CozyMoney</p>
+
+            <h2 class="home-title">내 돈을 이해하는 가장 쉬운 방법</h2>
+
+            <p class="home-description">
               주식 · 부동산 · 세테크 · 보험 · 전산세무까지<br />
               돈과 세금에 관한 정보를 쉽고 편하게
             </p>
           </section>
-          <!-- 카테고리 카드 -->
-          <section grid="~ cols-1 md:cols-2" gap="16px">
-            <a href="/stock/" data-page="stock" class="cardAnchor">
-              <h3 class="cardH3">주식</h3>
-              <p class="cardP">
+
+          <section class="category-grid" aria-label="CozyMoney 카테고리">
+            <a href="/stock/" data-page="stock" class="category-card" data-spa="true">
+              <h3>주식</h3>
+              <p>
                 투자에 필요한 기본 지식부터<br />
                 시장 이슈와 투자 상식까지
               </p>
-              <span text="13px #9b8069"
-                >주식 정보 보기<span class="i-mdi-arrow-right"></span>
+              <span class="category-card-more">
+                주식 정보 보기
+                <span class="i-mdi-arrow-right" aria-hidden="true"></span>
               </span>
             </a>
 
-            <a href="/realestate/" data-page="realestate" class="cardAnchor">
-              <h3 class="cardH3">부동산</h3>
-              <p class="cardP">
+            <a href="/realestate/" data-page="realestate" class="category-card" data-spa="true">
+              <h3>부동산</h3>
+              <p>
                 부동산 시장부터 청약과 세금까지<br />
                 알아두면 좋은 부동산 정보
               </p>
-              <span text="13px #9b8969"
-                >부동산 정보 보기<span class="i-mdi-arrow-right"></span>
+              <span class="category-card-more">
+                부동산 정보 보기
+                <span class="i-mdi-arrow-right" aria-hidden="true"></span>
               </span>
             </a>
 
-            <a href="/taxSaving/" data-page="taxSaving" class="cardAnchor">
-              <h3 class="cardH3">세테크</h3>
-              <p class="cardP">
+            <a href="/taxSaving/" data-page="taxSaving" class="category-card" data-spa="true">
+              <h3>세테크</h3>
+              <p>
                 세금을 이해하고 관리하는 방법<br />
                 연말정산부터 다양한 절세 정보까지
               </p>
-              <span text="13px #9b8969"
-                >세테크 정보 보기<span class="i-mdi-arrow-right"></span>
+              <span class="category-card-more">
+                세테크 정보 보기
+                <span class="i-mdi-arrow-right" aria-hidden="true"></span>
               </span>
             </a>
 
-            <a href="/insurance/" data-page="insurance" class="cardAnchor">
-              <h3 class="cardH3">보험</h3>
-              <p class="cardP">
+            <a href="/insurance/" data-page="insurance" class="category-card" data-spa="true">
+              <h3>보험</h3>
+              <p>
                 어렵게 느껴지는 보험을 쉽게 이해하고<br />
                 보험료와 보장 내용을 알아보세요
               </p>
-              <span text="13px #9b8969"
-                >보험 정보 보기<span class="i-mdi-arrow-right"></span>
+              <span class="category-card-more">
+                보험 정보 보기
+                <span class="i-mdi-arrow-right" aria-hidden="true"></span>
               </span>
             </a>
-            <a href="/computertax/" data-page="computertax" class="cardAnchor">
-              <h3 class="cardH3">전산세무</h3>
-              <p class="cardP">
+
+            <a href="/computertax/" data-page="computertax" class="category-card" data-spa="true">
+              <h3>전산세무</h3>
+              <p>
                 전산세무 시험에 필요한 학습 자료와<br />
                 기출문제 및 세무 정보를 확인하세요
               </p>
-              <span text="13px #9b8969"
-                >전산세무 정보 보기<span class="i-mdi-arrow-right"></span>
+              <span class="category-card-more">
+                전산세무 정보 보기
+                <span class="i-mdi-arrow-right" aria-hidden="true"></span>
               </span>
             </a>
           </section>
         </article>
       </main>
-      <aside
-        w="full"
-        lg:basis="284px"
-        lg:flex-shrink-0
-        lg:sticky
-        lg:top="100px"
-        h="fit"
-      >
-        <nav class="asideNav" shadow="xl">
+
+      <aside class="site-sidebar">
+        <nav class="asideNav" aria-label="최신 글">
           <h2 class="asideNavH2">최신 글</h2>
-          <ul id="latestPosts" list-none p="0" m="0"></ul>
+          <ul id="latestPosts" class="latest-post-list"></ul>
         </nav>
-        <!-- 오른쪽 구글 애드센스 -->
+
         <div class="ad-right" aria-label="Google AdSense 광고 영역">
           <div class="ad-label">Google AdSense</div>
           <ins
@@ -221,23 +189,13 @@
         </div>
       </aside>
     </div>
-    <footer bg="#523f2e" text="center #ffffff" py="20px 10px" px="20px">
-      <div flex justify="center" items="center" gap="16px" mb="10px">
-        <a
-          href="/pages/privacy.html"
-          text="14px #ffffff"
-          hover="text-[#F5DFD3]"
-        >
-          개인정보처리방침
-        </a>
-      </div>
 
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="/pages/privacy.html" data-spa="true">개인정보처리방침</a>
+      </div>
       <p>
-        <small
-          >Copyright
-          <i class="i-mdi-copyright text-16px"></i>
-          2026.CozyMoney All rights reserved.
-        </small>
+        <small>Copyright © 2026.CozyMoney All rights reserved.</small>
       </p>
     </footer>
   </body>

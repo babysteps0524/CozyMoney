@@ -11,6 +11,51 @@ import { initBoard, loadPosts } from "./board.js";
 const pageContent = document.querySelector("#page-content");
 
 // ========================================
+// 모바일 메뉴
+// ========================================
+
+function closeMobileMenu() {
+  const nav = document.querySelector(".site-nav");
+  const toggle = document.querySelector(".mobile-menu-toggle");
+
+  if (!nav || !toggle) return;
+
+  nav.classList.remove("is-open");
+  toggle.setAttribute("aria-expanded", "false");
+}
+
+function toggleMobileMenu() {
+  const nav = document.querySelector(".site-nav");
+  const toggle = document.querySelector(".mobile-menu-toggle");
+
+  if (!nav || !toggle) return;
+
+  const isOpen = nav.classList.toggle("is-open");
+  toggle.setAttribute("aria-expanded", String(isOpen));
+}
+
+function updateActiveNav(pathname = window.location.pathname) {
+  const normalized = normalizePath(pathname);
+
+  document.querySelectorAll(".site-nav-link").forEach((link) => {
+    const href = link.getAttribute("href");
+
+    if (!href) return;
+
+    const linkPath = normalizePath(new URL(href, window.location.origin).pathname);
+    const active = normalized !== "/" && normalized === linkPath;
+
+    link.classList.toggle("is-active", active);
+
+    if (active) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+// ========================================
 // 게시판 URL
 // ========================================
 
@@ -349,6 +394,9 @@ async function renderRoute(url, { scroll = true } = {}) {
 
   const targetPath = normalizePath(targetUrl.pathname);
 
+  closeMobileMenu();
+  updateActiveNav(targetPath);
+
   /*
     Home
   */
@@ -521,6 +569,22 @@ async function navigate(url, { push = true, scroll = true } = {}) {
 // preventDefault()를 먼저 실행한다.
 // ========================================
 
+document.addEventListener("click", (event) => {
+  const toggle = event.target.closest(".mobile-menu-toggle");
+
+  if (toggle) {
+    event.preventDefault();
+    toggleMobileMenu();
+    return;
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeMobileMenu();
+  }
+});
+
 document.addEventListener(
   "click",
   (event) => {
@@ -566,6 +630,7 @@ document.addEventListener(
 
     event.preventDefault();
     event.stopPropagation();
+    closeMobileMenu();
 
     /*
       SPA 이동
@@ -633,6 +698,8 @@ async function boot() {
   }
 
   const currentPath = normalizePath(window.location.pathname);
+
+  updateActiveNav(currentPath);
 
   /*
     현재가 Home

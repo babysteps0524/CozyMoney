@@ -132,8 +132,6 @@ function collectPosts() {
       continue;
     }
 
-    const date = formatDate(data.date);
-
     posts.push({
       filePath,
       sourceDir: path.dirname(filePath),
@@ -142,7 +140,7 @@ function collectPosts() {
       title: data.title || "제목 없음",
       description: data.description || "",
       category: data.category || BOARDS[board].name,
-      date,
+      date: formatDate(data.date),
       content,
       url: `/${board}/${id}/`,
     });
@@ -156,8 +154,8 @@ function latestPostsHtml(posts, limit = 5) {
     .slice(0, limit)
     .map(
       (post) => `
-        <li mb="10px">
-          <a href="${post.url}" text="14px #555" hover="text-[#9b8069]">
+        <li class="latest-post-item">
+          <a href="${escapeAttribute(post.url)}" class="latest-post-link" data-spa="true">
             ${escapeHtml(post.title)}
           </a>
         </li>`,
@@ -169,23 +167,15 @@ function categoryPostsHtml(posts) {
   return posts
     .map(
       (post) => `
-        <article
-          bg="[#F7F0EBFF]"
-          shadow="md"
-          border="1px solid [#F5DFD3FF]"
-          rounded="12px"
-          mb="12px"
-        >
-          <a href="${post.url}" block p="16px">
-            <h2 text="18px" font="600" mb="8px">
-              ${escapeHtml(post.title)}
-            </h2>
-            <p text="14px #777" mb="8px">
-              ${escapeHtml(post.description)}
-            </p>
-            <time datetime="${escapeAttribute(post.date)}" text="13px #999">
-              ${escapeHtml(post.date)}
-            </time>
+        <article class="post-card">
+          <a href="${escapeAttribute(post.url)}" class="post-card-link" data-spa="true">
+            <div class="post-card-title-row">
+              <h2 class="post-card-title">${escapeHtml(post.title)}</h2>
+              <time class="post-card-date" datetime="${escapeAttribute(post.date)}">
+                ${escapeHtml(post.date)}
+              </time>
+            </div>
+            <p class="post-card-description">${escapeHtml(post.description)}</p>
           </a>
         </article>`,
     )
@@ -194,32 +184,45 @@ function categoryPostsHtml(posts) {
 
 function navHtml() {
   return `
-    <ul flex justify="center" border-y="2px solid #C76B08FF" pt="12px" pb="10px">
-      ${Object.entries(BOARDS)
-        .map(
-          ([board, info]) => `
-            <li mx="20px">
-              <a href="/${board}/" class="navText">${info.name}</a>
-            </li>`,
-        )
-        .join("")}
-    </ul>`;
+    <div class="site-nav-inner">
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <span>메뉴</span>
+        <span class="mobile-menu-toggle-icon" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+
+      <ul id="primary-navigation" class="site-nav-list">
+        ${Object.entries(BOARDS)
+          .map(
+            ([board, info]) => `
+              <li class="site-nav-item">
+                <a
+                  href="/${board}/"
+                  class="site-nav-link"
+                  data-page="${board}"
+                  data-spa="true"
+                >${info.name}</a>
+              </li>`,
+          )
+          .join("")}
+      </ul>
+    </div>`;
 }
 
 function footerHtml() {
   return `
-    <footer bg="#523f2e" text="center #ffffff" py="20px 10px" px="20px">
-      <div flex justify="center" items="center" gap="16px" mb="10px">
-        <a href="/pages/privacy.html" text="14px #ffffff" hover="text-[#F5DFD3]">
-          개인정보처리방침
-        </a>
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="/pages/privacy.html" data-spa="true">개인정보처리방침</a>
       </div>
       <p>
-        <small>
-          Copyright
-          <i class="i-mdi-copyright text-16px"></i>
-          2026.CozyMoney All rights reserved.
-        </small>
+        <small>Copyright © 2026.CozyMoney All rights reserved.</small>
       </p>
     </footer>`;
 }
@@ -267,6 +270,7 @@ function commonHead({ title, description, canonical, ogType = "website" }) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="${escapeAttribute(description)}" />
     <link rel="canonical" href="${escapeAttribute(canonical)}" />
+    <meta property="og:site_name" content="CozyMoney" />
     <meta property="og:title" content="${escapeAttribute(title)}" />
     <meta property="og:description" content="${escapeAttribute(description)}" />
     <meta property="og:type" content="${escapeAttribute(ogType)}" />
@@ -274,92 +278,61 @@ function commonHead({ title, description, canonical, ogType = "website" }) {
     <title>${escapeHtml(title)}</title>`;
 }
 
+function shellStart({ title, description, canonical, ogType = "website" }) {
+  return `<!doctype html>
+<html lang="ko">
+  <head>
+    ${commonHead({ title, description, canonical, ogType })}
+    ${adsenseScriptHtml()}
+    ${ogType === "article" ? `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.css" />` : ""}
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body class="bodyText">
+    ${leftAdHtml()}
+
+    <header class="site-header">
+      <h1>
+        <a href="/" data-spa="true" aria-label="CozyMoney 홈">
+          <img class="site-logo" src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" />
+        </a>
+      </h1>
+    </header>
+
+    <nav class="site-nav" aria-label="주요 메뉴">
+      ${navHtml()}
+    </nav>
+`;
+}
+
 function createCategoryHtml({ board, posts, allPosts }) {
   const info = BOARDS[board];
   const title = `${info.name} | CozyMoney`;
   const canonical = `${DOMAIN}/${board}/`;
 
-  return `<!doctype html>
-<html lang="ko">
-  <head>
-    ${commonHead({
-      title,
-      description: info.description,
-      canonical,
-    })}
-    ${adsenseScriptHtml()}
-    <script type="module" src="/src/main.js"></script>
-  </head>
-  <body
-    bg="[url(/images/bg/bg-04.svg)]"
-    class="bodyText"
-    relative
-    min-h="100vh"
-    flex
-    flex-col
-  >
-    ${leftAdHtml()}
-
-    <header w="1240px" mx="auto">
-      <h1 py="10px 16px">
-        <a href="/">
-          <img src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" w="240px" h="auto" mx="auto" />
-        </a>
-      </h1>
-    </header>
-
-    <nav sticky top="0" z="100" mb="40px" bg="[url(/images/bg/bg-04.svg)]" w="1240px" mx="auto">
-      ${navHtml()}
-    </nav>
-
-    <div
-      w="full"
-      max-w="1240px"
-      mx="auto"
-      px="16px"
-      mb="40px"
-      flex
-      flex-col
-      lg:flex-row
-      gap="24px"
-      flex-1
-    >
-      <main
-        id="page-content"
-        w="full"
-        lg:flex-1
-        bg="#ffffff"
-        rounded="16px"
-        py="24px"
-        px="16px"
-        md:px="32px"
-        lg:px="72px"
-        shadow="xl"
-      >
-        <section mb="40px">
-          <p text="14px #9b8069" font="600" mb="10px">CozyMoney</p>
-          <h1 text="32px" font="600" mb="14px">${info.name}</h1>
-          <p text="16px #777" leading="7">${escapeHtml(info.description)}</p>
+  return `${shellStart({
+    title,
+    description: info.description,
+    canonical,
+  })}
+    <div class="site-main-layout">
+      <main id="page-content" class="site-main">
+        <section class="board-intro">
+          <p class="board-eyebrow">CozyMoney</p>
+          <h1 class="board-title">${escapeHtml(info.name)}</h1>
+          <p class="board-description">${escapeHtml(info.description)}</p>
         </section>
 
-        <section id="postList">
-          ${categoryPostsHtml(posts)}
+        <section id="postList" class="post-list">
+          ${categoryPostsHtml(posts.slice(0, 15))}
         </section>
 
-        <nav id="pagination" flex justify-center items-center gap="8px" mt="40px" mb="60px"></nav>
+        <nav id="pagination" aria-label="게시글 페이지"></nav>
       </main>
 
-      <aside
-        w="full"
-        lg:basis="284px"
-        lg:flex-shrink-0
-        lg:sticky
-        lg:top="100px"
-        h="fit"
-      >
-        <nav class="asideNav" shadow="xl">
+      <aside class="site-sidebar">
+        <nav class="asideNav" aria-label="최신 글">
           <h2 class="asideNavH2">최신 글</h2>
-          <ul id="latestPosts" list-none p="0" m="0">
+          <ul id="latestPosts" class="latest-post-list">
             ${latestPostsHtml(allPosts)}
           </ul>
         </nav>
@@ -378,58 +351,14 @@ function createPostHtml(post, allPosts) {
   const canonical = `${DOMAIN}${post.url}`;
   const contentHtml = renderMarkdown(post.content);
 
-  return `<!doctype html>
-<html lang="ko">
-  <head>
-    ${commonHead({
-      title,
-      description: post.description,
-      canonical,
-      ogType: "article",
-    })}
-    <meta property="article:published_time" content="${escapeAttribute(post.date)}" />
-    ${adsenseScriptHtml()}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.css" />
-    <script type="module" src="/src/main.js"></script>
-  </head>
-  <body
-    bg="[url(/images/bg/bg-04.svg)]"
-    class="bodyText"
-    relative
-    min-h="100vh"
-    flex
-    flex-col
-  >
-    ${leftAdHtml()}
-
-    <header w="1240px" mx="auto">
-      <h1 py="10px 16px">
-        <a href="/">
-          <img src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" w="240px" h="auto" mx="auto" />
-        </a>
-      </h1>
-    </header>
-
-    <nav sticky top="0" z="100" mb="40px" bg="[url(/images/bg/bg-04.svg)]" w="1240px" mx="auto">
-      ${navHtml()}
-    </nav>
-
-    <div
-      w="full"
-      max-w="1240px"
-      mx="auto"
-      px="16px"
-      mb="40px"
-      flex
-      flex-col
-      lg:flex-row
-      gap="24px"
-      flex-1
-    >
-      <main
-        id="page-content"
-        class="post-page-content"
-      >
+  return `${shellStart({
+    title,
+    description: post.description,
+    canonical,
+    ogType: "article",
+  })}
+    <div class="site-main-layout">
+      <main id="page-content" class="post-page-content">
         <article class="markdown-body">
           <header class="post-header">
             <p class="post-category">${escapeHtml(post.category)}</p>
@@ -443,8 +372,8 @@ function createPostHtml(post, allPosts) {
 
           <div class="post-footer">
             <a
-              href="/${post.board}/"
-              class="inline-block px-16px py-10px rounded-8px text-14px text-gray-600 transition-colors duration-150 hover:blue-500 hover:text-white"
+              href="/${escapeAttribute(post.board)}/"
+              class="post-back"
               data-spa="true"
             >
               ← ${escapeHtml(post.category)} 게시판 돌아가기
@@ -453,17 +382,10 @@ function createPostHtml(post, allPosts) {
         </article>
       </main>
 
-      <aside
-        w="full"
-        lg:basis="284px"
-        lg:flex-shrink-0
-        lg:sticky
-        lg:top="100px"
-        h="fit"
-      >
-        <nav class="asideNav" shadow="xl">
+      <aside class="site-sidebar">
+        <nav class="asideNav" aria-label="최신 글">
           <h2 class="asideNavH2">최신 글</h2>
-          <ul id="latestPosts" list-none p="0" m="0">
+          <ul id="latestPosts" class="latest-post-list">
             ${latestPostsHtml(allPosts)}
           </ul>
         </nav>
@@ -545,6 +467,7 @@ removeGeneratedCategoryPages();
 
 for (const post of posts) {
   const outputDir = path.join(ROOT_DIR, post.board, post.id);
+
   fs.mkdirSync(outputDir, { recursive: true });
 
   fs.writeFileSync(
@@ -562,6 +485,7 @@ for (const board of Object.keys(BOARDS)) {
     .sort(sortPosts);
 
   const outputDir = path.join(ROOT_DIR, board);
+
   fs.mkdirSync(outputDir, { recursive: true });
 
   fs.writeFileSync(
@@ -580,4 +504,4 @@ writePostsJson(posts);
 console.log(`Markdown 게시글 ${posts.length}개 발견`);
 console.log(`게시글 HTML ${posts.length}개 생성 완료`);
 console.log(`카테고리 HTML ${Object.keys(BOARDS).length}개 생성 완료`);
-console.log(`posts.json 생성 완료`);
+console.log("posts.json 생성 완료");
