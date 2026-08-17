@@ -224,7 +224,6 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
     <link>${DOMAIN}/</link>
     <description>주식, 세금, 부동산, 보험, 전산세무 정보를 쉽고 편하게 정리하는 CozyMoney</description>
     <language>ko</language>
-    <link>${DOMAIN}/</link>
     ${
       latestPostDate
         ? `<lastBuildDate>${formatRssDate(latestPostDate)}</lastBuildDate>`
