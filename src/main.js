@@ -42,8 +42,39 @@ function updateActiveNav(pathname = window.location.pathname) {
 
     if (!href) return;
 
-    const linkPath = normalizePath(new URL(href, window.location.origin).pathname);
-    const active = normalized !== "/" && normalized === linkPath;
+    let linkPath;
+
+    try {
+      linkPath = normalizePath(new URL(href, window.location.origin).pathname);
+    } catch {
+      return;
+    }
+
+    let active = false;
+
+    /*
+      홈은 별도로 처리한다.
+
+      "/"는 모든 경로의 시작이기 때문에
+      startsWith("/")를 사용하면 모든 메뉴가
+      홈으로 판정되는 문제가 발생한다.
+    */
+    if (linkPath === "/") {
+      active = normalized === "/";
+    } else {
+      /*
+        카테고리 페이지와 해당 카테고리의
+        개별 게시글 모두 active 처리한다.
+
+        예:
+        /stock/
+        /stock/260814-1/
+        /stock/260814-2/
+
+        → 모두 주식 메뉴가 active
+      */
+      active = normalized === linkPath || normalized.startsWith(linkPath);
+    }
 
     link.classList.toggle("is-active", active);
 

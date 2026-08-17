@@ -2,7 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
-import katex from "katex";
+let katex = null;
+
+try {
+  const katexModule = await import("katex");
+  katex = katexModule.default ?? katexModule;
+} catch (error) {
+  console.warn("KaTeX를 찾을 수 없어 수식은 일반 텍스트로 처리합니다.");
+}
 
 const ROOT_DIR = path.resolve(".");
 const POSTS_DIR = path.resolve("src/data/posts");
@@ -88,14 +95,20 @@ function removeFirstH1(markdown) {
 function renderMarkdown(markdown) {
   let html = marked.parse(removeFirstH1(markdown));
 
-  html = html.replace(/\$\$([\s\S]*?)\$\$/g, (_, formula) =>
+  // KaTeX가 설치되어 있으면 Markdown 수식을 KaTeX HTML로 변환한다.
+  // 설치되지 않은 환경에서도 게시글 빌드 자체는 중단되지 않도록 한다.
+  if (!katex) {
+    return html;
+  }
+
+  html = html.replace(/\\$\\$([\\s\\S]*?)\\$\\$/g, (_, formula) =>
     katex.renderToString(formula.trim(), {
       displayMode: true,
       throwOnError: false,
     }),
   );
 
-  html = html.replace(/(?<!\$)\$([^$\n]+)\$(?!\$)/g, (_, formula) =>
+  html = html.replace(/(?<!\\$)\\$([^$\\n]+)\\$(?!\\$)/g, (_, formula) =>
     katex.renderToString(formula.trim(), {
       displayMode: false,
       throwOnError: false,
