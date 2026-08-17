@@ -209,15 +209,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://cozymoney.kr/taxSaving/260813-1/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://cozymoney.kr/taxSaving/260813-10/</loc>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cozymoney.kr/taxSaving/260813-11/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cozymoney.kr/taxSaving/260813-1/</loc>
     <priority>0.6</priority>
   </url>
   <url>
