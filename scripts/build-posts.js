@@ -495,8 +495,7 @@ function createRss(posts) {
     .map((post) => {
       const url = `${DOMAIN}${post.url}`;
 
-      const description =
-        post.description || markdownToPlainText(post.content).slice(0, 300);
+      const description = markdownToPlainText(post.content);
 
       return `
     <item>
