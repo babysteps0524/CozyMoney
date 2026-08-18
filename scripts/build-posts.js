@@ -495,7 +495,8 @@ function createRss(posts) {
     .map((post) => {
       const url = `${DOMAIN}${post.url}`;
 
-      const description = markdownToPlainText(post.content);
+      const description =
+        post.description || markdownToPlainText(post.content).slice(0, 300);
 
       return `
     <item>
@@ -510,8 +511,14 @@ function createRss(posts) {
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0"
+    xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
+    <atom:link
+      href="${DOMAIN}/rss.xml"
+      rel="self"
+      type="application/rss+xml"
+    />
     <title>CozyMoney</title>
     <link>${DOMAIN}/</link>
     <description>주식, 부동산, 세테크, 보험, 전산세무 정보를 제공하는 코지머니(CozyMoney)</description>
