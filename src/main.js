@@ -108,6 +108,41 @@ let homeContent = null;
 let homeDocument = null;
 
 let navigationId = 0;
+// 브라우저 자체 스크롤 복원 기능은 사용하지 않는다.
+// 우리가 history.state의 scrolly를 직접 관리한다.
+history.scrollRestoration = "manual";
+
+// ========================================
+// 현재 페이지 스크롤 위치 자동 저장
+// ========================================
+
+let scrollSaveTimer = null;
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollSaveTimer) {
+      return;
+    }
+
+    scrollSaveTimer = requestAnimationFrame(() => {
+      const currentState = history.state || {};
+
+      history.replaceState(
+        {
+          ...currentState,
+          path: normalizePath(window.location.pathname),
+          scrollY: window.scrollY,
+        },
+        "",
+        window.location.href,
+      );
+
+      scrollSaveTimer = null;
+    });
+  },
+  { passive: true },
+);
 
 // ========================================
 // URL 정규화
@@ -132,6 +167,39 @@ function normalizePath(pathname) {
   }
 
   return pathname;
+}
+
+// ========================================
+// History 스크롤 위치
+// ========================================
+
+function saveCurrentScrollPosition() {
+  const currentState = history.state || {};
+
+  history.replaceState(
+    {
+      ...currentState,
+      path: normalizePath(window.location.pathname),
+      scrollY: window.scrollY,
+    },
+    "",
+    window.location.href,
+  );
+}
+
+function restoreScrollPosition() {
+  const scrollY = Number(history.state?.scrollY ?? 0);
+
+  // DOM 렌더링이 완료된 후 복원
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: scrollY,
+        left: 0,
+        behavior: "instant",
+      });
+    });
+  });
 }
 
 // ========================================
@@ -544,15 +612,35 @@ async function navigate(url, { push = true, scroll = true } = {}) {
   }
 
   /*
-    ★ 가장 중요
-    HTML을 가져오기 전에
-    History를 먼저 변경한다.
+    ====================================
+    현재 페이지의 스크롤 위치 저장
+    ====================================
+
+    현재 history entry에 저장한다.
+
+    예:
+    주식 게시판
+    scrollY = 1200
+
+    → 게시글 클릭
+    → 기존 주식 게시판 history에
+      scrollY: 1200 저장
   */
 
   if (push) {
+    saveCurrentScrollPosition();
+
+    /*
+      새 페이지 history entry 생성
+
+      새 페이지는 처음 표시될 때
+      맨 위에서 시작한다.
+    */
+
     history.pushState(
       {
         path: targetPath,
+        scrollY: 0,
       },
       "",
       targetFullUrl,
@@ -575,6 +663,7 @@ async function navigate(url, { push = true, scroll = true } = {}) {
       history.replaceState(
         {
           path: normalizePath(window.location.pathname),
+          scrollY: 0,
         },
         "",
         window.location.href,
@@ -681,21 +770,37 @@ document.addEventListener(
 
 window.addEventListener("popstate", async () => {
   /*
-      popstate에서는 절대로
-      pushState를 다시 호출하지 않는다.
-    */
+    popstate에서는 절대로
+    pushState를 다시 호출하지 않는다.
+
+    history.state에 저장되어 있는
+    scrollY를 그대로 사용한다.
+  */
 
   try {
+    /*
+      페이지를 렌더링할 때
+      scrollTo(0)을 실행하지 않는다.
+    */
+
     await renderRoute(window.location.href, {
-      scroll: true,
+      scroll: false,
     });
+
+    /*
+      렌더링이 완료된 후
+      해당 history entry의
+      스크롤 위치를 복원한다.
+    */
+
+    restoreScrollPosition();
   } catch (error) {
     console.error("뒤로가기/앞으로가기 처리 실패:", error);
 
     /*
-        SPA 처리 자체가 실패했을 때만
-        현재 URL을 다시 요청한다.
-      */
+      SPA 처리 자체가 실패했을 때만
+      일반 브라우저 이동을 사용한다.
+    */
 
     window.location.reload();
   }
@@ -713,6 +818,7 @@ async function boot() {
   history.replaceState(
     {
       path: normalizePath(window.location.pathname),
+      scrollY: window.scrollY,
     },
     "",
     window.location.href,
