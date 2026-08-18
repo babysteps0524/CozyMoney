@@ -434,6 +434,106 @@ function removeGeneratedCategoryPages() {
   }
 }
 
+// ========================================
+// RSS
+// ========================================
+
+function escapeXml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function formatRssDate(date) {
+  if (!date) {
+    return new Date().toUTCString();
+  }
+
+  /*
+    현재 게시글 날짜는 YYYY-MM-DD 형태이므로
+    한국 시간 기준 자정으로 해석한다.
+  */
+
+  const parsed = new Date(`${date}T00:00:00+09:00`);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return new Date().toUTCString();
+  }
+
+  return parsed.toUTCString();
+}
+
+function markdownToPlainText(markdown = "") {
+  return (
+    String(markdown)
+      // 이미지
+      .replace(/!\[.*?\]\(.*?\)/g, "")
+      // 링크
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      // HTML 태그
+      .replace(/<[^>]*>/g, "")
+      // 코드 블록
+      .replace(/```[\s\S]*?```/g, "")
+      // 인라인 코드
+      .replace(/`([^`]+)`/g, "$1")
+      // 제목
+      .replace(/^#{1,6}\s+/gm, "")
+      // 강조
+      .replace(/[*_~]/g, "")
+      // 여러 줄바꿈
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+}
+
+function createRss(posts) {
+  const rssItems = posts
+    .slice(0, 50)
+    .map((post) => {
+      const url = `${DOMAIN}${post.url}`;
+
+      const description =
+        post.description || markdownToPlainText(post.content).slice(0, 300);
+
+      return `
+    <item>
+      <title>${escapeXml(post.title)}</title>
+      <link>${escapeXml(url)}</link>
+      <guid isPermaLink="true">${escapeXml(url)}</guid>
+      <description>${escapeXml(description)}</description>
+      <pubDate>${escapeXml(formatRssDate(post.date))}</pubDate>
+      <category>${escapeXml(post.category)}</category>
+    </item>`;
+    })
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>CozyMoney</title>
+    <link>${DOMAIN}/</link>
+    <description>주식, 부동산, 세테크, 보험, 전산세무 정보를 제공하는 코지머니(CozyMoney)</description>
+    <language>ko</language>
+    <copyright>Copyright © 2026 CozyMoney</copyright>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <ttl>60</ttl>
+${rssItems}
+  </channel>
+</rss>
+`;
+}
+
+function writeRss(posts) {
+  fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+
+  const rss = createRss(posts);
+
+  fs.writeFileSync(path.join(PUBLIC_DIR, "rss.xml"), rss, "utf-8");
+}
+
 function writePostsJson(posts) {
   const dataDir = path.join(PUBLIC_DIR, "data");
   fs.mkdirSync(dataDir, { recursive: true });
@@ -518,3 +618,4 @@ console.log(`Markdown 게시글 ${posts.length}개 발견`);
 console.log(`게시글 HTML ${posts.length}개 생성 완료`);
 console.log(`카테고리 HTML ${Object.keys(BOARDS).length}개 생성 완료`);
 console.log("posts.json 생성 완료");
+console.log("rss.xml 생성 완료");
