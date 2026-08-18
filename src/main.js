@@ -459,26 +459,72 @@ async function prepareHomeCache() {
 // AdSense
 // ========================================
 
+let adsenseRefreshScheduled = false;
+
 function refreshAds() {
-  /*
-    AdSense 스크립트가 아직 비동기로 로드되지 않았더라도
-    전역 배열을 먼저 만들어 두면 push() 요청이 대기열에 들어간다.
-  */
   window.adsbygoogle = window.adsbygoogle || [];
 
-  document.querySelectorAll("ins.adsbygoogle").forEach((ad) => {
-    /*
-      이미 초기화된 광고는 다시 push하지 않는다.
-    */
-    if (ad.getAttribute("data-adsbygoogle-status")) {
-      return;
-    }
+  /*
+    같은 이벤트 사이클에서 여러 번 호출되는 경우
+    한 번만 처리한다.
+  */
+  if (adsenseRefreshScheduled) {
+    return;
+  }
 
-    try {
-      window.adsbygoogle.push({});
-    } catch (error) {
-      console.warn("AdSense 초기화 실패:", error);
-    }
+  adsenseRefreshScheduled = true;
+
+  requestAnimationFrame(() => {
+    adsenseRefreshScheduled = false;
+
+    const ads = document.querySelectorAll(
+      "ins.adsbygoogle[data-ad-client][data-ad-slot]",
+    );
+
+    ads.forEach((ad) => {
+      /*
+        AdSense가 이미 처리한 광고
+      */
+      if (ad.getAttribute("data-adsbygoogle-status")) {
+        return;
+      }
+
+      /*
+        우리 코드가 이미 초기화 요청을 보낸 광고
+      */
+      if (ad.dataset.adsInitialized === "true") {
+        return;
+      }
+
+      /*
+        필수 광고 정보 확인
+      */
+      const client = ad.getAttribute("data-ad-client");
+      const slot = ad.getAttribute("data-ad-slot");
+
+      if (!client || !slot) {
+        console.warn("AdSense 광고 슬롯 정보가 없습니다.", ad);
+
+        return;
+      }
+
+      /*
+        중복 초기화 방지 상태 기록
+      */
+      ad.dataset.adsInitialized = "true";
+
+      try {
+        window.adsbygoogle.push({});
+      } catch (error) {
+        /*
+          초기화 실패 시 재시도 가능하도록
+          상태를 제거한다.
+        */
+        delete ad.dataset.adsInitialized;
+
+        console.warn("AdSense 초기화 실패:", error);
+      }
+    });
   });
 }
 
