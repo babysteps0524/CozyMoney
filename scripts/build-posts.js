@@ -613,6 +613,7 @@ for (const board of Object.keys(BOARDS)) {
 }
 
 writePostsJson(posts);
+writeRss(posts);
 
 console.log(`Markdown 게시글 ${posts.length}개 발견`);
 console.log(`게시글 HTML ${posts.length}개 생성 완료`);
