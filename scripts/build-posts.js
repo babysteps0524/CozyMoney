@@ -166,12 +166,18 @@ function latestPostsHtml(posts, limit = 5) {
   return posts
     .slice(0, limit)
     .map(
-      (post) => `
+      (post) =>
+        /* html */
+        `
         <li class="latest-post-item">
-          <a href="${escapeAttribute(post.url)}" class="latest-post-link" data-spa="true">
-            ${escapeHtml(post.title)}
-          </a>
-        </li>`,
+            <a
+              href="${escapeAttribute(post.url)}"
+              class="latest-post-link"
+              data-spa="true"
+            >
+              ${escapeHtml(post.title)}
+            </a>
+          </li>`,
     )
     .join("\n");
 }
@@ -179,24 +185,37 @@ function latestPostsHtml(posts, limit = 5) {
 function categoryPostsHtml(posts) {
   return posts
     .map(
-      (post) => `
+      (post) =>
+        /* html */
+        `
         <article class="post-card">
-          <a href="${escapeAttribute(post.url)}" class="post-card-link" data-spa="true">
-            <div class="post-card-title-row">
-              <h2 class="post-card-title">${escapeHtml(post.title)}</h2>
-              <time class="post-card-date" datetime="${escapeAttribute(post.date)}">
-                ${escapeHtml(post.date)}
-              </time>
-            </div>
-            <p class="post-card-description">${escapeHtml(post.description)}</p>
-          </a>
-        </article>`,
+            <a
+              href="${escapeAttribute(post.url)}"
+              class="post-card-link"
+              data-spa="true"
+            >
+              <div class="post-card-title-row">
+                <h2 class="post-card-title">${escapeHtml(post.title)}</h2>
+                <time
+                  class="post-card-date"
+                  datetime="${escapeAttribute(post.date)}"
+                >
+                  ${escapeHtml(post.date)}
+                </time>
+              </div>
+              <p class="post-card-description">
+                ${escapeHtml(post.description)}
+              </p>
+            </a>
+          </article>`,
     )
     .join("\n");
 }
 
 function navHtml() {
-  return `
+  return;
+  /* html */
+  `
     <div class="site-nav-inner">
       <button
         type="button"
@@ -229,7 +248,7 @@ function navHtml() {
 }
 
 function footerHtml() {
-  return `
+  return /* html */ `
     <footer class="site-footer">
       <div class="site-footer-links">
         <a href="/pages/privacy.html" data-spa="true">개인정보처리방침</a>
@@ -241,7 +260,7 @@ function footerHtml() {
 }
 
 function adsenseScriptHtml() {
-  return `
+  return /* html */ `
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}"
@@ -250,8 +269,11 @@ function adsenseScriptHtml() {
 }
 
 function leftAdHtml() {
-  return `
-    <aside class="ad-left" aria-label="Google AdSense 광고 영역">
+  return /* html */ `
+    <aside
+      class="ad-left"
+      aria-label="Google AdSense 광고 영역"
+    >
       <div class="ad-label">Google AdSense</div>
       <ins
         class="adsbygoogle"
@@ -264,8 +286,11 @@ function leftAdHtml() {
 }
 
 function rightAdHtml() {
-  return `
-    <div class="ad-right" aria-label="Google AdSense 광고 영역">
+  return /* html */ `
+    <div
+      class="ad-right"
+      aria-label="Google AdSense 광고 영역"
+    >
       <div class="ad-label">Google AdSense</div>
       <ins
         class="adsbygoogle"
@@ -278,7 +303,7 @@ function rightAdHtml() {
 }
 
 function commonHead({ title, description, canonical, ogType = "website" }) {
-  return `
+  return /* html */ `
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="${escapeAttribute(description)}" />
@@ -292,28 +317,34 @@ function commonHead({ title, description, canonical, ogType = "website" }) {
 }
 
 function shellStart({ title, description, canonical, ogType = "website" }) {
-  return `<!doctype html>
-<html lang="ko">
-  <head>
-    ${commonHead({ title, description, canonical, ogType })}
-    ${adsenseScriptHtml()}
-    ${ogType === "article" ? `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.css" />` : ""}
-    <script type="module" src="/src/main.js"></script>
-  </head>
-  <body class="bodyText">
-    ${leftAdHtml()}
+  return /* html */ `<!doctype html>
+    <html lang="ko">
+      <head>
+        ${commonHead({ title, description, canonical, ogType })}
+        ${adsenseScriptHtml()}
+        ${ogType === "article"
+          ? `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.css" />`
+          : ""}
+        <script type="module" src="/src/main.js"></script>
+      </head>
+      <body class="bodyText">
+        ${leftAdHtml()}
 
-    <header class="site-header">
-      <h1>
-        <a href="/" data-spa="true" aria-label="CozyMoney 홈">
-          <img class="site-logo" src="/images/logo/cozymoney_01.svg" alt="CozyMoney 로고" />
-        </a>
-      </h1>
-    </header>
+        <header class="site-header">
+          <h1>
+            <a href="/" data-spa="true" aria-label="CozyMoney 홈">
+              <img
+                class="site-logo"
+                src="/images/logo/cozymoney_01.svg"
+                alt="CozyMoney 로고"
+              />
+            </a>
+          </h1>
+        </header>
 
-    <nav class="site-nav" aria-label="주요 메뉴">
-      ${navHtml()}
-    </nav>
+        <nav class="site-nav" aria-label="주요 메뉴">${navHtml()}</nav>
+      </body>
+    </html>
 `;
 }
 
@@ -322,7 +353,7 @@ function createCategoryHtml({ board, posts, allPosts }) {
   const title = `${info.name} | CozyMoney`;
   const canonical = `${DOMAIN}/${board}/`;
 
-  return `${shellStart({
+  return /* html */ `${shellStart({
     title,
     description: info.description,
     canonical,
@@ -364,7 +395,7 @@ function createPostHtml(post, allPosts) {
   const canonical = `${DOMAIN}${post.url}`;
   const contentHtml = renderMarkdown(post.content);
 
-  return `${shellStart({
+  return /* html */ `${shellStart({
     title,
     description: post.description,
     canonical,
@@ -498,7 +529,7 @@ function createRss(posts) {
       const description =
         post.description || markdownToPlainText(post.content).slice(0, 300);
 
-      return `
+      return /* html */ `
     <item>
       <title>${escapeXml(post.title)}</title>
       <link>${escapeXml(url)}</link>
@@ -510,7 +541,7 @@ function createRss(posts) {
     })
     .join("\n");
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  return /* html */ `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
     xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>

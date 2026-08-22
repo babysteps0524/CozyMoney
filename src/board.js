@@ -92,7 +92,9 @@ export function renderLatestPosts() {
 
   latestPosts.innerHTML = getLatestPosts(5)
     .map(
-      (post) => `
+      (post) =>
+        /* html */
+        `
           <li class="latest-post-item">
             <a
               href="${escapeHtml(post.url)}"
@@ -128,7 +130,9 @@ function renderPosts() {
 
   postList.innerHTML = currentPosts
     .map(
-      (post) => `
+      (post) =>
+        /* html */
+        `
           <article class="post-card">
             <a
               href="${escapeHtml(post.url)}"
@@ -136,9 +140,7 @@ function renderPosts() {
               data-spa="true"
             >
               <div class="post-card-title-row">
-                <h2 class="post-card-title">
-                  ${escapeHtml(post.title)}
-                </h2>
+                <h2 class="post-card-title">${escapeHtml(post.title)}</h2>
 
                 <time
                   class="post-card-date"
