@@ -1,0 +1,11 @@
+# CozyMoney 인증 함수 로컬 개발용 환경변수 예시
+# 이 파일을 .dev.vars로 복사하고 실제 값은 로컬에서만 설정하세요.
+# 실제 비밀값은 커밋하지 마세요.
+
+AUTH_SITE_URL=https://cozymoney.kr
+PUBLIC_SITE_URL=https://cozymoney.kr
+AUTH_EMAIL_PROVIDER=brevo
+BREVO_API_KEY=xkeysib_your_brevo_api_key
+BREVO_FROM_EMAIL=no-reply@cozymoney.kr
+BREVO_FROM_NAME=CozyMoney 코지머니
+ADMIN_EMAIL=admin@example.com

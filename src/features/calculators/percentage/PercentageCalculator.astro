@@ -1,0 +1,232 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="percentage">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <label class="cm-field">
+      <span class="cm-label">계산 유형</span>
+      <select class="cm-input" id="percentageMode">
+        <option value="Y의 X% 계산">Y의 X% 계산</option>
+        <option value="X는 Y의 몇 %인지 계산">X는 Y의 몇 %인지 계산</option>
+        <option value="이전 값에서 새 값으로의 증감률">
+          이전 값에서 새 값으로의 증감률
+        </option>
+        <option value="기준값의 X% 증가·감소 후 값">
+          기준값의 X% 증가·감소 후 값
+        </option>
+        <option value="X%에 해당하는 원래 값">X%에 해당하는 원래 값</option>
+        <option value="두 비율의 퍼센트포인트 차이">
+          두 비율의 퍼센트포인트 차이
+        </option>
+      </select>
+    </label>
+    <div class="cm-field">
+      <label class="cm-label" for="valueA">
+        첫 번째 값
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="첫 번째 값 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input"
+            id="valueA"
+            type="text"
+            inputmode="decimal"
+            value="100000"
+            data-default-value="100000"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="true"
+          />
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="첫 번째 값 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="valueB">
+        두 번째 값
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="두 번째 값 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input"
+            id="valueB"
+            type="text"
+            inputmode="decimal"
+            value="15"
+            data-default-value="15"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="true"
+          />
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="두 번째 값 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <label class="cm-field">
+      <span class="cm-label">증가·감소</span>
+      <select class="cm-input" id="percentageDirection">
+        <option value="증가">증가</option>
+        <option value="감소">감소</option>
+      </select>
+    </label>
+  </div>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div id="result-detail" class="cm-help-text" mt="3"></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import {
+    adjustByPercent,
+    calculateOriginalValue,
+    calculatePercentChange,
+    calculatePercentShare,
+    calculatePercentageOf,
+    calculatePercentagePointDifference,
+  } from './percentage';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorNumber,
+    formatCalculatorWon,
+    getCalculatorField,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="percentage"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const mode =
+        getCalculatorField(root, 'percentageMode')?.value ?? 'Y의 X% 계산';
+      const direction =
+        getCalculatorField(root, 'percentageDirection')?.value ?? '증가';
+      const a = readCalculatorNumber(root, 'valueA');
+      const b = readCalculatorNumber(root, 'valueB');
+
+      if (mode === 'Y의 X% 계산') {
+        const value = calculatePercentageOf(a, b);
+        out.textContent = formatCalculatorWon(value);
+        detail.textContent = `${formatCalculatorWon(a)}의 ${formatCalculatorNumber(b, 2)}% = ${formatCalculatorWon(value)} · 공식: ${formatCalculatorNumber(a, 2)} × ${formatCalculatorNumber(b, 2)} ÷ 100`;
+        return;
+      }
+
+      if (mode === 'X는 Y의 몇 %인지 계산') {
+        const value = calculatePercentShare(a, b);
+        out.textContent = formatCalculatorNumber(value, 2) + '%';
+        detail.textContent =
+          b === 0
+            ? '전체값은 0이 될 수 없습니다.'
+            : `${formatCalculatorWon(a)}은 ${formatCalculatorWon(b)}의 ${formatCalculatorNumber(value, 2)}%입니다 · 공식: ${formatCalculatorNumber(a, 2)} ÷ ${formatCalculatorNumber(b, 2)} × 100`;
+        return;
+      }
+
+      if (mode === '이전 값에서 새 값으로의 증감률') {
+        const value = calculatePercentChange(a, b);
+        out.textContent = formatCalculatorNumber(value, 2) + '%';
+        detail.textContent =
+          a === 0
+            ? '이전 값은 0이 될 수 없습니다.'
+            : `${formatCalculatorWon(a)} → ${formatCalculatorWon(b)}: ${value >= 0 ? '증가' : '감소'} ${formatCalculatorNumber(Math.abs(value), 2)}% · 공식: (${formatCalculatorNumber(b, 2)} - ${formatCalculatorNumber(a, 2)}) ÷ ${formatCalculatorNumber(a, 2)} × 100`;
+        return;
+      }
+
+      if (mode === '기준값의 X% 증가·감소 후 값') {
+        const value = adjustByPercent(
+          a,
+          b,
+          direction === '利앷?' ? 'increase' : 'decrease',
+        );
+        out.textContent = formatCalculatorWon(value);
+        detail.textContent = `${formatCalculatorWon(a)}에 ${formatCalculatorNumber(b, 2)}% ${direction}를 적용한 결과입니다 · 공식: ${formatCalculatorNumber(a, 2)} × (1 ${direction === '증가' ? '+' : '-'} ${formatCalculatorNumber(b, 2)} ÷ 100)`;
+        return;
+      }
+
+      if (mode === 'X%에 해당하는 원래 값') {
+        const value = calculateOriginalValue(a, b);
+        out.textContent = formatCalculatorWon(value);
+        detail.textContent =
+          b === 0
+            ? '퍼센트 값은 0이 될 수 없습니다.'
+            : `${formatCalculatorNumber(b, 2)}%가 ${formatCalculatorWon(a)}라면 원래 값은 ${formatCalculatorWon(value)}입니다 · 공식: ${formatCalculatorNumber(a, 2)} × 100 ÷ ${formatCalculatorNumber(b, 2)}`;
+        return;
+      }
+
+      const value = calculatePercentagePointDifference(a, b);
+      out.textContent = formatCalculatorNumber(value, 2) + '%p';
+      detail.textContent = `${formatCalculatorNumber(a, 2)}% → ${formatCalculatorNumber(b, 2)}%: ${value >= 0 ? '+' : ''}${formatCalculatorNumber(value, 2)}%p · 퍼센트포인트는 두 비율의 단순한 차이입니다.`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

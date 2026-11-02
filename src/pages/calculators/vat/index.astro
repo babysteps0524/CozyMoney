@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import VatCalculator from '../../../features/calculators/vat/VatCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.vat;
+---
+
+<CalculatorPage definition={definition}>
+  <VatCalculator />
+</CalculatorPage>

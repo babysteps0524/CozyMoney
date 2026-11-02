@@ -1,0 +1,429 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-property-tax>
+  <div grid="~ cols-1 md:cols-2" gap="4">
+    <label>
+      <span class="cm-label">기준연도</span>
+      <select id="property-year" class="cm-input">
+        <option value="2026" selected>
+          2026년
+        </option>
+      </select>
+    </label>
+    <div
+      rounded="xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="4"
+    >
+      <p m="0" text="sm" font="700">
+        계산 기준
+      </p>
+      <p m="0" mt="1" text="xs text-muted dark:dark-text-muted" leading="6">
+        현재는 2026년 주택 재산세 기준을 제공합니다.
+      </p>
+    </div>
+  </div>
+
+  <div grid="~ cols-1 md:cols-2" gap="3" mt="4">
+    <label
+      flex="~"
+      items-center
+      gap="3"
+      rounded="xl"
+      border="1 border dark:dark-border"
+      bg="surface dark:dark-surface"
+      p="4"
+      cursor-pointer
+    >
+      <input id="one-house" type="checkbox" checked class="accent-primary" />
+      <span text="sm" font="700">
+        1세대 1주택
+      </span>
+    </label>
+    <label
+      flex="~"
+      items-center
+      gap="3"
+      rounded="xl"
+      border="1 border dark:dark-border"
+      bg="surface dark:dark-surface"
+      p="4"
+      cursor-pointer
+    >
+      <input id="tax-cap" type="checkbox" checked class="accent-primary" />
+      <span text="sm" font="700">
+        세부담상한 적용
+      </span>
+    </label>
+  </div>
+
+  <div mt="6">
+    <div flex="~" items-center justify-between gap="3" mb="3">
+      <div>
+        <h3 m="0" text="lg" font="800">
+          주택 정보
+        </h3>
+        <p m="0" mt="1" text="xs text-muted dark:dark-text-muted">
+          주택별로 공시가격과 조건을 입력할 수 있습니다.
+        </p>
+      </div>
+      <button
+        id="add-property"
+        type="button"
+        class="cm-button-secondary"
+        px="4"
+        py="2.5"
+      >
+        + 주택 추가
+      </button>
+    </div>
+    <div id="property-list" grid="~ cols-1" gap="4"></div>
+  </div>
+
+  <div
+    id="property-error"
+    hidden
+    mt="4"
+    rounded="xl"
+    border="1 danger/20 dark:dark-border"
+    bg="danger-surface dark:dark-danger-surface"
+    p="4"
+    text="sm danger-text dark:dark-danger-text"
+  ></div>
+
+  <div
+    id="property-result"
+    mt="6"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p m="0" text="sm text-muted dark:dark-text-muted">
+      예상 납부액
+    </p>
+    <div id="property-total" mt="2" text="3xl md:4xl" font="800" text-primary>
+      0원
+    </div>
+    <div id="property-detail" mt="4" grid="~ cols-1 sm:cols-2" gap="3"></div>
+    <div id="property-breakdown" mt="4" grid="~ cols-1" gap="2"></div>
+    <CalculatorResultCopy targets="#property-total, #property-detail, #property-breakdown" />
+  </div>
+
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button
+      id="property-calculate"
+      type="button"
+      class="cm-button-primary"
+      py="3"
+    >
+      계산하기
+    </button>
+    <button
+      id="property-reset"
+      type="button"
+      class="cm-button-secondary"
+      py="3"
+    >
+      초기화
+    </button>
+  </div>
+
+  <div mt="8" grid="~ cols-1 lg:cols-2" gap="4">
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        이번 계산에 반영한 항목
+      </h3>
+      <ul
+        m="0"
+        mt="3"
+        pl="5"
+        text="sm text-muted dark:dark-text-muted"
+        leading="7"
+      >
+        <li>주택 공시가격을 기준으로 공정시장가액비율을 적용합니다.</li>
+        <li>1세대 1주택이면 2026년 특례 비율과 세율을 적용합니다.</li>
+        <li>도시지역으로 선택한 주택은 도시지역분을 계산합니다.</li>
+        <li>전년도 재산세를 입력하면 세부담상한을 선택적으로 적용합니다.</li>
+        <li>공동명의는 입력한 소유지분을 반영합니다.</li>
+      </ul>
+    </section>
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        주의사항
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        실제 고지세액에는 감면, 지방자치단체 조례, 개별 주택의 법적 요건 등이
+        영향을 줄 수 있습니다. 이 계산기는 주택 재산세를 빠르게 추정하기 위한
+        참고용 도구입니다.
+      </p>
+    </section>
+  </div>
+</div>
+
+<script>
+  import { calculatePropertyTax } from './property';
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  const root = document.querySelector<HTMLElement>('[data-property-tax]');
+
+  if (root) {
+    const list = root.querySelector<HTMLElement>('#property-list')!;
+    const error = root.querySelector<HTMLElement>('#property-error')!;
+    const total = root.querySelector<HTMLElement>('#property-total')!;
+    const detail = root.querySelector<HTMLElement>('#property-detail')!;
+    const breakdown = root.querySelector<HTMLElement>('#property-breakdown')!;
+    const oneHouse = root.querySelector<HTMLInputElement>('#one-house')!;
+    const taxCap = root.querySelector<HTMLInputElement>('#tax-cap')!;
+    let nextId = 2;
+
+    const format = (value: number) => Math.round(value).toLocaleString('ko-KR');
+
+    const assetHtml = (id: number) => `
+      <article
+        data-property-asset="${id}"
+        rounded="2xl"
+        border="1 border dark:dark-border"
+        bg="surface-muted dark:dark-surface-muted"
+        p="4 md:5"
+      >
+        <div flex="~" items-center justify-between gap="3" mb="4">
+          <h4 m="0" text="base" font="800">주택 ${id}</h4>
+          <button
+            type="button"
+            data-remove-property
+            class="cm-button-secondary"
+            px="3"
+            py="2"
+            ${id === 1 ? 'hidden' : ''}
+          >삭제</button>
+        </div>
+
+        <div grid="~ cols-1 md:cols-2" gap="4">
+          <div>
+            <label class="cm-label">공시가격</label>
+            <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+              <button type="button" data-step-direction="-1" aria-label="공시가격 감소" class="cm-step-button">−</button>
+              <div relative>
+                <input
+                  id="assessed-${id}"
+                  class="cm-input pr-12"
+                  type="text"
+                  inputmode="numeric"
+                  value="500000000"
+                  data-number-input
+                  data-step="1000000"
+                  data-min="0"
+                />
+                <span absolute right-4 top="[50%]" class="-translate-y-1/2" text="sm text-muted dark:dark-text-muted">원</span>
+              </div>
+              <button type="button" data-step-direction="1" aria-label="공시가격 증가" class="cm-step-button">+</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="cm-label">소유지분</label>
+            <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+              <button type="button" data-step-direction="-1" aria-label="소유지분 감소" class="cm-step-button">−</button>
+              <div relative>
+                <input
+                  id="share-${id}"
+                  class="cm-input pr-12"
+                  type="text"
+                  inputmode="numeric"
+                  value="100"
+                  data-number-input
+                  data-step="1"
+                  data-min="0"
+                  data-max="100"
+                />
+                <span absolute right-4 top="[50%]" class="-translate-y-1/2" text="sm text-muted dark:dark-text-muted">%</span>
+              </div>
+              <button type="button" data-step-direction="1" aria-label="소유지분 증가" class="cm-step-button">+</button>
+            </div>
+          </div>
+
+          <label>
+            <span class="cm-label">전년도 재산세</span>
+            <div relative>
+              <input
+                id="previous-tax-${id}"
+                class="cm-input pr-12"
+                type="text"
+                inputmode="numeric"
+                value="0"
+                data-number-input
+                data-step="10000"
+                data-min="0"
+              />
+              <span absolute right-4 top="[50%]" class="-translate-y-1/2" text="sm text-muted dark:dark-text-muted">원</span>
+            </div>
+          </label>
+
+          <label>
+            <span class="cm-label">전년도 도시지역분</span>
+            <div relative>
+              <input
+                id="previous-urban-${id}"
+                class="cm-input pr-12"
+                type="text"
+                inputmode="numeric"
+                value="0"
+                data-number-input
+                data-step="10000"
+                data-min="0"
+              />
+              <span absolute right-4 top="[50%]" class="-translate-y-1/2" text="sm text-muted dark:dark-text-muted" class="-translate-y-1/2">원</span>
+            </div>
+          </label>
+        </div>
+
+        <div grid="~ cols-1 sm:cols-2" gap="3" mt="4">
+          <label flex="~" items-center gap="3" rounded="xl" border="1 border dark:dark-border" bg="surface dark:dark-surface" p="3" cursor-pointer>
+            <input id="urban-${id}" type="checkbox" />
+            <span text="sm" font="650">도시지역</span>
+          </label>
+          <div rounded="xl" bg="surface-subtle dark:dark-surface-subtle" p="3" text="xs text-muted dark:dark-text-muted" leading="6">
+            공동명의는 소유지분을 입력하면 해당 지분만 계산합니다.
+          </div>
+        </div>
+      </article>
+    `;
+
+    const addAsset = () => {
+      const id = nextId++;
+      list.insertAdjacentHTML('beforeend', assetHtml(id));
+      calc();
+    };
+
+    const removeAsset = (article: HTMLElement) => {
+      if (list.querySelectorAll('[data-property-asset]').length <= 1) return;
+      article.remove();
+      calc();
+    };
+
+    const readAssets = () =>
+      Array.from(
+        list.querySelectorAll<HTMLElement>('[data-property-asset]'),
+      ).map((article, index) => ({
+        id: article.dataset.propertyAsset || String(index + 1),
+        assessedValue: readCalculatorNumber(
+          article,
+          article.querySelector<HTMLInputElement>('[id^="assessed-"]')?.id ||
+            '',
+        ),
+        ownershipShare: readCalculatorNumber(
+          article,
+          article.querySelector<HTMLInputElement>('[id^="share-"]')?.id || '',
+        ),
+        previousPropertyTax: readCalculatorNumber(
+          article,
+          article.querySelector<HTMLInputElement>('[id^="previous-tax-"]')
+            ?.id || '',
+        ),
+        previousUrbanAreaTax: readCalculatorNumber(
+          article,
+          article.querySelector<HTMLInputElement>('[id^="previous-urban-"]')
+            ?.id || '',
+        ),
+        urbanArea:
+          article.querySelector<HTMLInputElement>('[id^="urban-"]')?.checked ||
+          false,
+      }));
+
+    const calc = () => {
+      try {
+        error.hidden = true;
+        const result = calculatePropertyTax({
+          year: Number(
+            root.querySelector<HTMLSelectElement>('#property-year')?.value ||
+              2026,
+          ),
+          oneHouseholdOneHome: oneHouse.checked,
+          taxBurdenCap: taxCap.checked,
+          assets: readAssets(),
+        });
+
+        total.textContent = format(result.total) + '원';
+        detail.innerHTML = `
+          <div rounded="xl" bg="surface dark:dark-surface" p="3">
+            <p m="0" text="xs text-muted dark:dark-text-muted">재산세</p>
+            <p m="1" font="750">${format(result.propertyTax)}원</p>
+          </div>
+          <div rounded="xl" bg="surface dark:dark-surface" p="3">
+            <p m="0" text="xs text-muted dark:dark-text-muted">도시지역분</p>
+            <p m="1" font="750">${format(result.urbanAreaTax)}원</p>
+          </div>
+          <div rounded="xl" bg="surface dark:dark-surface" p="3">
+            <p m="0" text="xs text-muted dark:dark-text-muted">지방교육세</p>
+            <p m="1" font="750">${format(result.localEducationTax)}원</p>
+          </div>
+          <div rounded="xl" bg="surface dark:dark-surface" p="3">
+            <p m="0" text="xs text-muted dark:dark-text-muted">과세표준</p>
+            <p m="1" font="750">${format(result.taxableBase)}원</p>
+          </div>
+        `;
+
+        breakdown.innerHTML = result.assets
+          .map(
+            (asset, index) => `
+              <div flex="~" items-center justify-between gap="4" rounded="xl" border="1 border dark:dark-border" bg="surface dark:dark-surface" p="3" text="sm">
+                <span font="700">주택 ${index + 1}</span>
+                <span text="right text-muted dark:dark-text-muted">
+                  재산세 ${format(asset.propertyTax)}원 · 총 ${format(asset.total)}원
+                  ${asset.capApplied ? ' · 세부담상한 적용' : ''}
+                </span>
+              </div>
+            `,
+          )
+          .join('');
+      } catch (e) {
+        total.textContent = '계산할 수 없습니다';
+        detail.innerHTML = '';
+        breakdown.innerHTML = '';
+        error.textContent =
+          e instanceof Error
+            ? e.message
+            : '입력값을 확인한 후 다시 계산하세요.';
+        error.hidden = false;
+      }
+    };
+
+    list.innerHTML = assetHtml(1);
+
+    root.querySelector('#add-property')?.addEventListener('click', addAsset);
+    root.querySelector('#property-calculate')?.addEventListener('click', calc);
+    list.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      const remove = target.closest<HTMLButtonElement>(
+        '[data-remove-property]',
+      );
+      if (!remove) return;
+      const article = remove.closest<HTMLElement>('[data-property-asset]');
+      if (article) removeAsset(article);
+    });
+
+    root.querySelector('#property-reset')?.addEventListener('click', () => {
+      list.innerHTML = assetHtml(1);
+      nextId = 2;
+      oneHouse.checked = true;
+      taxCap.checked = true;
+      calc();
+    });
+
+    bindCalculatorInputs(root, calc, { change: true });
+    calc();
+  }
+</script>

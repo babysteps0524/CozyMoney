@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="페이지를 찾을 수 없습니다 | CozyMoney 코지머니"
+  description="요청한 페이지를 찾을 수 없습니다. CozyMoney 계산기와 생활도구에서 필요한 기능을 찾아보세요."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="16 md:24">
+    <section max-w="2xl" mx="auto" text="center">
+      <p m="0" text="sm" font="700" text-primary>
+        404
+      </p>
+      <h1 m="0" mt="2" text="3xl md:4xl" font="800">
+        페이지를 찾을 수 없습니다.
+      </h1>
+      <p m="0" mt="4" leading="7" text="text-muted dark:dark-text-muted">
+        요청한 주소가 존재하지 않거나 페이지가 이동되었을 수 있습니다.
+      </p>
+      <div flex="~ wrap" justify-center gap="3" mt="7">
+        <a href="/" class="cm-button-primary" px="5" py="3" no-underline>
+          홈으로
+        </a>
+        <a
+          href="/calculators/"
+          class="cm-button-secondary"
+          px="5"
+          py="3"
+          no-underline
+        >
+          계산기
+        </a>
+        <a
+          href="/tools/"
+          class="cm-button-secondary"
+          px="5"
+          py="3"
+          no-underline
+        >
+          생활도구
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

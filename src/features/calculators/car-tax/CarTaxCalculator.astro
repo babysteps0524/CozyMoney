@@ -1,0 +1,282 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="carTax">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="fuel">
+        연료 유형
+      </label>
+      <select class="cm-input" id="fuel" aria-describedby="fuel-help">
+        <option value="combustion" selected>
+          내연기관 · 휘발유 · 경유 · LPG · 하이브리드
+        </option>
+        <option value="electric">전기 승용차</option>
+      </select>
+      <p id="fuel-help" class="cm-help-text" mt="2" text="sm">
+        전기 승용차는 배기량 대신 정액 세율을 적용합니다.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="use">
+        차량 용도
+      </label>
+      <select class="cm-input" id="use" aria-describedby="use-help">
+        <option value="private" selected>
+          비영업용(자가용)
+        </option>
+        <option value="business">영업용</option>
+      </select>
+      <p id="use-help" class="cm-help-text" mt="2" text="sm">
+        택시 등 영업용은 별도의 cc당 세율을 적용합니다.
+      </p>
+    </div>
+
+    <div class="cm-field" id="displacement-field">
+      <label class="cm-label" for="cc">
+        배기량
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="배기량 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="cc"
+            type="text"
+            inputmode="numeric"
+            value="1998"
+            data-default-value="1998"
+            data-number-input
+            data-step="100"
+            data-min="1"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            cc
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="배기량 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+      <p class="cm-help-text" mt="2" text="sm">
+        자동차등록증의 배기량(cc)을 입력해. 구간별 세율이 배기량 전체에
+        적용됩니다.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="registration-year">
+        최초 등록연도
+      </label>
+      <input
+        class="cm-input"
+        id="registration-year"
+        type="number"
+        inputmode="numeric"
+        min="1900"
+        step="1"
+        placeholder="예: 2022"
+        aria-describedby="registration-help"
+      />
+      <p id="registration-help" class="cm-help-text" mt="2" text="sm">
+        선택 입력입니다. 비워 두면 차령 경감 없이 계산됩니다.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="tax-year">
+        과세연도
+      </label>
+      <input
+        class="cm-input"
+        id="tax-year"
+        type="number"
+        inputmode="numeric"
+        min="1900"
+        step="1"
+        value={new Date().getFullYear()}
+        data-default-value={new Date().getFullYear()}
+      />
+    </div>
+  </div>
+
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      연간 예상 자동차세 합계
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <p id="result-detail" class="cm-help-text" mt="2"></p>
+    <div mt="4" border="t solid default" pt="3">
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span class="cm-help-text">기본 자동차세</span>
+        <strong id="base-tax">-</strong>
+      </div>
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span class="cm-help-text">차령 경감</span>
+        <strong id="age-reduction">-</strong>
+      </div>
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span class="cm-help-text">경감 후 자동차세</span>
+        <strong id="after-reduction">-</strong>
+      </div>
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span class="cm-help-text">지방교육세</span>
+        <strong id="education-tax">-</strong>
+      </div>
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span>제1기분 예상액(6월)</span>
+        <strong id="first-half">-</strong>
+      </div>
+      <div grid="~ cols-[minmax(0,1fr)_auto]" gap="2" py="2">
+        <span>제2기분 예상액(12월)</span>
+        <strong id="second-half">-</strong>
+      </div>
+    </div>
+  </div>
+
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+  <p
+    id="validation-message"
+    class="cm-help-text"
+    mt="3"
+    role="status"
+    aria-live="polite"
+  ></p>
+</div>
+
+<script>
+  import { calculateCarTax } from './car-tax';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import {
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="carTax"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const output = (id: string) => root.querySelector<HTMLElement>(id)!;
+    const resultValue = output('#result-value');
+    const resultDetail = output('#result-detail');
+    const validation = output('#validation-message');
+    const fuel = root.querySelector<HTMLSelectElement>('#fuel')!;
+    const use = root.querySelector<HTMLSelectElement>('#use')!;
+    const ccInput = root.querySelector<HTMLInputElement>('#cc')!;
+    const registrationYear =
+      root.querySelector<HTMLInputElement>('#registration-year')!;
+    const taxYear = root.querySelector<HTMLInputElement>('#tax-year')!;
+    const displacementField = output('#displacement-field');
+
+    const won = (value: number) => formatCalculatorWon(value);
+    const render = () => {
+      const isElectric = fuel.value === 'electric';
+      displacementField.hidden = isElectric;
+      ccInput.disabled = isElectric;
+      try {
+        const registrationValue = registrationYear.value.trim();
+        const result = calculateCarTax({
+          displacementCc: isElectric ? 0 : readCalculatorNumber(root, 'cc'),
+          firstRegistrationYear:
+            registrationValue === '' ? null : Number(registrationValue),
+          taxYear: Number(taxYear.value),
+          fuel: fuel.value as 'combustion' | 'electric',
+          use: use.value as 'private' | 'business',
+        });
+
+        validation.textContent = '';
+        resultValue.textContent = won(result.annualTotal);
+        resultDetail.textContent =
+          result.vehicleAge === null
+            ? '차령 경감을 적용하지 않은 연간 예상액입니다.'
+            : `차령 ${result.vehicleAge}년차 기준 · 차령 경감률 ${result.ageReductionRate}% 적용`;
+        output('#base-tax').textContent = won(result.vehicleTax);
+        output('#age-reduction').textContent =
+          result.ageReductionAmount > 0
+            ? `−${won(result.ageReductionAmount)} (${result.ageReductionRate}%)`
+            : `0원 (${result.ageReductionRate}%)`;
+        output('#after-reduction').textContent = won(
+          result.vehicleTaxAfterReduction,
+        );
+        output('#education-tax').textContent = won(result.educationTax);
+        output('#first-half').textContent = won(result.firstHalfTotal);
+        output('#second-half').textContent = won(result.secondHalfTotal);
+      } catch (error) {
+        resultValue.textContent = '입력값 확인';
+        resultDetail.textContent = '';
+        validation.textContent =
+          error instanceof Error ? error.message : '입력값을 확인해 주세요.';
+        for (const id of [
+          '#base-tax',
+          '#age-reduction',
+          '#after-reduction',
+          '#education-tax',
+          '#first-half',
+          '#second-half',
+        ]) {
+          output(id).textContent = '-';
+        }
+      }
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      fuel.value = 'combustion';
+      use.value = 'private';
+      registrationYear.value = '';
+      taxYear.value = String(new Date().getFullYear());
+      ccInput.disabled = false;
+      render();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', render);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    fuel.addEventListener('change', render);
+    use.addEventListener('change', render);
+    registrationYear.addEventListener('input', render);
+    taxYear.addEventListener('input', render);
+    bindCalculatorInputs(fields, render);
+    render();
+  }
+</script>

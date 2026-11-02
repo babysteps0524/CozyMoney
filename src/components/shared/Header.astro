@@ -1,0 +1,244 @@
+<header
+  transition:persist="site-header"
+  view-transition-name="none"
+  sticky
+  top-0
+  z="50"
+  border="b border dark:dark-border"
+  bg="surface/92 dark:dark-surface/92"
+  backdrop-blur="md"
+>
+  <div class="cm-container" h="16 md:18" flex="~" items-center justify-between>
+    <a
+      href="/"
+      flex="~"
+      items-center
+      gap="2"
+      text="lg md:xl text dark:dark-text"
+      font="800 "
+      no-underline
+      cursor-pointer
+      hover="opacity-80"
+      active="opacity-60"
+      transition="opacity duration-50"
+    >
+      <span
+        flex="~"
+        items-center
+        justify-center
+        w="8"
+        h="8"
+        rounded="xl"
+        bg="primary"
+        text="sm"
+        font="800"
+        text-white
+      >
+        CM
+      </span>
+      CozyMoney
+    </a>
+    <nav flex="~" items-center gap="1 md:2" text="sm" font="600">
+      <a
+        href="/calculators/"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hover:text dark:dark-text-muted dark:hover:dark-text"
+        bg="hover:surface-subtle active:surface-subtle dark:hover:surface-subtle dark:active:dark-surface-subtle"
+        no-underline
+        cursor-pointer
+        transition="colors duration-50"
+      >
+        계산기
+      </a>
+      <a
+        href="/tools/"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hober:text dark:dark-text-muted dark:hover:dark-text"
+        bg="hover:surface-subtle active:surface-subtle dark:hover:surface-subtle dark:active:surface-subtle"
+        no-underline
+        cursor-pointer
+        transition="colors duration-50"
+      >
+        생활도구
+      </a>
+    </nav>
+
+    <nav
+      id="header-auth-nav"
+      flex="~"
+      items-center
+      gap="2"
+      text="sm"
+      font="600"
+    >
+      <a
+        id="header-auth-login"
+        href="/login/"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hover:text-text dark:dark-text dark:hover:dark-text"
+        border="1 border border-border dark:dark-border"
+        no-underline
+        cursor-pointer
+        hover="bg-surface-subtle dark:bg-dark-surface-subtle"
+        active="bg-surface-subtle dark:bg-dark-surface-subtle"
+        transition="colors duration-50"
+      >
+        로그인
+      </a>
+      <a
+        id="header-auth-signup"
+        href="/signup/"
+        rounded="lg"
+        px="3"
+        py="2"
+        class="cm-button-primary"
+        no-underline
+        cursor-pointer
+      >
+        회원가입
+      </a>
+      <a
+        id="header-auth-mypage"
+        href="/account/"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hover:text-text dark:dark-text dark:hover:dark-text"
+        border="1 border border-border dark:dark-border"
+        no-underline
+        cursor-pointer
+        hover="bg-surface-subtle dark:bg-dark-surface-subtle"
+        active="bg-surface-subtle dark:bg-dark-surface-subtle"
+        transition="colors duration-50"
+        hidden
+      >
+        마이페이지
+      </a>
+      <a
+        id="header-auth-admin"
+        href="/admin/inquiries/"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hover:text-text dark:dark-text dark:hover:dark-text"
+        border="1 border border-border dark:dark-border"
+        no-underline
+        cursor-pointer
+        hover="bg-surface-subtle dark:bg-dark-surface-subtle"
+        active="bg-surface-subtle dark:bg-dark-surface-subtle"
+        transition="colors duration-50"
+        hidden
+      >
+        관리자
+      </a>
+      <button
+        id="header-auth-logout"
+        type="button"
+        rounded="lg"
+        px="3"
+        py="2"
+        text="text hover:text-text dark:dark-text dark:hover:dark-text"
+        border="1 border border-border dark:dark-border"
+        no-underline
+        cursor-pointer
+        hover="bg-surface-subtle dark:bg-dark-surface-subtle"
+        active="bg-surface-subtle dark:bg-dark-surface-subtle"
+        transition="colors duration-50"
+        hidden
+        aria-label="로그아웃"
+      >
+        로그아웃
+      </button>
+      <span
+        id="header-auth-status"
+        role="status"
+        aria-live="polite"
+        text="xs text-danger"
+        hidden
+      ></span>
+    </nav>
+  </div>
+</header>
+
+<script>
+  async function refreshAuthNavigation() {
+    const loginLink =
+      document.querySelector<HTMLAnchorElement>('#header-auth-login');
+    const signupLink = document.querySelector<HTMLAnchorElement>(
+      '#header-auth-signup',
+    );
+    const accountLink = document.querySelector<HTMLAnchorElement>(
+      '#header-auth-mypage',
+    );
+    const adminLink =
+      document.querySelector<HTMLAnchorElement>('#header-auth-admin');
+    const logoutButton = document.querySelector<HTMLButtonElement>(
+      '#header-auth-logout',
+    );
+
+    try {
+      const response = await fetch('/api/auth/session', {
+        method: 'GET',
+        credentials: 'same-origin',
+        cache: 'no-store',
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) return;
+      const result: {
+        user?: { id: string; email: string } | null;
+        isAdmin?: boolean;
+      } = await response.json();
+      const isSignedIn = Boolean(result.user);
+      const isAdmin = result.isAdmin === true;
+      if (loginLink) loginLink.hidden = isSignedIn;
+      if (signupLink) signupLink.hidden = isSignedIn;
+      if (accountLink) accountLink.hidden = !isSignedIn;
+      if (adminLink) adminLink.hidden = !isAdmin;
+      if (logoutButton) logoutButton.hidden = !isSignedIn;
+    } catch {
+      // 세션 확인에 실패하면 기존 헤더 표시를 유지합니다.
+    }
+  }
+
+  document.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const logoutButton = target.closest<HTMLButtonElement>(
+      '#header-auth-logout',
+    );
+    if (!logoutButton || logoutButton.disabled) return;
+
+    logoutButton.disabled = true;
+    const authStatus = document.querySelector<HTMLSpanElement>(
+      '#header-auth-status',
+    );
+    if (authStatus) {
+      authStatus.hidden = true;
+      authStatus.textContent = '';
+    }
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) throw new Error('로그아웃 요청에 실패했습니다.');
+      window.location.assign('/');
+    } catch {
+      if (authStatus) {
+        authStatus.hidden = false;
+        authStatus.textContent = '로그아웃하지 못했습니다. 다시 시도해 주세요.';
+      }
+      logoutButton.disabled = false;
+    }
+  });
+
+  document.addEventListener('astro:page-load', refreshAuthNavigation);
+  refreshAuthNavigation();
+</script>

@@ -1,0 +1,30 @@
+<div>
+  <p m="0" text="sm" font="700" text-primary>
+    AGE CALCULATOR
+  </p>
+  <h2 m="0" mt="1" text="xl md:2xl" font="800">
+    나이 계산기
+  </h2>
+  <div grid="~ cols-1 md:cols-2" gap="4" mt="6">
+    <label>
+      <span class="cm-label">생년월일</span>
+      <input id="age-birth" class="cm-input" type="date" />
+    </label>
+    <label>
+      <span class="cm-label">기준일</span>
+      <input id="age-asof" class="cm-input" type="date" />
+    </label>
+  </div>
+  <div
+    id="age-result"
+    mt="5"
+    rounded="2xl"
+    bg="surface-muted dark:dark-surface-subtle"
+    p="5"
+  >
+    생년월일을 입력하세요.
+  </div>
+  <button id="age-calc" class="cm-button-primary" w="full" mt="4" py="3">
+    나이 계산
+  </button>
+</div>

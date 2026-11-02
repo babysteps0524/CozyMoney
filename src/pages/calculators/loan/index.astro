@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import LoanCalculator from '../../../features/calculators/loan/LoanCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.loan;
+---
+
+<CalculatorPage definition={definition}>
+  <LoanCalculator />
+</CalculatorPage>

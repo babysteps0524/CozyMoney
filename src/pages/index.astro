@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+import AdSlot from '../components/shared/AdSlot.astro';
+
+const groups = [
+  {
+    title: '금융 계산기',
+    description: '대출·저축·부채 관리',
+    items: [
+      {
+        title: '대출 계산기',
+        description: '월 상환금액과 총 이자를 계산합니다.',
+        href: '/calculators/loan/',
+      },
+      {
+        title: '예적금 계산기',
+        description: '예금과 적금의 예상 만기금액을 계산합니다.',
+        href: '/calculators/savings/',
+      },
+      {
+        title: '복리 계산기',
+        description: '복리와 추가납입에 따른 미래 금액을 계산합니다.',
+        href: '/calculators/compound/',
+      },
+      {
+        title: 'DSR 계산기',
+        description: '연소득 대비 연간 원리금 상환비율을 계산합니다.',
+        href: '/calculators/dsr/',
+      },
+      {
+        title: 'DTI 계산기',
+        description: '소득 대비 대출 상환부담을 계산합니다.',
+        href: '/calculators/dti/',
+      },
+    ],
+  },
+  {
+    title: '급여·노동 계산기',
+    description: '급여와 근로에 필요한 계산',
+    items: [
+      {
+        title: '연봉 계산기',
+        description: '연봉을 기준으로 월 급여와 시급을 계산합니다.',
+        href: '/calculators/salary/',
+      },
+      {
+        title: '월급 계산기',
+        description: '연봉이나 월급을 입력해 예상 월 실수령액을 계산합니다.',
+        href: '/calculators/monthly-salary/',
+      },
+      {
+        title: '시급 계산기',
+        description: '시급·일급·주급·월급·연봉과 주휴·연장수당을 반영합니다.',
+        href: '/calculators/hourly-wage/',
+      },
+      {
+        title: '퇴직금 계산기',
+        description: '월 평균임금과 근속기간으로 퇴직금을 추정합니다.',
+        href: '/calculators/severance/',
+      },
+      {
+        title: '주휴수당 계산기',
+        description: '시급과 소정근로시간으로 주휴수당을 계산합니다.',
+        href: '/calculators/weekly/',
+      },
+      {
+        title: '연차수당 계산기',
+        description: '통상임금과 미사용 연차로 수당을 계산합니다.',
+        href: '/calculators/vacation/',
+      },
+    ],
+  },
+  {
+    title: '세금·부동산 계산기',
+    description: '세금과 주거비를 간편하게 계산',
+    items: [
+      {
+        title: '부가가치세 계산기',
+        description: '공급가액과 합계금액을 기준으로 부가세를 계산합니다.',
+        href: '/calculators/vat/',
+      },
+      {
+        title: '종합소득세 계산기',
+        description:
+          '종합소득과 공제 조건을 입력해 예상 종합소득세를 계산합니다.',
+        href: '/calculators/incomeTax/',
+      },
+      {
+        title: '취득세 계산기',
+        description:
+          '취득원인·주택 수·조정대상지역·생애최초 여부를 반영해 취득세를 계산합니다.',
+        href: '/calculators/acquisition/',
+      },
+      {
+        title: '재산세 계산기',
+        description: '과세표준과 세율로 재산세를 계산합니다.',
+        href: '/calculators/property/',
+      },
+      {
+        title: '양도소득세 계산기',
+        description: '양도차익과 가정 세율로 세액을 추정합니다.',
+        href: '/calculators/capitalGain/',
+      },
+      {
+        title: '전월세 계산기',
+        description: '보증금과 월세를 연간 비용으로 비교합니다.',
+        href: '/calculators/rent/',
+      },
+    ],
+  },
+  {
+    title: '생활 계산기',
+    description: '일상에서 자주 쓰는 기본 계산',
+    items: [
+      {
+        title: '퍼센트 계산기',
+        description: '기준값의 퍼센트 금액을 계산합니다.',
+        href: '/calculators/percentage/',
+      },
+      {
+        title: '자동차세 계산기',
+        description:
+          '차량 용도·연료·배기량·최초 등록연도로 자동차세와 지방교육세, 차령 경감액을 추정합니다.',
+        href: '/calculators/carTax/',
+      },
+      {
+        title: '부동산 중개보수 계산기',
+        description: '거래금액과 중개보수율로 보수를 계산합니다.',
+        href: '/calculators/brokerage/',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="CozyMoney 코지머니 | 생활 계산기와 유용한 도구"
+  description="대출 상환액과 예적금 이자, 연봉 실수령액, 세금과 부동산 비용을 계산하고 날짜·나이·단위 변환 등 생활도구를 무료로 이용하세요."
+  canonical="https://cozymoney.kr/"
+>
+  <Header />
+  <main>
+    <section class="cm-container" py="10 md:16 lg:22">
+      <div
+        rounded="3xl"
+        border="1 border dark:dark-border"
+        bg="surface-muted dark:dark-surface-muted"
+        p="6 md:10 lg:14"
+      >
+        <p m="0" mb="3" text="sm" font="700" text-primary-hover>
+          CALCULATORS & TOOLS
+        </p>
+        <h1
+          m="0"
+          max-w="3xl"
+          text="3xl md:4xl lg:5xl"
+          font="800"
+          tracking-tight
+          leading-tight
+        >
+          필요한 계산과 도구를
+          <br />
+          한곳에서 간편하게
+        </h1>
+        <p
+          m="0"
+          mt="5"
+          max-w="2xl"
+          text="base md:lg text-muted dark:dark-text-muted"
+          leading="7"
+        >
+          복잡한 숫자 계산부터 날짜, 나이, 단위 변환과 랜덤 도구까지
+          <br />
+          필요한 기능을 간단하게 이용할 수 있습니다.
+        </p>
+        <div flex="~ wrap" gap="2" mt="6">
+          <a
+            href="/calculators/"
+            class="cm-button-primary"
+            px="5"
+            py="3"
+            text="sm md:base"
+            no-underline
+          >
+            계산기 보기
+          </a>
+          <a
+            href="/tools/"
+            class="cm-button-secondary"
+            px="5"
+            py="3"
+            text="sm md:base"
+            no-underline
+          >
+            생활도구 보기
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cm-container" pb="16 md:20">
+      <div flex="~ col" gap="10 md:12">
+        {groups.map((group, index) => (
+          <>
+            <section>
+              <div mb="5 md:6">
+                <p m="0" text="sm" font="700" text-primary>
+                  {group.title === '생활 도구' ? 'LIFE TOOLS' : 'CALCULATORS'}
+                </p>
+                <h2 class="cm-section-title" mt="1">
+                  {group.title}
+                </h2>
+                <p m="0" mt="1" text="sm text-muted dark:dark-text-muted">
+                  {group.description}
+                </p>
+              </div>
+              <div grid="~ cols-1 sm:cols-2 lg:cols-3" gap="3 md:4">
+                {group.items.map((item) => (
+                  <a
+                    href={item.href}
+                    class="cm-card-interactive"
+                    p="5 md:6"
+                    no-underline
+                  >
+                    <div flex="~" items-center justify-between gap="3">
+                      <h3 m="0" text="lg md:xl text dark:dark-text" font="750">
+                        {item.title}
+                      </h3>
+                      <span text="text-subtle dark:dark-text-subtle">→</span>
+                    </div>
+                    <p
+                      m="0"
+                      mt="2"
+                      text="sm text-muted dark:dark-text-muted"
+                      leading="6"
+                    >
+                      {item.description}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </section>
+            {index === 1 ? (
+              <AdSlot
+                slot={import.meta.env.PUBLIC_ADSENSE_SLOT_HOME_MID || ''}
+                label="광고"
+              />
+            ) : null}
+          </>
+        ))}
+      </div>
+    </section>
+    <section class="cm-container" pb="8 md:12" aria-label="광고">
+      <AdSlot slot={import.meta.env.PUBLIC_ADSENSE_SLOT_HOME || ''} />
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

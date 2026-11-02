@@ -1,0 +1,633 @@
+---
+---
+
+<div grid="~ cols-1 lg:cols-2" gap="4 md:6" items-start>
+  <section class="cm-card" p="5 md:7">
+    <div
+      grid="~ cols-2"
+      gap="2"
+      p="1"
+      rounded="xl"
+      bg="surface-subtle dark:dark-surface-subtle"
+    >
+      <button
+        id="deposit-tab"
+        type="button"
+        role="tab"
+        aria-pressed="true"
+        h="11"
+        w="full"
+        p="0"
+        rounded="lg"
+        text="sm"
+        font="700"
+        outline="none"
+        focus-visible="ring-2 ring-primary ring-offset-2 dark:focus-visible:ring-offset-dark-surface"
+        cursor-pointer
+      >
+        <span
+          id="deposit-tab-active"
+          flex="~"
+          h="full"
+          w="full"
+          items-center
+          justify-center
+          rounded="lg"
+          bg="primary"
+          text-white
+        >
+          예금
+        </span>
+        <span
+          id="deposit-tab-inactive"
+          hidden
+          flex="~"
+          h="full"
+          w="full"
+          items-center
+          justify-center
+          class="cm-button-secondary"
+        >
+          예금
+        </span>
+      </button>
+      <button
+        id="installment-tab"
+        type="button"
+        role="tab"
+        aria-pressed="false"
+        h="11"
+        w="full"
+        p="0"
+        rounded="lg"
+        text="sm"
+        font="700"
+        outline="none"
+        focus-visible="ring-2 ring-primary ring-offset-2 dark:ring-offset-dark-surface"
+        cursor-pointer
+      >
+        <span
+          id="installment-tab-active"
+          hidden
+          flex="~"
+          h="full"
+          w="full"
+          items-center
+          justify-center
+          rounded="lg"
+          bg="primary"
+          text-white
+        >
+          적금
+        </span>
+        <span
+          id="installment-tab-inactive"
+          flex="~"
+          h="full"
+          w="full"
+          items-center
+          justify-center
+          class="cm-button-secondary"
+        >
+          적금
+        </span>
+      </button>
+    </div>
+
+    <form id="savings-form" mt="6">
+      <fieldset m="0" border="0" p="0">
+        <legend class="cm-label" mb="3">
+          이자 계산 방식
+        </legend>
+        <div
+          grid="~ cols-2"
+          gap="2"
+          rounded="xl"
+          bg="surface-subtle dark:dark-surface-subtle"
+          p="1"
+        >
+          <button
+            id="simple-tab"
+            type="button"
+            role="tab"
+            aria-pressed="false"
+            h="10"
+            w="full"
+            p="0"
+            rounded="lg"
+            text="sm"
+            font="700"
+            outline="none"
+            focus-visible="ring-2 ring-primary ring-offset-2 dark:ring-offset-dark-surface"
+            cursor-pointer
+          >
+            <span
+              id="simple-tab-active"
+              hidden
+              flex="~"
+              h="full"
+              w="full"
+              items-center
+              justify-center
+              rounded="lg"
+              bg="primary"
+              text-white
+            >
+              단리
+            </span>
+            <span
+              id="simple-tab-inactive"
+              flex="~"
+              h="full"
+              w="full"
+              items-center
+              justify-center
+              class="cm-button-secondary"
+            >
+              단리
+            </span>
+          </button>
+          <button
+            id="compound-tab"
+            type="button"
+            role="tab"
+            aria-pressed="true"
+            h="10"
+            w="full"
+            p="0"
+            rounded="lg"
+            text="sm"
+            font="700"
+            outline="none"
+            focus-visible="ring-2 ring-primary ring-offset-2 dark:ring-offset-dark-surface"
+            cursor-pointer
+          >
+            <span
+              id="compound-tab-active"
+              flex="~"
+              h="full"
+              w="full"
+              items-center
+              justify-center
+              rounded="lg"
+              bg="primary"
+              text-white
+              hover="bg-primary-hover"
+              active="bg-primary-active"
+            >
+              복리
+            </span>
+            <span
+              id="compound-tab-inactive"
+              hidden
+              flex="~"
+              h="full"
+              w="full"
+              items-center
+              justify-center
+              class="cm-button-secondary"
+            >
+              복리
+            </span>
+          </button>
+        </div>
+        <p
+          id="interest-method-help"
+          m="0"
+          mt="2"
+          text="xs text-muted dark:dark-text-muted"
+          leading="5"
+        >
+          이자가 원금과 누적 이자에 다시 붙는 방식으로 계산합니다.
+        </p>
+      </fieldset>
+      <div id="deposit-field">
+        <label class="cm-label" for="principal">
+          예치금액
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+          <button
+            type="button"
+            data-step-direction="-1"
+            aria-label="예치금액 감소"
+            class="cm-step-button"
+          >
+            −
+          </button>
+          <input
+            class="cm-input"
+            id="principal"
+            type="text"
+            inputmode="numeric"
+            value="10000000"
+            data-number-input
+            data-step="100000"
+            data-min="1"
+            data-decimal="false"
+          />
+          <button
+            type="button"
+            data-step-direction="1"
+            aria-label="예치금액 증가"
+            class="cm-step-button"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div id="monthly-field" hidden>
+        <label class="cm-label" for="monthly">
+          월 납입금액
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+          <button
+            type="button"
+            data-step-direction="-1"
+            aria-label="월 납입금액 감소"
+            class="cm-step-button"
+          >
+            −
+          </button>
+          <input
+            class="cm-input"
+            id="monthly"
+            type="text"
+            inputmode="numeric"
+            value="300000"
+            data-number-input
+            data-step="10000"
+            data-min="1"
+            data-decimal="false"
+          />
+          <button
+            type="button"
+            data-step-direction="1"
+            aria-label="월 납입금액 증가"
+            class="cm-step-button"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div mt="5">
+        <label class="cm-label" for="rate">
+          연이율
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+          <button
+            type="button"
+            data-step-direction="-1"
+            aria-label="연이율 감소"
+            class="cm-step-button"
+          >
+            −
+          </button>
+          <div relative>
+            <input
+              class="cm-input"
+              id="rate"
+              type="text"
+              inputmode="decimal"
+              value="3.5"
+              data-number-input
+              data-step="0.1"
+              data-min="0"
+              data-decimal="true"
+              pr="12"
+            />
+            <span
+              absolute
+              right-4
+              top="[50%]"
+              translate-y="[-50%]"
+              text="sm"
+              text-text-muted
+            >
+              {' '}
+              %{' '}
+            </span>
+          </div>
+          <button
+            type="button"
+            data-step-direction="1"
+            aria-label="연이율 증가"
+            class="cm-step-button"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div mt="5">
+        <label class="cm-label" for="months">
+          저축기간
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+          <button
+            type="button"
+            data-step-direction="-1"
+            aria-label="저축기간 감소"
+            class="cm-step-button"
+          >
+            −
+          </button>
+          <div relative>
+            <input
+              class="cm-input"
+              id="months"
+              type="text"
+              inputmode="numeric"
+              value="12"
+              data-number-input
+              data-step="1"
+              data-min="1"
+              data-decimal="false"
+              pr="14"
+            />
+            <span
+              absolute
+              right-4
+              top="[50%]"
+              translate-y="[-50%]"
+              text="sm"
+              text-text-muted
+            >
+              개월
+            </span>
+          </div>
+          <button
+            type="button"
+            data-step-direction="1"
+            aria-label="저축기간 증가"
+            class="cm-step-button"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div grid="~ cols-1 sm:cols-2" gap="3" mt="6">
+        <button type="submit" class="cm-button-primary" py="3.5">
+          계산하기
+        </button>
+        <button id="reset" type="button" class="cm-button-secondary" py="3.5">
+          초기화
+        </button>
+      </div>
+      <p
+        id="error"
+        hidden
+        m="0"
+        mt="4"
+        rounded="xl"
+        bg="danger-surface dark:dark-danger-surface"
+        px="4"
+        py="3"
+        text="sm danger-text dark:dark-danger-text"
+      ></p>
+    </form>
+  </section>
+
+  <section
+    id="result"
+    class="cm-card"
+    p="5 md:7"
+    lg="sticky top-24"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <div flex="~" items-center justify-between mb="5">
+      <div>
+        <p m="0" text="xs" font="700" text-primary>
+          RESULT
+        </p>
+        <h2 m="0" mt="1" text="lg md:xl" font="750">
+          예상 만기 결과
+        </h2>
+      </div>
+      <button
+        id="copy"
+        type="button"
+        class="cm-button-secondary"
+        px="3"
+        py="2"
+        text="xs sm:sm"
+      >
+        결과 복사
+      </button>
+    </div>
+    <div rounded="2xl" bg="primary/10 dark:dark-primary-surface" p="5">
+      <p m="0" text="sm text-muted dark:dark-text-muted">
+        세후 예상 만기금액
+      </p>
+      <strong
+        id="maturity"
+        block
+        mt="2"
+        text="2xl md:3xl"
+        font="800"
+        text-primary
+      >
+        -
+      </strong>
+    </div>
+    <div grid="~ cols-1 sm:cols-2" gap="3" mt="3">
+      <div class="cm-result">
+        <p m="0" text="sm" text-text-muted>
+          납입 원금
+        </p>
+        <strong id="paid" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+      <div class="cm-result">
+        <p m="0" text="sm" text-text-muted>
+          세전 이자
+        </p>
+        <strong id="interest" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+      <div class="cm-result" sm="col-span-2">
+        <p m="0" text="sm" text-text-muted>
+          이자소득세(15.4% 가정)
+        </p>
+        <strong id="tax" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  import { calculateSavings, formatWon, type SavingsType } from './savings';
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  const form = document.querySelector<HTMLFormElement>('#savings-form');
+  const depositTab = document.querySelector<HTMLButtonElement>('#deposit-tab');
+  const installmentTab =
+    document.querySelector<HTMLButtonElement>('#installment-tab');
+  const depositTabActive = document.querySelector<HTMLElement>(
+    '#deposit-tab-active',
+  );
+  const depositTabInactive = document.querySelector<HTMLElement>(
+    '#deposit-tab-inactive',
+  );
+  const installmentTabActive = document.querySelector<HTMLElement>(
+    '#installment-tab-active',
+  );
+  const installmentTabInactive = document.querySelector<HTMLElement>(
+    '#installment-tab-inactive',
+  );
+  const simpleTab = document.querySelector<HTMLButtonElement>('#simple-tab');
+  const compoundTab =
+    document.querySelector<HTMLButtonElement>('#compound-tab');
+  const simpleTabActive =
+    document.querySelector<HTMLElement>('#simple-tab-active');
+  const simpleTabInactive = document.querySelector<HTMLElement>(
+    '#simple-tab-inactive',
+  );
+  const compoundTabActive = document.querySelector<HTMLElement>(
+    '#compound-tab-active',
+  );
+  const compoundTabInactive = document.querySelector<HTMLElement>(
+    '#compound-tab-inactive',
+  );
+  const interestMethodHelp = document.querySelector<HTMLElement>(
+    '#interest-method-help',
+  );
+  const depositField = document.querySelector<HTMLElement>('#deposit-field');
+  const monthlyField = document.querySelector<HTMLElement>('#monthly-field');
+  const principal = document.querySelector<HTMLInputElement>('#principal');
+  const monthly = document.querySelector<HTMLInputElement>('#monthly');
+  const rate = document.querySelector<HTMLInputElement>('#rate');
+  const months = document.querySelector<HTMLInputElement>('#months');
+  const maturity = document.querySelector<HTMLElement>('#maturity');
+  const paid = document.querySelector<HTMLElement>('#paid');
+  const interest = document.querySelector<HTMLElement>('#interest');
+  const tax = document.querySelector<HTMLElement>('#tax');
+  const error = document.querySelector<HTMLElement>('#error');
+  const reset = document.querySelector<HTMLButtonElement>('#reset');
+  const copy = document.querySelector<HTMLButtonElement>('#copy');
+  let type: SavingsType = 'deposit';
+  let interestMethod: 'simple' | 'compound' = 'compound';
+
+  const setInterestMethod = (next: 'simple' | 'compound') => {
+    interestMethod = next;
+    const isSimple = next === 'simple';
+    simpleTab!.setAttribute('aria-pressed', String(isSimple));
+    compoundTab!.setAttribute('aria-pressed', String(!isSimple));
+    simpleTabActive!.hidden = !isSimple;
+    simpleTabInactive!.hidden = isSimple;
+    compoundTabActive!.hidden = isSimple;
+    compoundTabInactive!.hidden = !isSimple;
+    interestMethodHelp!.textContent = isSimple
+      ? '원금에 대해서만 이자를 계산하는 방식입니다.'
+      : '이자가 원금과 누적 이자에 다시 붙는 방식으로 계산합니다.';
+    render();
+  };
+
+  const setType = (next: SavingsType) => {
+    type = next;
+    depositField!.hidden = type !== 'deposit';
+    monthlyField!.hidden = type !== 'installment';
+    const depositActive = type === 'deposit';
+    depositTab!.setAttribute('aria-pressed', String(depositActive));
+    installmentTab!.setAttribute('aria-pressed', String(!depositActive));
+
+    depositTabActive!.hidden = !depositActive;
+    depositTabInactive!.hidden = depositActive;
+    installmentTabActive!.hidden = depositActive;
+    installmentTabInactive!.hidden = !depositActive;
+    render();
+  };
+  const render = () => {
+    if (!form) return;
+    error!.hidden = true;
+    try {
+      const r = calculateSavings({
+        type,
+        method: interestMethod,
+        principal: readCalculatorNumber(form, 'principal'),
+        monthlyDeposit: readCalculatorNumber(form, 'monthly'),
+        annualRate: readCalculatorNumber(form, 'rate'),
+        months: readCalculatorNumber(form, 'months'),
+      });
+      maturity!.textContent = formatWon(r.maturityAmount);
+      paid!.textContent = formatWon(r.principal);
+      interest!.textContent = formatWon(r.interestBeforeTax);
+      tax!.textContent = formatWon(r.tax);
+    } catch (e) {
+      error!.textContent =
+        e instanceof Error ? e.message : '계산 중 오류가 발생했습니다.';
+      error!.hidden = false;
+    }
+  };
+  if (
+    form &&
+    depositTab &&
+    installmentTab &&
+    simpleTab &&
+    compoundTab &&
+    simpleTabActive &&
+    simpleTabInactive &&
+    compoundTabActive &&
+    compoundTabInactive &&
+    interestMethodHelp &&
+    depositTabActive &&
+    depositTabInactive &&
+    installmentTabActive &&
+    installmentTabInactive &&
+    depositField &&
+    monthlyField &&
+    principal &&
+    monthly &&
+    rate &&
+    months &&
+    maturity &&
+    paid &&
+    interest &&
+    tax &&
+    error &&
+    reset &&
+    copy
+  ) {
+    depositTab.addEventListener('click', () => setType('deposit'));
+    installmentTab.addEventListener('click', () => setType('installment'));
+    simpleTab.addEventListener('click', () => setInterestMethod('simple'));
+    compoundTab.addEventListener('click', () => setInterestMethod('compound'));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      render();
+    });
+    reset.addEventListener('click', () => {
+      type = 'deposit';
+      principal.value = '10,000,000';
+      monthly.value = '300,000';
+      rate.value = '3.5';
+      months.value = '12';
+      interestMethod = 'compound';
+      setType('deposit');
+    });
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(
+          [
+            `유형: ${type === 'deposit' ? '예금' : '적금'}`,
+            `납입 원금: ${paid.textContent}`,
+            `세전 이자: ${interest.textContent}`,
+            `세금: ${tax.textContent}`,
+            `세후 만기금액: ${maturity.textContent}`,
+          ].join('\n'),
+        );
+        copy.textContent = '복사 완료';
+        setTimeout(() => (copy.textContent = '결과 복사'), 1000);
+      } catch {
+        copy.textContent = '복사 실패';
+      }
+    });
+    bindCalculatorInputs(form, render);
+    setType(type);
+    setInterestMethod(interestMethod);
+  }
+</script>

@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import HourlyWageCalculator from '../../../features/calculators/hourly-wage/HourlyWageCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions['hourly-wage'];
+---
+
+<CalculatorPage definition={definition}>
+  <HourlyWageCalculator />
+</CalculatorPage>

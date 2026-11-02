@@ -1,0 +1,368 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-vat-calculator min-w="0" w="full">
+  <div>
+    <p m="0" text="sm" font="700" text-primary>
+      VAT CALCULATOR
+    </p>
+    <h2 m="0" mt="1" text="xl md:2xl" font="800">
+      부가가치세 계산기
+    </h2>
+    <p m="0" mt="2" text="sm text-muted dark:dark-text-muted" leading="6">
+      공급가액, 부가세 포함 합계금액, 부가세액을 서로 환산하고 일반과세자의
+      매출세액·매입세액 차이도 간편하게 확인합니다.
+    </p>
+  </div>
+
+  <div mt="6" grid="~ cols-1 md:cols-2" gap="4">
+    <label class="cm-field">
+      <span class="cm-label">계산 유형</span>
+      <select id="vat-mode" class="cm-input">
+        <option value="supply">공급가액 → 부가세·합계금액</option>
+        <option value="total">합계금액 → 공급가액·부가세</option>
+        <option value="tax">부가세액 → 공급가액·합계금액</option>
+        <option value="payable">매출세액 - 매입세액 → 납부·환급세액</option>
+      </select>
+    </label>
+
+    <label class="cm-field">
+      <span class="cm-label" id="vat-amount-label">
+        공급가액
+      </span>
+      <div relative>
+        <input
+          id="vat-amount"
+          class="cm-input pr-12"
+          type="text"
+          inputmode="numeric"
+          value="1000000"
+          data-number-input
+          data-step="10000"
+          data-min="0"
+          data-decimal="false"
+        />
+        <span
+          absolute
+          right-4
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          원
+        </span>
+      </div>
+    </label>
+
+    <label class="cm-field">
+      <span class="cm-label" id="vat-second-label">
+        세율
+      </span>
+      <div relative>
+        <input
+          id="vat-rate"
+          class="cm-input pr-12"
+          type="text"
+          inputmode="decimal"
+          value="10"
+          data-number-input
+          data-step="0.1"
+          data-min="0"
+          data-decimal="true"
+        />
+        <span
+          absolute
+          right-4
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          %
+        </span>
+      </div>
+    </label>
+
+    <label class="cm-field">
+      <span class="cm-label" id="vat-second-value-label">
+        매입세액
+      </span>
+      <div relative>
+        <input
+          id="vat-second-value"
+          class="cm-input pr-12"
+          type="text"
+          inputmode="numeric"
+          value="0"
+          data-number-input
+          data-step="10000"
+          data-min="0"
+          data-decimal="false"
+        />
+        <span
+          absolute
+          right-4
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          원
+        </span>
+      </div>
+    </label>
+
+    <label class="cm-field">
+      <span class="cm-label">끝자리 처리 단위</span>
+      <select id="vat-round-unit" class="cm-input">
+        <option value="1">1원</option>
+        <option value="10">10원</option>
+        <option value="100">100원</option>
+        <option value="1000">1,000원</option>
+      </select>
+    </label>
+
+    <label class="cm-field">
+      <span class="cm-label">끝자리 처리 방법</span>
+      <select id="vat-round-mode" class="cm-input">
+        <option value="round">반올림</option>
+        <option value="floor">내림</option>
+        <option value="ceil">올림</option>
+      </select>
+    </label>
+  </div>
+
+  <div
+    mt="4"
+    rounded="xl"
+    bg="surface-muted dark:dark-surface-muted"
+    p="4"
+    text="sm text-muted dark:dark-text-muted"
+    leading="7"
+  >
+    <strong text="text dark:dark-text">입력 안내:</strong>
+    <span id="vat-input-help">
+      공급가액을 입력하면 부가세와 합계금액을 계산합니다.
+    </span>
+  </div>
+
+  <div mt="5" rounded="2xl" bg="primary/10 dark:dark-primary-surface" p="5">
+    <p m="0" text="sm text-muted dark:dark-text-muted">
+      계산 결과
+    </p>
+    <div
+      id="vat-result"
+      aria-live="polite"
+      aria-atomic="true"
+      mt="2"
+      text="2xl md:3xl"
+      font="800"
+      text-primary
+    >
+      -
+    </div>
+    <div
+      id="vat-detail"
+      mt="3"
+      text="sm text-muted dark:dark-text-muted"
+      leading="7"
+    ></div>
+  </div>
+
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="vat-calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="vat-reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+
+  <div
+    mt="6"
+    rounded="2xl"
+    border="1 border dark:dark-border"
+    bg="surface-muted dark:dark-surface-muted"
+    p="5"
+  >
+    <h3 m="0" text="sm" font="750">
+      계산 과정
+    </h3>
+    <div
+      id="vat-breakdown"
+      mt="3"
+      text="sm text-muted dark:dark-text-muted"
+      leading="7"
+    ></div>
+  </div>
+  <CalculatorResultCopy targets="#vat-result, #vat-detail, #vat-breakdown" />
+</div>
+
+<script>
+  import { calculateVat, type VatMode } from './vat';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import {
+    formatCalculatorNumber,
+    formatCalculatorWon,
+    readCalculatorNumber,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>('[data-vat-calculator]');
+
+  if (root) {
+    const mode = root.querySelector<HTMLSelectElement>('#vat-mode')!;
+    const amount = root.querySelector<HTMLInputElement>('#vat-amount')!;
+    const rate = root.querySelector<HTMLInputElement>('#vat-rate')!;
+    const second = root.querySelector<HTMLInputElement>('#vat-second-value')!;
+    const unit = root.querySelector<HTMLSelectElement>('#vat-round-unit')!;
+    const roundMode = root.querySelector<HTMLSelectElement>('#vat-round-mode')!;
+    const amountLabel = root.querySelector<HTMLElement>('#vat-amount-label')!;
+    const rateLabel = root.querySelector<HTMLElement>('#vat-second-label')!;
+    const secondLabel = root.querySelector<HTMLElement>(
+      '#vat-second-value-label',
+    )!;
+    const help = root.querySelector<HTMLElement>('#vat-input-help')!;
+    const result = root.querySelector<HTMLElement>('#vat-result')!;
+    const detail = root.querySelector<HTMLElement>('#vat-detail')!;
+    const breakdown = root.querySelector<HTMLElement>('#vat-breakdown')!;
+
+    const money = (value: number) => formatCalculatorWon(value);
+
+    const decimal = (value: number) => formatCalculatorNumber(value, 2);
+
+    const applyRounding = (value: number) => {
+      const size = Number(unit.value);
+      if (!size) return value;
+      if (roundMode.value === 'floor') return Math.floor(value / size) * size;
+      if (roundMode.value === 'ceil') return Math.ceil(value / size) * size;
+      return Math.round(value / size) * size;
+    };
+
+    const updateMode = () => {
+      if (mode.value === 'supply') {
+        amountLabel.textContent = '공급가액';
+        rateLabel.textContent = '부가가치세율';
+        secondLabel.textContent = '사용하지 않음';
+        second.disabled = true;
+        help.textContent =
+          '공급가액을 입력하면 부가세와 부가세 포함 합계금액을 계산합니다.';
+      } else if (mode.value === 'total') {
+        amountLabel.textContent = '합계금액';
+        rateLabel.textContent = '부가가치세율';
+        secondLabel.textContent = '사용하지 않음';
+        second.disabled = true;
+        help.textContent =
+          '부가세가 포함된 합계금액을 입력하면 공급가액과 부가세를 역산합니다.';
+      } else if (mode.value === 'tax') {
+        amountLabel.textContent = '부가세액';
+        rateLabel.textContent = '부가가치세율';
+        secondLabel.textContent = '사용하지 않음';
+        second.disabled = true;
+        help.textContent =
+          '부가세액을 알고 있을 때 세율을 기준으로 공급가액과 합계금액을 역산합니다.';
+      } else {
+        amountLabel.textContent = '매출 공급가액';
+        rateLabel.textContent = '부가가치세율';
+        secondLabel.textContent = '공제할 매입세액';
+        second.disabled = false;
+        help.textContent =
+          '일반과세자의 기본 구조인 매출세액에서 공제 가능한 매입세액을 차감해 납부·환급세액을 간편 추정합니다.';
+      }
+    };
+
+    const calculate = () => {
+      const a = readCalculatorNumber(root, 'vat-amount');
+      const taxRate = readCalculatorNumber(root, 'vat-rate') / 100;
+      const inputTax = readCalculatorNumber(root, 'vat-second-value');
+      const modeValue = mode.value;
+
+      if (taxRate < 0 || taxRate >= 100 || !Number.isFinite(taxRate)) {
+        result.textContent = '-';
+        detail.textContent = '세율은 0 이상 100 미만으로 입력하세요.';
+        breakdown.textContent = '';
+        return;
+      }
+
+      const { supply, tax, total, payable } = calculateVat({
+        mode: modeValue as VatMode,
+        amount: a,
+        ratePercent: taxRate * 100,
+        inputTax,
+      });
+
+      if (![supply, tax, total].every(Number.isFinite)) {
+        result.textContent = '-';
+        detail.textContent =
+          '세율이 0%인 경우 부가세액으로부터 공급가액을 역산할 수 없습니다.';
+        breakdown.textContent = '';
+        return;
+      }
+
+      const roundedSupply = applyRounding(supply);
+      const roundedTax = applyRounding(tax);
+      const roundedTotal = applyRounding(total);
+      const roundedPayable = applyRounding(payable);
+
+      if (modeValue === 'payable') {
+        result.textContent =
+          roundedPayable >= 0
+            ? money(roundedPayable)
+            : money(Math.abs(roundedPayable));
+        detail.textContent =
+          roundedPayable >= 0
+            ? '예상 납부세액입니다.'
+            : '매입세액이 더 큰 경우의 예상 환급세액입니다.';
+        breakdown.innerHTML =
+          '매출 공급가액: <strong>' +
+          money(roundedSupply) +
+          '</strong><br />매출세액: <strong>' +
+          money(roundedTax) +
+          '</strong><br />공제할 매입세액: <strong>' +
+          money(applyRounding(inputTax)) +
+          '</strong><br />납부(환급)세액 = 매출세액 − 매입세액';
+      } else {
+        result.textContent = money(roundedTax);
+        detail.textContent =
+          '공급가액 ' +
+          money(roundedSupply) +
+          '에 ' +
+          decimal(readCalculatorNumber(root, 'vat-rate')) +
+          '%를 적용했습니다.';
+
+        breakdown.innerHTML =
+          '공급가액: <strong>' +
+          money(roundedSupply) +
+          '</strong><br />부가세: <strong>' +
+          money(roundedTax) +
+          '</strong><br />합계금액: <strong>' +
+          money(roundedTotal) +
+          '</strong><br />공식: ' +
+          (modeValue === 'total'
+            ? '합계금액 ÷ (1 + 세율) → 공급가액, 합계금액 − 공급가액 → 부가세'
+            : modeValue === 'tax'
+              ? '부가세 ÷ 세율 → 공급가액, 공급가액 + 부가세 → 합계금액'
+              : '공급가액 × 세율 → 부가세, 공급가액 + 부가세 → 합계금액');
+      }
+    };
+
+    const reset = () => {
+      mode.value = 'supply';
+      amount.value = '1000000';
+      rate.value = '10';
+      second.value = '0';
+      unit.value = '1';
+      roundMode.value = 'round';
+      updateMode();
+      calculate();
+    };
+
+    [mode, unit, roundMode].forEach((input) => {
+      input.addEventListener('change', updateMode);
+    });
+    bindCalculatorInputs(root, calculate, { change: true });
+
+    root.querySelector('#vat-calculate')?.addEventListener('click', calculate);
+    root.querySelector('#vat-reset')?.addEventListener('click', reset);
+
+    updateMode();
+  }
+</script>

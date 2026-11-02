@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="회원가입 | CozyMoney 코지머니"
+  description="CozyMoney 계정을 만들고 이메일 인증을 완료하세요."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        CREATE ACCOUNT
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        회원가입
+      </h1>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="6">
+        이메일 주소를 인증해야 로그인할 수 있어요. 비밀번호는 12자 이상으로
+        설정해주세요.
+      </p>
+
+      <form id="signup-form" mt="6" flex="~ col" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="signup-email">
+            이메일
+          </label>
+          <input
+            class="cm-input"
+            id="signup-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="254"
+          />
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="signup-password">
+            비밀번호
+          </label>
+          <input
+            class="cm-input"
+            id="signup-password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="12"
+            maxlength="128"
+          />
+          <p class="cm-help-text" mt="2">
+            12자 이상 128자 이하
+          </p>
+        </div>
+        <button class="cm-button-primary" type="submit" w="full" py="3">
+          가입 요청
+        </button>
+        <p
+          id="form-status"
+          m="0"
+          text="sm"
+          leading="6"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+
+      <p m="0" mt="5" text="sm text-muted dark:dark-text-muted">
+        이미 계정이 있습니까?
+        <a href="/login/" text-primary font="700" underline>
+          로그인
+        </a>
+      </p>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#signup-form');
+  const status = document.querySelector<HTMLElement>('#form-status');
+  const submitButton = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !status || !submitButton) return;
+
+    const formData = new FormData(form);
+    status.textContent = '가입 요청을 처리하고 있어요.';
+    status.removeAttribute('text-danger');
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.get('email'),
+          password: formData.get('password'),
+        }),
+      });
+      const result = await response.json();
+      status.textContent =
+        result.error || result.message || '요청을 처리하지 못 했어요.';
+      status.setAttribute('data-error', response.ok ? 'false' : 'true');
+      if (response.ok) form.reset();
+    } catch {
+      status.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+      status.setAttribute('data-error', 'true');
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>

@@ -1,0 +1,269 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="dsr">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="income">
+        연소득
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="연소득 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="income"
+            type="text"
+            inputmode="numeric"
+            value="50000000"
+            data-default-value="50000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="연소득 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="debt">
+        연간 원리금 상환액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="연간 원리금 상환액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="debt"
+            type="text"
+            inputmode="numeric"
+            value="12000000"
+            data-default-value="12000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="연간 원리금 상환액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="newdebt">
+        새 대출 연간 상환액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="새 대출 연간 상환액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="newdebt"
+            type="text"
+            inputmode="numeric"
+            value="6000000"
+            data-default-value="6000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="새 대출 연간 상환액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="rate">
+        목표 DSR
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="목표 DSR 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="rate"
+            type="text"
+            inputmode="decimal"
+            value="40"
+            data-default-value="40"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="목표 DSR 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p m="0" class="cm-help-text">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div
+      id="result-detail"
+      mt="3"
+      class="cm-help-text"
+      text="sm"
+      leading="7"
+    ></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { calculateDsr } from './dsr';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorNumber,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>('[data-calculator="dsr"]');
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const income = readCalculatorNumber(root, 'income');
+      const debt = readCalculatorNumber(root, 'debt');
+      const newDebt = readCalculatorNumber(root, 'newdebt');
+      const target = readCalculatorNumber(root, 'rate');
+      const { currentDsr, totalDsr: dsr } = calculateDsr({
+        annualIncome: income,
+        existingAnnualDebt: debt,
+        newAnnualDebt: newDebt,
+      });
+
+      out.textContent = Number.isFinite(dsr)
+        ? formatCalculatorNumber(dsr, 2) + '%'
+        : '-';
+      detail.textContent = `현재 대출만 반영한 DSR: ${formatCalculatorNumber(currentDsr, 2)}%. 새 대출 포함: ${formatCalculatorNumber(dsr, 2)}%. 입력한 목표 기준: ${formatCalculatorNumber(target, 2)}%.`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

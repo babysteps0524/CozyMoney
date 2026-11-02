@@ -1,0 +1,603 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="leaseLoan">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="deposit">
+        임차보증금
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="임차보증금 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="deposit"
+            type="text"
+            inputmode="numeric"
+            value="200000000"
+            data-default-value="200000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="임차보증금 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+      <p class="cm-help-text" mt="1" text="xs">
+        임대차계약서에 적힌 전체 보증금
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="loanRate">
+        예상 대출비율
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="대출비율 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="loanRate"
+            type="text"
+            inputmode="decimal"
+            value="80"
+            data-default-value="80"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-max="100"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="대출비율 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+      <p class="cm-help-text" mt="1" text="xs">
+        계산을 위한 가정이며 실제 승인 한도와 다를 수 있습니다.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="rate">
+        연이율
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="연이율 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="rate"
+            type="text"
+            inputmode="decimal"
+            value="3.5"
+            data-default-value="3.5"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="연이율 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="termMonths">
+        대출 기간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="대출 기간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-16"
+            id="termMonths"
+            type="text"
+            inputmode="numeric"
+            value="24"
+            data-default-value="24"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-max="600"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            개월
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="대출 기간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+      <p class="cm-help-text" mt="1" text="xs">
+        최대 600개월까지 계산할 수 있습니다.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="repaymentType">
+        상환 방식
+      </label>
+      <select id="repaymentType" class="cm-input">
+        <option value="interest-only">
+          만기일시상환 (매월 이자, 만기에 원금)
+        </option>
+        <option value="equal-payment">원리금균등상환 (매월 원금과 이자)</option>
+      </select>
+      <p class="cm-help-text" mt="1" text="xs">
+        실제 상품에서 제공하는 상환 방식과 약정을 확인해주세요.
+      </p>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="guaranteeFeeRate">
+        연 보증료율 (선택)
+      </label>
+      <div relative>
+        <input
+          class="cm-input pr-14"
+          id="guaranteeFeeRate"
+          type="text"
+          inputmode="decimal"
+          value="0"
+          data-default-value="0"
+          data-number-input
+          data-step="0.01"
+          data-min="0"
+          data-max="100"
+          data-decimal="true"
+        />
+        <span
+          absolute
+          right-4
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          %
+        </span>
+      </div>
+      <p class="cm-help-text" mt="1" text="xs">
+        안내받은 연 보증료율이 있을 때만 입력해주세요. 기본값 0%.
+      </p>
+    </div>
+  </div>
+
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p id="result-label" m="0" class="cm-help-text">
+      예상 월 이자
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div
+      id="result-detail"
+      mt="3"
+      class="cm-help-text"
+      text="sm"
+      leading="7"
+    ></div>
+  </div>
+
+  <p class="cm-help-text" mt="3" text="xs">
+    비교를 위한 추정치입니다. 실제 금융기관의 일수 계산·반올림·약정에 따라
+    납부액이 달라질 수 있습니다. 보증료는 사용자가 입력한 연 보증료율을 대출금에
+    적용해 기간 비례로 계산한 참고값이며, 실제 부과 방식이나 보증기관의 요율을
+    대신하지 않습니다.
+  </p>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+
+  <section mt="6" aria-labelledby="rate-comparison-title">
+    <h3 id="rate-comparison-title" text="lg" font="700">
+      금리 변동 가정 비교
+    </h3>
+    <p class="cm-help-text" text="sm" mb="3">
+      입력한 금리보다 0.5%p 또는 1.0%p 높아졌을 때의 계산값입니다. 미래 금리를
+      예측하는 표는 아니며, 실제 금융기관의 일수 계산·반올림·약정에 따라
+      납부액이 달라질 수 있습니다.
+    </p>
+    <div overflow="auto" rounded="xl" border="1" border-border>
+      <table min-w="560px" w="full" text="sm" border-collapse="collapse">
+        <thead bg="surface-muted dark:dark-surface-muted">
+          <tr text-left>
+            <th p="3" whitespace="nowrap">
+              가정
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              적용 연이율
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              월 납부액
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              기간 전체 이자
+            </th>
+          </tr>
+        </thead>
+        <tbody id="rate-comparison-body">
+          <tr>
+            <td p="3" colspan="4" text-center>
+              입력값을 계산하면 금리 비교가 표시됩니다.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section mt="6" aria-labelledby="schedule-title">
+    <h3 id="schedule-title" text="lg" font="700">
+      월별 상환 예상표
+    </h3>
+    <p id="schedule-note" class="cm-help-text" text="sm" mb="3">
+      월별 예상 원금과 이자를 확인할 수 있습니다.
+    </p>
+    <div overflow="auto" max-h="96" rounded="xl" border="1" border-border>
+      <table min-w="720px" w="full" text="sm" border-collapse="collapse">
+        <thead bg="surface-muted dark:dark-surface-muted">
+          <tr text-left>
+            <th p="3" whitespace="nowrap">
+              회차
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              상환 원금
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              이자
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              월 납부액
+            </th>
+            <th p="3" text-right whitespace="nowrap">
+              남은 원금
+            </th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body">
+          <tr>
+            <td p="3" colspan="5" text-center>
+              입력값을 계산하면 상환 예상표가 표시됩니다.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section mt="8" aria-labelledby="official-loan-info-title">
+    <h3 id="official-loan-info-title" text="lg" font="700">
+      정책 전세대출·보증 공식 정보
+    </h3>
+    <p class="cm-help-text" text="sm" mb="4">
+      계산 결과는 상품 자격 판정이 아닙니다. 아래 공식 기관에서 현재 기준과 신청
+      조건을 확인하고, 최종 조건은 취급 은행에 문의해주세요.
+    </p>
+    <div grid="~ cols-1 md:cols-2" gap="3">
+      <article rounded="xl" border="1" border-border p="4">
+        <h4 font="700" m="0">
+          주택도시기금
+        </h4>
+        <p class="cm-help-text" text="sm" mt="2">
+          버팀목 전세자금과 청년 전용 상품 등 정책성 주택자금 대출의 공식 안내를
+          확인할 수 있습니다.
+        </p>
+        <a
+          href="https://nhuf.molit.go.kr/FP/FP05/FP0502/FP05020302.jsp"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary underline underline-offset-4"
+          mt="3"
+          inline-block
+        >
+          청년전용 버팀목 안내 보기
+        </a>
+      </article>
+      <article rounded="xl" border="1" border-border p="4">
+        <h4 font="700" m="0">
+          한국주택금융공사(HF)
+        </h4>
+        <p class="cm-help-text" text="sm" mt="2">
+          주택 소재지와 신청자 조건 등을 입력해 전세자금보증 상품을 찾아볼 수
+          있습니다.
+        </p>
+        <a
+          href="https://www.hf.go.kr/ko/sub02/sub02_01_01.do"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary underline underline-offset-4"
+          mt="3"
+          inline-block
+        >
+          전세자금보증 상품 찾기
+        </a>
+      </article>
+      <article rounded="xl" border="1" border-border p="4">
+        <h4 font="700" m="0">
+          마이홈포털
+        </h4>
+        <p class="cm-help-text" text="sm" mt="2">
+          버팀목 등 주거지원 정책과 전월세 자금 지원 정보를 살펴볼 수 있습니다.
+        </p>
+        <a
+          href="https://www.myhome.go.kr/hws/portal/cont/selectSupLeaseLoanView.do?cntrNo=1&menuNo=MN202210050000049292"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary underline underline-offset-4"
+          mt="3"
+          inline-block
+        >
+          버팀목 전세대출 정보 보기
+        </a>
+      </article>
+      <article rounded="xl" border="1" border-border p="4">
+        <h4 font="700" m="0">
+          주택도시보증공사(HUG)
+        </h4>
+        <p class="cm-help-text" text="sm" mt="2">
+          전세금안심대출보증의 보증 조건과 신청 절차를 공식 안내에서 확인할 수
+          있습니다.
+        </p>
+        <a
+          href="https://m.khug.or.kr/hug/web/ig/dl/igdl000002.jsp?tabMenu=Y"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary underline underline-offset-4"
+          mt="3"
+          inline-block
+        >
+          전세금안심대출보증 확인
+        </a>
+      </article>
+    </div>
+    <p class="cm-help-text" text="xs" mt="3">
+      외부 기관의 페이지와 상품 조건은 해당 기관이 관리합니다. 링크된 정보는
+      변경될 수 있으므로 신청 전에 최신 공고·약관·취급 은행 안내를 다시
+      확인해주세요.
+    </p>
+  </section>
+</div>
+
+<script>
+  import { calculateLeaseLoan } from './lease-loan';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import {
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="leaseLoan"]',
+  );
+
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const label = root.querySelector<HTMLElement>('#result-label')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+    const scheduleBody =
+      root.querySelector<HTMLTableSectionElement>('#schedule-body')!;
+    const scheduleNote = root.querySelector<HTMLElement>('#schedule-note')!;
+    const rateComparisonBody = root.querySelector<HTMLTableSectionElement>(
+      '#rate-comparison-body',
+    )!;
+    const repaymentType =
+      root.querySelector<HTMLSelectElement>('#repaymentType')!;
+
+    const calc = () => {
+      const estimate = calculateLeaseLoan({
+        deposit: readCalculatorNumber(root, 'deposit'),
+        loanRatio: readCalculatorNumber(root, 'loanRate'),
+        annualRate: readCalculatorNumber(root, 'rate'),
+        termMonths: readCalculatorNumber(root, 'termMonths'),
+        repaymentType:
+          repaymentType.value === 'equal-payment'
+            ? 'equal-payment'
+            : 'interest-only',
+        annualGuaranteeFeeRate: readCalculatorNumber(root, 'guaranteeFeeRate'),
+      });
+
+      label.textContent =
+        estimate.repaymentType === 'interest-only'
+          ? '예상 월 이자'
+          : '예상 월 납부액';
+      out.textContent = formatCalculatorWon(estimate.monthlyPayment);
+      detail.textContent = [
+        `예상 대출금: ${formatCalculatorWon(estimate.loanAmount)}`,
+        `필요 자기자금: ${formatCalculatorWon(estimate.ownFunds)}`,
+        `예상 총이자: ${formatCalculatorWon(estimate.totalInterest)}`,
+        `입력 기준 보증료 추정액: ${formatCalculatorWon(estimate.estimatedGuaranteeFee)}`,
+        `이자와 보증료 합산 기준 총지출 추정: ${formatCalculatorWon(estimate.totalEstimatedOutflow)}`,
+        estimate.repaymentType === 'interest-only'
+          ? '마지막 달에는 월 이자와 대출 원금을 함께 상환하는 것으로 가정'
+          : '매월 원금과 이자를 함께 상환하는 것으로 가정',
+      ].join(' · ');
+
+      rateComparisonBody.replaceChildren();
+      estimate.rateComparisons.forEach((comparison, index) => {
+        const row = document.createElement('tr');
+        row.className =
+          index % 2 === 0
+            ? 'border-t border-subtle bg-surface dark:bg-dark-surface'
+            : 'border-t border-subtle bg-surface-muted dark:bg-dark-surface-muted';
+        const values = [
+          `+${comparison.increasePercentagePoints.toFixed(1)}%p`,
+          `${comparison.annualRate.toFixed(2)}%`,
+          formatCalculatorWon(comparison.monthlyPayment),
+          formatCalculatorWon(comparison.totalInterest),
+        ];
+        values.forEach((value, index) => {
+          const cell = document.createElement('td');
+          cell.className =
+            index === 0
+              ? 'px-3 py-4 leading-6 whitespace-nowrap'
+              : 'px-3 py-4 leading-6 text-right whitespace-nowrap';
+          cell.textContent = value;
+          row.append(cell);
+        });
+        rateComparisonBody.append(row);
+      });
+
+      scheduleBody.replaceChildren();
+      scheduleNote.textContent =
+        estimate.repaymentType === 'interest-only'
+          ? '만기일시상환은 매월 이자만 내고 마지막 회차에 원금을 함께 상환하는 것으로 계산합니다.'
+          : '원리금균등상환은 매월 납부액이 비슷하도록 계산한 추정표입니다.';
+
+      if (estimate.schedule.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 5;
+        cell.className = 'p-3 text-center';
+        cell.textContent =
+          '대출 기간을 1개월 이상 입력하면 상환 예상표가 표시됩니다.';
+        row.append(cell);
+        scheduleBody.append(row);
+        return;
+      }
+
+      const rows = estimate.schedule.map((item, index) => {
+        const row = document.createElement('tr');
+        row.className =
+          index % 2 === 0
+            ? 'border-t border-subtle bg-surface dark:bg-dark-surface'
+            : 'border-t border-subtle bg-surface-muted dark:bg-dark-surface-muted';
+        const values = [
+          `${item.month}개월`,
+          formatCalculatorWon(item.principalPayment),
+          formatCalculatorWon(item.interestPayment),
+          formatCalculatorWon(item.totalPayment),
+          formatCalculatorWon(item.remainingPrincipal),
+        ];
+        values.forEach((value, index) => {
+          const cell = document.createElement('td');
+          cell.className =
+            index === 0
+              ? 'px-3 py-4 leading-6 whitespace-nowrap'
+              : 'px-3 py-4 leading-6 text-right whitespace-nowrap';
+          cell.textContent = value;
+          row.append(cell);
+        });
+        return row;
+      });
+      scheduleBody.append(...rows);
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      repaymentType.value = 'interest-only';
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    repaymentType.addEventListener('change', calc);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

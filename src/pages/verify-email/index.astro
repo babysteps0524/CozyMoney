@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="이메일 인증 | CozyMoney 코지머니"
+  description="CozyMoney 회원가입을 위한 이메일 인증 페이지입니다."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        EMAIL VERIFICATION
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        이메일 인증
+      </h1>
+      <p
+        id="verification-status"
+        m="0"
+        mt="4"
+        text="sm text-muted dark:dark-text-muted"
+        leading="7"
+        role="status"
+        aria-live="polite"
+      >
+        인증 링크를 확인하고 있어요.
+      </p>
+      <div id="verification-actions" mt="5" hidden>
+        <a
+          href="/login/"
+          class="cm-button-primary"
+          inline-flex
+          px="5"
+          py="3"
+          no-underline
+        >
+          로그인으로 이동
+        </a>
+      </div>
+      <form id="resend-form" mt="6" flex="~ col" gap="3" hidden>
+        <label class="cm-label" for="resend-email">
+          인증 이메일 다시 받기
+        </label>
+        <input
+          class="cm-input"
+          id="resend-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254"
+          placeholder="가입한 이메일 주소"
+        />
+        <button class="cm-button-secondary" type="submit" py="3">
+          인증 이메일 재전송
+        </button>
+        <p
+          id="resend-status"
+          m="0"
+          text="sm"
+          leading="6"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const status = document.querySelector<HTMLElement>('#verification-status');
+  const actions = document.querySelector<HTMLElement>('#verification-actions');
+  const resendForm = document.querySelector<HTMLFormElement>('#resend-form');
+  const resendStatus = document.querySelector<HTMLElement>('#resend-status');
+  const resendButton = resendForm?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+  const token = new URLSearchParams(window.location.search).get('token');
+
+  async function verifyEmail() {
+    if (!status || !actions || !resendForm) return;
+    if (!token) {
+      status.textContent =
+        '이메일에 포함된 인증 링크를 열어 주세요. 링크가 없거나 만료됐다면 인증 이메일을 다시 요청할 수 있어요.';
+      resendForm.hidden = false;
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      const result = await response.json();
+      status.textContent =
+        result.error || result.message || '인증을 완료하지 못 했어요.';
+      if (response.ok) {
+        actions.hidden = false;
+        resendForm.hidden = true;
+      } else {
+        resendForm.hidden = false;
+      }
+    } catch {
+      status.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 인증 링크를 다시 열어 주세요.';
+    }
+  }
+
+  resendForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!resendForm || !resendStatus || !resendButton) return;
+    const formData = new FormData(resendForm);
+    resendButton.disabled = true;
+    resendStatus.textContent = '요청을 처리하고 있어요.';
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.get('email') }),
+      });
+      const result = await response.json();
+      resendStatus.textContent =
+        result.error || result.message || '요청을 처리하지 못 했어요.';
+    } catch {
+      resendStatus.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+    } finally {
+      resendButton.disabled = false;
+    }
+  });
+
+  void verifyEmail();
+</script>

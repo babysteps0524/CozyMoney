@@ -1,0 +1,263 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="compound">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="principal">
+        초기금액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="초기금액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="principal"
+            type="text"
+            inputmode="numeric"
+            value="10000000"
+            data-default-value="10000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="초기금액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="rate">
+        연이율
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="연이율 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="rate"
+            type="text"
+            inputmode="decimal"
+            value="3.5"
+            data-default-value="3.5"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="연이율 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="years">
+        기간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="기간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="years"
+            type="text"
+            inputmode="numeric"
+            value="10"
+            data-default-value="10"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            년
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="기간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="deposit">
+        정기 추가납입
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="정기 추가납입 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="deposit"
+            type="text"
+            inputmode="numeric"
+            value="0"
+            data-default-value="0"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="정기 추가납입 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div id="result-detail" class="cm-help-text" mt="3"></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { calculateCompound } from './compound';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="compound"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const p = readCalculatorNumber(root, 'principal');
+      const rate = readCalculatorNumber(root, 'rate');
+      const y = readCalculatorNumber(root, 'years');
+      const m = readCalculatorNumber(root, 'deposit');
+      const final = calculateCompound({
+        principal: p,
+        annualRate: rate,
+        years: y,
+        annualContribution: m,
+      });
+      out.textContent = formatCalculatorWon(final);
+      detail.textContent = `원금과 추가납입을 연복리로 단순 계산한 결과입니다. 이자: ${formatCalculatorWon(final - p - m * y)}`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

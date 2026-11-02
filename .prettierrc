@@ -1,0 +1,18 @@
+{
+  "plugins": ["prettier-plugin-astro", "prettier-plugin-embed"],
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ],
+  "singleQuote": true,
+  "semi": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "trailingComma": "all",
+  "embeddedLanguageFormatting": "auto",
+  "embeddedHtmlComments": ["html"]
+}

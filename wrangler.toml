@@ -1,0 +1,36 @@
+# Production configuration for CozyMoney authentication.
+# This file is used by Cloudflare Pages deployment.
+# Do not commit real secrets here; set them in Cloudflare Pages dashboard instead.
+
+name = "cozymoney"
+compatibility_date = "2026-10-17"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "D1_AUTH_DB"
+database_name = "cozymoney-auth-db"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "src/migrations"
+
+[vars]
+AUTH_SITE_URL = "https://cozymoney.kr"
+AUTH_EMAIL_PROVIDER = "brevo"
+PUBLIC_SITE_URL = "https://cozymoney.kr"
+BREVO_FROM_EMAIL = "no-reply@cozymoney.kr"
+BREVO_FROM_NAME = "CozyMoney 코지머니"
+ADMIN_EMAIL = "admin@example.com"
+
+[env.preview.vars]
+AUTH_EMAIL_PROVIDER = "brevo"
+AUTH_SITE_URL = "https://YOUR-PREVIEW-PROJECT.pages.dev"
+PUBLIC_SITE_URL = "https://cozymoney.kr"
+BREVO_FROM_EMAIL = "no-reply@cozymoney.kr"
+BREVO_FROM_NAME = "CozyMoney 코지머니"
+ADMIN_EMAIL = "admin@example.com"
+
+# Preview uses a separate D1 database so test accounts never enter production.
+[[env.preview.d1_databases]]
+binding = "D1_AUTH_DB"
+database_name = "cozymoney-auth-db-preview"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "src/migrations"

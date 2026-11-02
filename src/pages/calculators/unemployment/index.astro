@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import UnemploymentCalculator from '../../../features/calculators/unemployment/UnemploymentCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.unemployment;
+---
+
+<CalculatorPage definition={definition}>
+  <UnemploymentCalculator />
+</CalculatorPage>

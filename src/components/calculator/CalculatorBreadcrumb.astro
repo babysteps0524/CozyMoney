@@ -1,0 +1,54 @@
+---
+interface Props {
+  category: string;
+  canonical: string;
+}
+
+const { category, canonical } = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${canonical}#breadcrumb`,
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: '홈',
+      item: 'https://cozymoney.kr/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '계산기',
+      item: 'https://cozymoney.kr/calculators/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: category,
+      item: canonical,
+    },
+  ],
+};
+const jsonLd = JSON.stringify(structuredData)
+  .replace(/</g, '\\u003c')
+  .replace(/>/g, '\\u003e')
+  .replace(/&/g, '\\u0026');
+---
+
+<script type="application/ld+json" is:inline set:html={jsonLd} />
+<nav
+  aria-label="사이트 경로"
+  mb="5"
+  text="xs sm:sm text-text-muted dark:dark-text-muted"
+>
+  <a href="/" no-underline hover="text-primary">
+    홈
+  </a>
+  <span mx="2">/</span>
+  <a href="/calculators/" no-underline hover="text-primary">
+    계산기
+  </a>
+  <span mx="2">/</span>
+  <span aria-current="page">{category}</span>
+</nav>

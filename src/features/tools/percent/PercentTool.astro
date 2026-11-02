@@ -1,0 +1,39 @@
+<div>
+  <p m="0" text="sm" font="700" text-primary>
+    PERCENT CALCULATOR
+  </p>
+  <h2 m="0" mt="1" text="xl md:2xl" font="800">
+    퍼센트 계산기
+  </h2>
+  <label block mt="6">
+    <span class="cm-label">계산 종류</span>
+    <select id="percent-type" class="cm-input">
+      <option value="of">A의 B%는 얼마인가요?</option>
+      <option value="change">A에서 B로 바뀌면 몇 % 변했나요?</option>
+      <option value="discount">A에서 B% 할인하면 얼마인가요?</option>
+      <option value="increase">A에 B%를 더하면 얼마인가요?</option>
+    </select>
+  </label>
+  <div grid="~ cols-1 md:cols-2" gap="4" mt="4">
+    <label>
+      <span class="cm-label">A</span>
+      <input id="percent-a" class="cm-input" type="number" value="100" />
+    </label>
+    <label>
+      <span class="cm-label">B (%) 또는 값</span>
+      <input id="percent-b" class="cm-input" type="number" value="20" />
+    </label>
+  </div>
+  <div
+    id="percent-result"
+    mt="5"
+    rounded="2xl"
+    bg="surface-muted dark:dark-surface-subtle"
+    p="5"
+  >
+    결과가 여기에 표시됩니다.
+  </div>
+  <button id="percent-calc" class="cm-button-primary" w="full" mt="4" py="3">
+    계산하기
+  </button>
+</div>

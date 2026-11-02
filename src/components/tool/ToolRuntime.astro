@@ -1,0 +1,32 @@
+---
+import type { ToolDefinition } from '../../features/tools/catalog';
+
+interface Props {
+  kind: ToolDefinition['kind'];
+}
+
+const { kind } = Astro.props;
+---
+
+<div data-tool-runtime={kind} hidden></div>
+
+<script>
+  import { createToolHelpers } from '../../lib/tool/helpers';
+  import { mountTool } from '../../lib/tool/runtime';
+  import { isToolKind } from '../../lib/tool/types';
+
+  const marker = document.querySelector<HTMLElement>('[data-tool-runtime]');
+  const root = marker?.closest<HTMLElement>('[data-tool]');
+
+  if (marker && root && isToolKind(marker.dataset.toolRuntime)) {
+    const helpers = createToolHelpers(root);
+    void mountTool(root, helpers, marker.dataset.toolRuntime).catch(() => {
+      const message = document.createElement('p');
+      message.className = 'cm-result';
+      message.setAttribute('role', 'alert');
+      message.textContent =
+        '도구를 불러오지 못했습니다. 페이지를 새로고침해 주세요.';
+      root.append(message);
+    });
+  }
+</script>

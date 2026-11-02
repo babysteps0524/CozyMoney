@@ -1,0 +1,98 @@
+---
+import type { ToolDefinition } from '../../features/tools/catalog';
+import { toolGuides } from '../../features/tools/guides';
+
+interface Props {
+  kind: ToolDefinition['kind'];
+  title: string;
+  description: string;
+}
+
+const { kind, title, description } = Astro.props;
+const content = toolGuides[kind];
+---
+
+<aside class="cm-card" min-w="0" p="5 md:p-6" h="fit">
+  <p m="0" text="sm" font="700" text-primary>
+    TOOL GUIDE
+  </p>
+  <h2 m="0" mt="2" text="lg" font="750">
+    {title}
+  </h2>
+  <p m="0" mt="2" text="sm text-muted dark:dark-text-muted" leading="6">
+    {description}
+  </p>
+  <p m="0" mt="4" text="sm" leading="6">
+    {content.purpose}
+  </p>
+
+  <section mt="5" pt="5" border="t border dark:dark-border">
+    <h3 m="0" text="sm" font="750">
+      사용 방법
+    </h3>
+    <ol
+      m="0"
+      mt="2"
+      pl="5"
+      text="sm text-muted dark:dark-text-muted"
+      leading="6"
+    >
+      {content.steps.map((step) => (
+        <li>{step}</li>
+      ))}
+    </ol>
+  </section>
+
+  <section mt="5" pt="5" border="t border dark:dark-border">
+    <h3 m="0" text="sm" font="750">
+      계산·이용 시 주의사항
+    </h3>
+    <ul
+      m="0"
+      mt="2"
+      pl="5"
+      text="sm text-muted dark:dark-text-muted"
+      leading="6"
+    >
+      {content.details.map((detail) => (
+        <li>{detail}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section mt="5" pt="5" border="t border dark:dark-border">
+    <h3 m="0" text="sm" font="750">
+      자주 묻는 질문
+    </h3>
+    <div flex="~ col" gap="4" mt="3">
+      {content.faqs.map((faq) => (
+        <div>
+          <h4 m="0" text="sm" font="700">
+            {faq.question}
+          </h4>
+          <p m="0" mt="1" text="sm text-muted dark:dark-text-muted" leading="6">
+            {faq.answer}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div
+    mt="5"
+    rounded="2xl"
+    border="1 border dark:dark-border"
+    border-border
+    bg="surface-muted dark:dark-surface-muted"
+    p="4"
+  >
+    <p m="0" text="xs" font="700" text-primary>
+      개인정보 안내
+    </p>
+    <p m="0" mt="2" text="xs sm text-muted dark:dark-text-muted" leading="6">
+      이 도구 이용에 불필요한 주민등록번호, 계좌번호, 카드번호, 실제 비밀번호 등
+      민감한 정보를 입력하지 마세요. 계산 결과는 참고용이며, 사이트는 결과가
+      특정 목적에 적합하다고 보장하지 않습니다.
+    </p>
+  </div>
+</aside>

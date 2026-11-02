@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import VacationCalculator from '../../../features/calculators/vacation/VacationCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.vacation;
+---
+
+<CalculatorPage definition={definition}>
+  <VacationCalculator />
+</CalculatorPage>

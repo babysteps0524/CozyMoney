@@ -1,0 +1,33 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  url: string;
+  category: 'FinanceApplication' | 'UtilitiesApplication';
+}
+
+const { name, description, url, category } = Astro.props;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${url}#webapplication`,
+  name,
+  description,
+  url,
+  applicationCategory: category,
+  operatingSystem: 'Any',
+  isAccessibleForFree: true,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KRW',
+  },
+};
+---
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(structuredData)}
+/>

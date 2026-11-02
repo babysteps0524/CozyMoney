@@ -1,0 +1,609 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/shared/Header.astro';
+import Footer from '../../../components/shared/Footer.astro';
+
+const title = '문의 관리 | CozyMoney 코지머니';
+const description =
+  '사용자 문의를 확인하고 답변을 전송하는 관리자 페이지입니다.';
+const canonical = 'https://cozymoney.kr/admin/inquiries/';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14 lg:18">
+    <article max-w="7xl" mx="auto">
+      <header mb="8">
+        <p m="0" text="sm" font="700" text-primary>
+          ADMIN
+        </p>
+        <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+          문의 관리
+        </h1>
+        <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+          사용자가 보낸 문의를 확인하고 답변을 전송할 수 있습니다.
+        </p>
+      </header>
+
+      <section class="cm-card" p="5 md:7" id="inquiries-section">
+        <div flex="~" items-center justify-between mb="6">
+          <div>
+            <h2 m="0" text="lg" font="750">
+              문의 목록
+            </h2>
+            <p m="0" mt="2" text="sm text-muted dark:dark-text-muted">
+              접수된 문의를 최신 순으로 확인할 수 있습니다.
+            </p>
+          </div>
+          <select
+            id="status-filter"
+            p="2.5"
+            rounded="lg"
+            border="1"
+            border="border dark:dark-border"
+            bg="white dark:dark-surface"
+            text="text-gray-900 dark:dark-text"
+            text="sm"
+          >
+            <option value="">전체 상태</option>
+            <option value="open">접수됨 (open)</option>
+            <option value="answered">답변 완료 (answered)</option>
+            <option value="closed">종료 (closed)</option>
+          </select>
+        </div>
+
+        <div
+          id="inquiries-loading"
+          mt="4"
+          text="text-muted dark:dark-text-muted"
+          text="sm"
+        >
+          불러오는 중입니다...
+        </div>
+
+        <div
+          id="inquiries-error"
+          mt="4"
+          p="4"
+          rounded="lg"
+          bg="red-50 dark:bg-red-900/20"
+          border="1 border-red-200 dark:border-red-800"
+          text="text-red-700 dark:text-red-400"
+          text="sm"
+          hidden
+        >
+          문의를 불러오는 데 실패했습니다. 로그인 상태를 확인해 주세요.
+        </div>
+
+        <table
+          id="inquiries-table"
+          w="full"
+          border-collapse="collapse"
+          mt="4"
+          hidden
+        >
+          <thead>
+            <tr border-b="1" border-b="border dark:dark-border">
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                ID
+              </th>
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                이름 / 이메일
+              </th>
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                제목
+              </th>
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                상태
+              </th>
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                접수 일시
+              </th>
+              <th
+                p="3"
+                text="left"
+                text="xs font-700 text-gray-500 dark:dark-text-muted"
+                upper-case
+              >
+                답변
+              </th>
+            </tr>
+          </thead>
+          <tbody id="inquiries-tbody"></tbody>
+        </table>
+
+        <div id="inquiries-empty" mt="8" p="8" text="center" hidden>
+          <p text="text-muted dark:dark-text-muted" text="sm">
+            문의가 없습니다.
+          </p>
+        </div>
+
+        <div
+          id="inquiries-pagination"
+          mt="6"
+          flex="~"
+          items-center
+          justify-between
+          text="sm"
+        ></div>
+      </section>
+
+      <section
+        id="answer-form-section"
+        class="cm-card"
+        p="5 md:7"
+        mt="8"
+        hidden
+      >
+        <h2 m="0" text="lg" font="750" mb="4">
+          답변 작성
+        </h2>
+        <form id="answer-form">
+          <input type="hidden" id="answer-inquiry-id" />
+          <div mb="4">
+            <label
+              for="answer-subject"
+              block
+              mb="2"
+              text="sm font-700 text-gray-900 dark:dark-text"
+            >
+              문의 제목
+            </label>
+            <input
+              id="answer-subject"
+              type="text"
+              readonly
+              w="full"
+              p="3"
+              rounded="lg"
+              border="1"
+              border="border dark:dark-border"
+              bg="gray-50 dark:dark-surface-muted"
+              text="text-gray-900 dark:dark-text"
+              text="sm"
+            />
+          </div>
+          <div mb="4">
+            <label
+              for="answer-content"
+              block
+              mb="2"
+              text="sm font-700 text-gray-900 dark:dark-text"
+            >
+              답변 내용
+            </label>
+            <textarea
+              id="answer-content"
+              rows="8"
+              w="full"
+              p="3"
+              rounded="lg"
+              border="1"
+              border="border dark:dark-border"
+              bg="white dark:dark-surface"
+              text="text-gray-900 dark:dark-text"
+              text="sm"
+              required
+            ></textarea>
+          </div>
+          <div flex="~" gap="3">
+            <button
+              type="submit"
+              px="5"
+              py="3"
+              rounded="lg"
+              bg="blue-600"
+              text="white"
+              font="700"
+              text="sm"
+              hover="bg-blue-700"
+              active="scale-98"
+            >
+              답변 전송
+            </button>
+            <button
+              type="button"
+              id="answer-cancel"
+              px="5"
+              py="3"
+              rounded="lg"
+              border="1"
+              border="border dark:dark-border"
+              bg="white dark:dark-surface"
+              text="text-gray-900 dark:dark-text"
+              font="700"
+              text="sm"
+              hover="bg-gray-100 dark:hover:dark-surface-muted"
+              active="scale-98"
+            >
+              취소
+            </button>
+          </div>
+          <div
+            id="answer-message"
+            mt="3"
+            p="3"
+            rounded="lg"
+            text="sm"
+            hidden
+          ></div>
+        </form>
+      </section>
+    </article>
+  </main>
+  <Footer />
+
+  <script>
+    function initializeAdminInquiries() {
+      const API_BASE = '/api/admin/inquiries';
+      const statusFilter = document.getElementById('status-filter')!;
+      const loadingEl = document.getElementById('inquiries-loading')!;
+      const errorEl = document.getElementById('inquiries-error')!;
+      const tableEl = document.getElementById('inquiries-table')!;
+      const tbodyEl = document.getElementById('inquiries-tbody')!;
+      const emptyEl = document.getElementById('inquiries-empty')!;
+      const paginationEl = document.getElementById('inquiries-pagination')!;
+
+      const answerSection = document.getElementById('answer-form-section')!;
+      const answerForm = document.getElementById('answer-form')!;
+      const answerIdInput = document.getElementById(
+        'answer-inquiry-id',
+      )! as HTMLInputElement;
+      const answerSubjectInput = document.getElementById(
+        'answer-subject',
+      )! as HTMLInputElement;
+      const answerContentInput = document.getElementById(
+        'answer-content',
+      )! as HTMLTextAreaElement;
+      const answerCancel = document.getElementById('answer-cancel')!;
+      const answerMessage = document.getElementById('answer-message')!;
+
+      let currentPage = 1;
+      let currentPerPage = 20;
+      let currentStatus = '';
+      let totalPages = 1;
+
+      function setMessage(
+        el: HTMLElement,
+        text: string,
+        type: 'success' | 'error',
+      ) {
+        el.hidden = false;
+        el.textContent = text;
+        el.className =
+          'p-3 rounded-lg text-sm ' +
+          (type === 'success'
+            ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+            : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400');
+      }
+
+      function hideMessage(el: HTMLElement) {
+        el.hidden = true;
+      }
+
+      function formatDate(ts: number | null): string {
+        if (!ts) return '-';
+        return new Date(ts * 1000).toLocaleString('ko-KR');
+      }
+
+      function badgeHtml(status: string): string {
+        const map: Record<string, string> = {
+          open: 'badge badge-open',
+          answered: 'badge badge-answered',
+          closed: 'badge badge-answered',
+        };
+        const labelMap: Record<string, string> = {
+          open: '접수됨',
+          answered: '답변 완료',
+          closed: '종료',
+        };
+        const cls = map[status] || 'badge';
+        const label = labelMap[status] || status;
+        return '<span class="' + cls + '">' + label + '</span>';
+      }
+
+      async function loadInquiries() {
+        loadingEl.hidden = false;
+        errorEl.hidden = true;
+        tableEl.hidden = true;
+        emptyEl.hidden = true;
+
+        const params = new URLSearchParams({
+          page: String(currentPage),
+          per_page: String(currentPerPage),
+        });
+        if (currentStatus) params.set('status', currentStatus);
+
+        try {
+          const res = await fetch(API_BASE + '?' + params.toString(), {
+            credentials: 'include',
+          });
+          if (res.status === 403) {
+            location.href =
+              '/login/?redirect=' + encodeURIComponent(location.pathname);
+            return;
+          }
+          if (!res.ok) throw new Error('Failed to load inquiries');
+          const data = await res.json();
+
+          renderInquiries(data.inquiries, data.pagination);
+        } catch {
+          errorEl.hidden = false;
+        } finally {
+          loadingEl.hidden = true;
+        }
+      }
+
+      function renderInquiries(
+        inquiries: unknown[],
+        pagination: {
+          page: number;
+          per_page: number;
+          total: number;
+          total_pages: number;
+        },
+      ) {
+        currentPage = pagination.page;
+        currentPerPage = pagination.per_page;
+        totalPages = pagination.total_pages;
+
+        tbodyEl.innerHTML = '';
+
+        if (!inquiries || inquiries.length === 0) {
+          emptyEl.hidden = false;
+          tableEl.hidden = true;
+          renderPagination();
+          return;
+        }
+
+        tableEl.hidden = false;
+        emptyEl.hidden = true;
+
+        for (const inq of inquiries) {
+          const item = inq as {
+            id: string;
+            name: string;
+            email: string;
+            subject: string;
+            status: string;
+            answer: string | null;
+            created_at: number | null;
+          };
+          const tr = document.createElement('tr');
+          tr.className =
+            'border-b border dark:dark-border last:border-0 hover:bg-gray-50 dark:hover:dark-surface-muted';
+          tr.innerHTML =
+            '<td p="3" text="sm text-gray-900 dark:dark-text" font="600">' +
+            escapeHtml(item.id) +
+            '</td>' +
+            '<td p="3" text="sm text-gray-900 dark:dark-text">' +
+            '<div font="600">' +
+            escapeHtml(item.name) +
+            '</div>' +
+            '<div text="xs text-gray-500 dark:dark-text-muted">' +
+            escapeHtml(item.email) +
+            '</div>' +
+            '</td>' +
+            '<td p="3" text="sm text-gray-900 dark:dark-text">' +
+            escapeHtml(item.subject) +
+            '</td>' +
+            '<td p="3" text="sm">' +
+            badgeHtml(item.status) +
+            '</td>' +
+            '<td p="3" text="sm text-gray-500 dark:dark-text-muted">' +
+            formatDate(item.created_at) +
+            '</td>' +
+            '<td p="3" text="sm">' +
+            (item.status === 'answered'
+              ? '<button type="button" class="text-sm text-blue-600 dark:text-blue-400 hover:underline font-600" aria-label="답변 보기">' +
+                '답변 보기' +
+                '</button>'
+              : '<button type="button" class="text-sm text-blue-600 dark:text-blue-400 hover:underline font-600" aria-label="답변 작성">' +
+                '답변 작성' +
+                '</button>') +
+            '</td>';
+          const btn = tr.querySelector('button');
+          if (btn) {
+            btn.addEventListener('click', () => openAnswerForm(item));
+          }
+          tbodyEl.appendChild(tr);
+        }
+
+        renderPagination();
+      }
+
+      function renderPagination() {
+        paginationEl.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        const buttonClass =
+          'inline-flex min-w-9 items-center justify-center px-3 py-1.5 rounded-lg border border dark:dark-border bg-white dark:dark-surface text-sm text-gray-700 dark:dark-text hover:bg-gray-100 dark:hover:dark-surface-muted disabled:opacity-50 disabled:cursor-not-allowed';
+        const activePageClass =
+          'inline-flex min-w-9 items-center justify-center px-3 py-1.5 rounded-lg border border-blue-600 bg-blue-600 text-sm font-700 text-white dark:bg-blue-500 dark:border-blue-500';
+        const pageWindowSize = 10;
+        const firstVisiblePage =
+          Math.floor((currentPage - 1) / pageWindowSize) * pageWindowSize + 1;
+        const lastVisiblePage = Math.min(
+          firstVisiblePage + pageWindowSize - 1,
+          totalPages,
+        );
+
+        const controls = document.createElement('div');
+        controls.className = 'flex flex-wrap items-center justify-center gap-2';
+
+        const prev = document.createElement('button');
+        prev.type = 'button';
+        prev.textContent = '이전';
+        prev.className = buttonClass;
+        prev.disabled = currentPage <= 1;
+        prev.setAttribute('aria-label', '이전 페이지');
+        prev.addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            loadInquiries();
+          }
+        });
+        controls.appendChild(prev);
+
+        for (let page = firstVisiblePage; page <= lastVisiblePage; page++) {
+          const pageButton = document.createElement('button');
+          pageButton.type = 'button';
+          pageButton.textContent = String(page);
+          pageButton.className =
+            page === currentPage ? activePageClass : buttonClass;
+          pageButton.disabled = page === currentPage;
+          pageButton.setAttribute('aria-label', page + '페이지');
+          if (page === currentPage) {
+            pageButton.setAttribute('aria-current', 'page');
+          }
+          pageButton.addEventListener('click', () => {
+            if (page !== currentPage) {
+              currentPage = page;
+              loadInquiries();
+            }
+          });
+          controls.appendChild(pageButton);
+        }
+
+        const next = document.createElement('button');
+        next.type = 'button';
+        next.textContent = '다음';
+        next.className = buttonClass;
+        next.disabled = currentPage >= totalPages;
+        next.setAttribute('aria-label', '다음 페이지');
+        next.addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            loadInquiries();
+          }
+        });
+        controls.appendChild(next);
+
+        const pageInfo = document.createElement('span');
+        pageInfo.className =
+          'w-full text-center text-xs text-gray-500 dark:dark-text-muted sm:w-auto sm:ml-2';
+        pageInfo.textContent =
+          '총 ' + totalPages + '페이지 · ' + currentPage + '페이지 선택';
+        paginationEl.appendChild(controls);
+        paginationEl.appendChild(pageInfo);
+      }
+
+      function openAnswerForm(inq: {
+        id: string;
+        subject: string;
+        answer: string | null;
+      }) {
+        answerIdInput.value = inq.id;
+        answerSubjectInput.value = inq.subject;
+        answerContentInput.value = inq.answer || '';
+        answerMessage.hidden = true;
+        answerSection.hidden = false;
+        answerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      answerCancel.addEventListener('click', closeAnswerForm);
+
+      answerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const id = answerIdInput.value;
+        const answer = answerContentInput.value.trim();
+        if (!id || !answer) return;
+
+        const submitBtn = answerForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          (submitBtn as HTMLButtonElement).disabled = true;
+        }
+        hideMessage(answerMessage);
+
+        try {
+          const res = await fetch(API_BASE + '/' + encodeURIComponent(id), {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answer }),
+          });
+
+          if (res.status === 403) {
+            location.href =
+              '/login/?redirect=' + encodeURIComponent(location.pathname);
+            return;
+          }
+          if (!res.ok) throw new Error('Failed to send answer');
+
+          setMessage(answerMessage, '답변이 전송되었습니다.', 'success');
+          answerContentInput.value = '';
+          answerSection.hidden = true;
+          loadInquiries();
+        } catch {
+          setMessage(
+            answerMessage,
+            '답변 전송에 실패했습니다. 다시 시도해 주세요.',
+            'error',
+          );
+        } finally {
+          if (submitBtn) {
+            (submitBtn as HTMLButtonElement).disabled = false;
+          }
+        }
+      });
+
+      function closeAnswerForm() {
+        answerSection.hidden = true;
+        (answerForm as HTMLFormElement).reset();
+        answerIdInput.value = '';
+        answerSubjectInput.value = '';
+        answerContentInput.value = '';
+        answerMessage.hidden = true;
+      }
+
+      statusFilter.addEventListener('change', (event) => {
+        const target = event.target as HTMLSelectElement;
+        currentStatus = target.value;
+        currentPage = 1;
+        closeAnswerForm();
+        loadInquiries();
+      });
+
+      function escapeHtml(text: string): string {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      loadInquiries();
+    }
+
+    document.addEventListener('astro:page-load', initializeAdminInquiries);
+  </script>
+</BaseLayout>

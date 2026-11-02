@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="CozyMoney 코지머니 소개 | 생활·금융 계산기와 도구"
+  description="CozyMoney가 제공하는 계산기와 생활도구, 계산 결과의 활용 범위, 콘텐츠 작성 및 운영 원칙을 안내합니다."
+  canonical="https://cozymoney.kr/about/"
+>
+  <Header />
+  <main class="cm-container" py="10 md:14 lg:18">
+    <article max-w="4xl" mx="auto">
+      <header mb="8 md:10">
+        <p m="0" text="sm" font="700" text-primary>
+          ABOUT COZYMONEY
+        </p>
+        <h1 m="0" mt="2" text="3xl md:4xl" font="800" tracking-tight>
+          CozyMoney 소개
+        </h1>
+        <p
+          m="0"
+          mt="4"
+          text="base md:lg text-muted dark:dark-text-muted"
+          leading="7"
+        >
+          CozyMoney는 생활 속 숫자와 계산 과정을 이해하기 쉽게 확인할 수 있도록
+          계산기와 생활도구를 제공하는 정보 웹사이트입니다. 단순히 결과값만
+          제시하는 데 그치지 않고, 사용자가 입력 조건과 계산 결과의 의미 및
+          한계를 이해하는 데 도움이 되는 정보를 제공하는 것을 목표로 합니다.
+        </p>
+      </header>
+
+      <div flex="~ col" gap="8">
+        <section class="cm-card" p="5 md:7">
+          <h2 m="0" text="xl" font="750">
+            어떤 서비스를 제공하나요?
+          </h2>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            CozyMoney는 대출 상환, 예금·적금, 복리, DSR·DTI와 같은 금융 계산,
+            급여 및 노동 관련 계산, 세금·부동산 관련 계산을 비롯해 날짜,
+            기념일, 나이, 단위, 퍼센트 등의 생활도구를 제공합니다. 도구별
+            입력값을 바꾸어 결과를 비교하고, 상황에 맞는 대략적인 수치와
+            계산 과정을 살펴볼 수 있습니다.
+          </p>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            <a href="/calculators/" underline text-primary>전체 계산기 보기</a>
+            와
+            <a href="/tools/" underline text-primary>전체 생활도구 보기</a>
+            에서 제공 중인 도구를 확인할 수 있습니다.
+          </p>
+        </section>
+
+        <section class="cm-card" p="5 md:7">
+          <h2 m="0" text="xl" font="750">
+            계산 결과는 어떻게 이해해야 하나요?
+          </h2>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            계산 결과는 사용자가 입력한 값과 해당 도구에 구현된 계산 방식에
+            따라 산출됩니다. 결과를 해석할 때는 입력 단위, 적용 기간, 이자율,
+            세율, 반올림 방식, 포함하거나 제외한 항목 등 도구에서 안내하는
+            조건을 함께 확인해야 합니다. 입력값이나 전제 조건이 달라지면
+            결과도 달라질 수 있습니다.
+          </p>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            실제 금융상품의 약정, 개인별 세금·공제, 근로계약, 지방자치단체별
+            기준 및 개별 자격요건은 계산 결과와 다를 수 있습니다. 계약, 신고,
+            대출, 투자, 급여 등 중요한 결정을 내리기 전에는 관련 기관의 최신
+            안내와 실제 계약 조건을 확인해 주세요.
+          </p>
+        </section>
+
+        <section class="cm-card" p="5 md:7">
+          <h2 m="0" text="xl" font="750">
+            콘텐츠 운영 원칙
+          </h2>
+          <ul
+            m="0"
+            mt="4"
+            pl="5"
+            text="sm md:base text-muted dark:dark-text-muted"
+            leading="7"
+          >
+            <li>
+              도구의 목적과 사용 방법을 이해하기 쉬운 언어로 설명합니다.
+            </li>
+            <li>
+              계산에 필요한 입력값과 결과 해석에 영향을 주는 전제 조건을
+              가능한 범위에서 안내합니다.
+            </li>
+            <li>
+              단순화한 계산 또는 추정값은 실제 계약·행정 결과와 다를 수 있음을
+              명확히 알립니다.
+            </li>
+            <li>
+              법령, 세율, 금융상품 조건처럼 변경될 수 있는 정보는 공식 자료를
+              확인하는 것이 중요하다는 점을 안내합니다.
+            </li>
+            <li>
+              오류나 개선 의견을 접수하면 내용을 검토하고 필요한 경우 도구와
+              안내를 수정합니다.
+            </li>
+            <li>
+              도구 사용에 필요하지 않은 민감한 개인정보를 입력하도록 요구하지
+              않습니다. 회원 기능과 문의 기능에서 처리하는 정보는
+              <a href="/privacy/" underline text-primary>개인정보처리방침</a>
+              에 안내합니다.
+            </li>
+          </ul>
+        </section>
+
+        <section class="cm-card" p="5 md:7">
+          <h2 m="0" text="xl" font="750">
+            광고와 사이트 운영
+          </h2>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            CozyMoney는 사이트 운영을 지원하기 위해 광고 서비스를 이용할 수
+            있습니다. 광고는 계산 결과나 안내 콘텐츠와 구분하여 표시하며,
+            광고의 게재 여부가 계산 결과나 설명의 내용에 영향을 주어서는
+            안 됩니다. 광고 및 쿠키를 포함한 개인정보 처리에 관한 자세한
+            내용은
+            <a href="/privacy/" underline text-primary>개인정보처리방침</a>
+            을 확인해 주세요.
+          </p>
+        </section>
+
+        <section class="cm-card" p="5 md:7">
+          <h2 m="0" text="xl" font="750">
+            의견 및 오류 제보
+          </h2>
+          <p m="0" mt="3" leading="7" text="text-muted dark:dark-text-muted">
+            계산식, 입력 조건, 화면 표시 또는 사용 방법에 관한 의견은 문의
+            페이지를 통해 전달할 수 있습니다. 오류를 제보할 때는 해당 도구의
+            주소, 사용한 입력값, 예상한 결과와 실제 결과를 알려주시면 확인에
+            도움이 됩니다. 문의 시 비밀번호, 주민등록번호, 계좌번호 등 불필요한
+            민감정보는 보내지 마세요.
+          </p>
+          <a href="/contact/" mt="4" inline-block text-primary font="700">
+            문의하기
+          </a>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

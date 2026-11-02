@@ -1,0 +1,505 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-annual-leave-calculator>
+  <fieldset border="0" m="0" p="0">
+    <legend class="cm-label">연차 계산 기준</legend>
+    <div
+      grid="~ cols-2"
+      gap="2"
+      rounded-xl
+      bg="surface-muted dark:dark-surface-subtle"
+      p="1"
+    >
+      <button
+        id="basis-hire"
+        type="button"
+        class="cm-button-primary"
+        py="2.5"
+        aria-pressed="true"
+      >
+        입사일 기준
+      </button>
+      <button
+        id="basis-fiscal"
+        type="button"
+        class="cm-button-secondary"
+        py="2.5"
+        aria-pressed="false"
+      >
+        회계연도 기준
+      </button>
+    </div>
+    <p mt="2" text="xs text-muted dark:dark-text-muted" leading="5">
+      회사가 회계연도 기준으로 연차를 일괄 관리하는 경우 회계연도 기준을
+      선택하세요. 퇴직 시에는 입사일 기준보다 불리하지 않은지 별도로 확인해야
+      합니다.
+    </p>
+  </fieldset>
+
+  <div grid="~ cols-1 md:cols-2" gap="4" mt="5">
+    <label>
+      <span class="cm-label">입사일자</span>
+      <input
+        id="annual-start"
+        class="cm-input"
+        type="date"
+        value="2021-10-01"
+      />
+    </label>
+    <label>
+      <span class="cm-label">계산일자</span>
+      <input id="annual-date" class="cm-input" type="date" value="2026-10-05" />
+    </label>
+  </div>
+
+  <div grid="~ cols-1 md:cols-2" gap="4" mt="5">
+    <label>
+      <span class="cm-label">사용한 연차일수</span>
+      <div relative>
+        <input
+          id="annual-used"
+          class="cm-input pr-12"
+          type="text"
+          inputmode="decimal"
+          value="0"
+          data-number-input
+          data-step="0.5"
+          data-min="0"
+          data-decimal="true"
+        />
+        <span
+          absolute
+          right="4"
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          일
+        </span>
+      </div>
+      <span mt="1.5" block text="xs text-muted dark:dark-text-muted">
+        계산 기준일까지 실제 사용한 연차를 입력하세요.
+      </span>
+    </label>
+    <label>
+      <span class="cm-label">근무시간 입력 방식</span>
+      <select id="annual-hours-mode" class="cm-input">
+        <option value="preset">선택입력</option>
+        <option value="direct">직접입력</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="preset-hours" grid="~ cols-1 sm:cols-2" gap="4" mt="4">
+    <label>
+      <span class="cm-label">일 근무시간</span>
+      <select id="annual-daily-hours" class="cm-input">
+        <option value="8">8시간</option>
+        <option value="7">7시간</option>
+        <option value="6">6시간</option>
+        <option value="5">5시간</option>
+        <option value="4">4시간</option>
+      </select>
+    </label>
+    <label>
+      <span class="cm-label">주 근무일수</span>
+      <select id="annual-weekly-days" class="cm-input">
+        <option value="5">주 5일</option>
+        <option value="6">주 6일</option>
+        <option value="4">주 4일</option>
+        <option value="3">주 3일</option>
+        <option value="2">주 2일</option>
+        <option value="1">주 1일</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="direct-hours" hidden grid="~ cols-1 md:cols-2" gap="4" mt="4">
+    <label>
+      <span class="cm-label">1주일 총 소정근로시간</span>
+      <div relative>
+        <input
+          id="annual-weekly-hours"
+          class="cm-input pr-16"
+          gap="4"
+          type="text"
+          inputmode="decimal"
+          value="40"
+          data-number-input
+          data-step="1"
+          data-min="0"
+          data-decimal="true"
+        />
+        <span
+          absolute
+          right="4"
+          top="[50%]"
+          translate-y="[-50%]"
+          text="sm text-muted dark:dark-text-muted"
+        >
+          시간
+        </span>
+      </div>
+      <span mt="1.5" block text="xs text-muted dark:dark-text-muted">
+        직접 입력 방식에서는 1일 8시간 근무로 계산합니다.
+      </span>
+    </label>
+  </div>
+
+  <div mt="5">
+    <h3 m="0" text="base" font="800">
+      임금 정보 · 통상임금 기준
+    </h3>
+    <p m="0" mt="1" text="xs text-muted dark:dark-text-muted">
+      기본급과 정기·일률적으로 지급되는 고정수당, 연간 상여금 등을 입력하세요.
+    </p>
+    <div grid="~ cols-1 md:cols-2" gap="4" mt="3">
+      <label>
+        <span class="cm-label">월 기본급</span>
+        <div relative>
+          <input
+            id="annual-base-pay"
+            class="cm-input pr-12"
+            type="text"
+            inputmode="numeric"
+            value="3,000,000"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right="4"
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+      </label>
+      <label>
+        <span class="cm-label">월 고정수당 합계</span>
+        <div relative>
+          <input
+            id="annual-fixed-allowance"
+            class="cm-input pr-12"
+            type="text"
+            inputmode="numeric"
+            value="0"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right="4"
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <span mt="1.5" block text="xs text-muted dark:dark-text-muted">
+          정기적·일률적으로 지급되는 고정수당을 입력하세요.
+        </span>
+      </label>
+      <label>
+        <span class="cm-label">연간 상여금 합계</span>
+        <div relative>
+          <input
+            id="annual-bonus"
+            class="cm-input pr-12"
+            type="text"
+            inputmode="numeric"
+            value="0"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right="4"
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <span mt="1.5" block text="xs text-muted dark:dark-text-muted">
+          연간 금액을 12개월로 나누어 월할 반영합니다.
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div flex="~ col sm:row" gap="3" mt="6">
+    <button
+      id="annual-calculate"
+      type="button"
+      class="cm-button-primary"
+      px="5"
+      py="3"
+    >
+      연차수당 계산하기
+    </button>
+    <button
+      id="annual-reset"
+      type="button"
+      class="cm-button-secondary"
+      px="5"
+      py="3"
+    >
+      초기화
+    </button>
+  </div>
+
+  <div
+    id="annual-error"
+    hidden
+    mt="4"
+    rounded-xl
+    border="danger/30 dark:dark-danger-text/30"
+    bg="danger-surface dark:dark-danger-surface"
+    p="4"
+    text="sm danger-text dark:dark-danger-text"
+  ></div>
+
+  <section
+    mt="6"
+    rounded-2xl
+    border="1 border dark:dark-border"
+    bg="surface-muted dark:dark-surface-subtle"
+    p="5"
+    aria-live="polite"
+  >
+    <p m="0" text="sm" font="700" text-primary>
+      예상 연차수당 · 세전
+    </p>
+    <p id="annual-value" m="1 0 0" text="3xl md:4xl" font="800" tracking-tight>
+      0원
+    </p>
+    <div
+      id="annual-summary"
+      grid="~ cols-1 sm:cols-2 lg:cols-3"
+      gap="3"
+      mt="5"
+    ></div>
+    <div
+      id="annual-breakdown"
+      mt="5"
+      rounded-xl
+      border="1 border dark:dark-border"
+      bg="surface dark:dark-surface"
+      p="4"
+    ></div>
+    <CalculatorResultCopy targets="#annual-value, #annual-summary, #annual-breakdown" />
+  </section>
+
+  <p m="4 0 0" text="xs text-muted dark:dark-text-muted" leading="5">
+    일반적인 연차 발생 및 통상임금 산식을 이용한 모의계산입니다. 실제 연차일수와
+    지급액은 출근율, 회사의 연차관리 기준, 취업규칙·단체협약, 통상임금 해당 여부
+    및 연차 사용촉진 여부에 따라 달라질 수 있습니다.
+  </p>
+</div>
+
+<script>
+  import { calculateAnnualLeave, type AnnualLeaveBasis } from './vacation';
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-annual-leave-calculator]',
+  );
+
+  if (root) {
+    const $ = <T extends HTMLElement>(id: string) =>
+      root.querySelector<T>('#' + id);
+    const start = $('annual-start') as HTMLInputElement;
+    const date = $('annual-date') as HTMLInputElement;
+    const used = $('annual-used') as HTMLInputElement;
+    const mode = $('annual-hours-mode') as HTMLSelectElement;
+    const preset = $('preset-hours') as HTMLElement;
+    const direct = $('direct-hours') as HTMLElement;
+    const daily = $('annual-daily-hours') as HTMLSelectElement;
+    const weeklyDays = $('annual-weekly-days') as HTMLSelectElement;
+    const weeklyInput = $('annual-weekly-hours') as HTMLInputElement;
+    const basePay = $('annual-base-pay') as HTMLInputElement;
+    const fixed = $('annual-fixed-allowance') as HTMLInputElement;
+    const bonus = $('annual-bonus') as HTMLInputElement;
+    const value = $('annual-value') as HTMLElement;
+    const summary = $('annual-summary') as HTMLElement;
+    const breakdown = $('annual-breakdown') as HTMLElement;
+    const error = $('annual-error') as HTMLElement;
+    let basis: AnnualLeaveBasis = 'hire-date';
+
+    const fmt = (number: number, digits = 0) =>
+      number.toLocaleString('ko-KR', { maximumFractionDigits: digits });
+    const won = (number: number) => fmt(Math.round(number)) + '원';
+
+    const updateMode = () => {
+      const isDirect = mode.value === 'direct';
+      preset.hidden = isDirect;
+      direct.hidden = !isDirect;
+    };
+
+    const setBasis = (next: AnnualLeaveBasis) => {
+      basis = next;
+      const hire = $('basis-hire') as HTMLButtonElement;
+      const fiscal = $('basis-fiscal') as HTMLButtonElement;
+      hire.setAttribute('aria-pressed', String(next === 'hire-date'));
+      fiscal.setAttribute('aria-pressed', String(next === 'fiscal-year'));
+      hire.className =
+        next === 'hire-date' ? 'cm-button-primary' : 'cm-button-secondary';
+      fiscal.className =
+        next === 'fiscal-year' ? 'cm-button-primary' : 'cm-button-secondary';
+    };
+
+    const calculate = () => {
+      error.hidden = true;
+      try {
+        const isDirect = mode.value === 'direct';
+        const dailyHours = isDirect
+          ? 8
+          : readCalculatorNumber(root, 'annual-daily-hours');
+        const weekly = isDirect
+          ? readCalculatorNumber(root, 'annual-weekly-hours')
+          : dailyHours * readCalculatorNumber(root, 'annual-weekly-days');
+        const result = calculateAnnualLeave({
+          basis,
+          startDate: start.value,
+          calculationDate: date.value,
+          usedDays: readCalculatorNumber(root, 'annual-used'),
+          dailyHours,
+          weeklyDays: isDirect
+            ? 5
+            : readCalculatorNumber(root, 'annual-weekly-days'),
+          weeklyHours: weekly,
+          monthlyBasePay: readCalculatorNumber(root, 'annual-base-pay'),
+          monthlyFixedAllowance: readCalculatorNumber(
+            root,
+            'annual-fixed-allowance',
+          ),
+          annualBonus: readCalculatorNumber(root, 'annual-bonus'),
+        });
+
+        value.textContent = won(result.allowance);
+
+        const cards = [
+          ['연차일수', fmt(result.leaveDays, 2) + '일'],
+          ['사용 연차', fmt(result.usedDays, 2) + '일'],
+          ['미사용 연차', fmt(result.unusedDays, 2) + '일'],
+          ['근무일수', fmt(result.serviceDays) + '일'],
+          ['근속연수', fmt(result.serviceYears, 2) + '년'],
+          ['1일 통상임금', won(result.dailyOrdinaryWage)],
+          ['시간당 통상임금', won(result.hourlyOrdinaryWage)],
+          ['월 소정근로시간', fmt(result.monthlyHours, 2) + '시간'],
+          ['월 통상임금', won(result.monthlyOrdinaryWage)],
+        ];
+
+        summary.innerHTML = cards
+          .map(
+            (card) =>
+              '<div rounded-xl border="1 border dark:dark-border" bg="surface dark:dark-surface" p="4">' +
+              '<p m="0" text="xs text-muted dark:dark-text-muted">' +
+              card[0] +
+              '</p>' +
+              '<p m="1 0 0" text="base" font="800">' +
+              card[1] +
+              '</p></div>',
+          )
+          .join('');
+
+        const dailyHoursText = fmt(dailyHours, 2);
+        breakdown.innerHTML =
+          '<p m="0" font="700">계산 과정</p>' +
+          '<p m="2 0 0" text="sm text-muted dark:dark-text-muted" leading="6">' +
+          result.basisLabel +
+          ' · 입사일 ' +
+          start.value +
+          ' · 계산일 ' +
+          date.value +
+          '</p>' +
+          '<p m="2 0 0" text="sm text-muted dark:dark-text-muted" leading="6">' +
+          '주 근로시간 ' +
+          fmt(result.weeklyHours, 2) +
+          '시간 · 주휴시간 ' +
+          fmt(result.weeklyHolidayHours, 2) +
+          '시간 · 월 소정근로시간 ' +
+          fmt(result.monthlyHours, 2) +
+          '시간</p>' +
+          '<p m="2 0 0" text="sm text-muted dark:dark-text-muted" leading="6">' +
+          '월 통상임금 = 기본급 ' +
+          won(readCalculatorNumber(root, 'annual-base-pay')) +
+          ' + 고정수당 ' +
+          won(readCalculatorNumber(root, 'annual-fixed-allowance')) +
+          ' + 연간 상여금 월할 ' +
+          won(readCalculatorNumber(root, 'annual-bonus') / 12) +
+          '</p>' +
+          '<p m="2 0 0" text="sm text-muted dark:dark-text-muted" leading="6">' +
+          '1일 통상임금 = 시간당 통상임금 × 1일 근무시간 = ' +
+          won(result.hourlyOrdinaryWage) +
+          ' × ' +
+          dailyHoursText +
+          '시간</p>' +
+          '<p m="2 0 0" text="sm" leading="6" font="700">연차수당 = 1일 통상임금 ' +
+          won(result.dailyOrdinaryWage) +
+          ' × 미사용 연차 ' +
+          fmt(result.unusedDays, 2) +
+          '일 = ' +
+          won(result.allowance) +
+          '</p>' +
+          '<p m="2 0 0" text="sm text-muted dark:dark-text-muted" leading="6">' +
+          result.explanation +
+          '</p>';
+      } catch (caught) {
+        value.textContent = '계산 불가';
+        summary.innerHTML = '';
+        breakdown.innerHTML = '';
+        error.hidden = false;
+        error.textContent =
+          caught instanceof Error ? caught.message : '입력값을 확인하세요.';
+      }
+    };
+
+    const reset = () => {
+      basis = 'hire-date';
+      setBasis(basis);
+      start.value = '2021-10-01';
+      date.value = '2026-10-05';
+      used.value = '0';
+      mode.value = 'preset';
+      daily.value = '8';
+      weeklyDays.value = '5';
+      weeklyInput.value = '40';
+      basePay.value = '3,000,000';
+      fixed.value = '0';
+      bonus.value = '0';
+      updateMode();
+      calculate();
+    };
+
+    bindCalculatorInputs(root, calculate, { change: true });
+    updateMode();
+    $('basis-hire')?.addEventListener('click', () => {
+      setBasis('hire-date');
+      calculate();
+    });
+    $('basis-fiscal')?.addEventListener('click', () => {
+      setBasis('fiscal-year');
+      calculate();
+    });
+    mode.addEventListener('change', updateMode);
+
+    $('annual-calculate')?.addEventListener('click', calculate);
+    $('annual-reset')?.addEventListener('click', reset);
+    calculate();
+  }
+</script>

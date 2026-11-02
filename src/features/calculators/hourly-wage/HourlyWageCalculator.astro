@@ -1,0 +1,423 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="hourlyWage">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <label class="cm-field">
+      <span class="cm-label">급여 형태</span>
+      <select class="cm-input" id="payType">
+        <option value="시급">시급</option>
+        <option value="일급">일급</option>
+        <option value="주급">주급</option>
+        <option value="월급">월급</option>
+        <option value="연봉">연봉</option>
+      </select>
+    </label>
+    <div class="cm-field">
+      <label class="cm-label" for="amount">
+        급여 금액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="급여 금액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="amount"
+            type="text"
+            inputmode="numeric"
+            value="10320"
+            data-default-value="10320"
+            data-number-input
+            data-step="100"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="급여 금액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="dailyHours">
+        일일 근무시간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="일일 근무시간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="dailyHours"
+            type="text"
+            inputmode="numeric"
+            value="8"
+            data-default-value="8"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            시간
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="일일 근무시간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="weeklyDays">
+        일주 근무일수
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="일주 근무일수 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="weeklyDays"
+            type="text"
+            inputmode="numeric"
+            value="5"
+            data-default-value="5"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            일
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="일주 근무일수 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="monthlyDays">
+        한달 근무일수
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="한달 근무일수 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="monthlyDays"
+            type="text"
+            inputmode="numeric"
+            value="22"
+            data-default-value="22"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            일
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="한달 근무일수 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="weeklyOvertimeHours">
+        주 연장 근무시간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="주 연장 근무시간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="weeklyOvertimeHours"
+            type="text"
+            inputmode="numeric"
+            value="0"
+            data-default-value="0"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            시간
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="주 연장 근무시간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="monthlyOvertimeHours">
+        월 연장 근무시간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="월 연장 근무시간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="monthlyOvertimeHours"
+            type="text"
+            inputmode="numeric"
+            value="0"
+            data-default-value="0"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            시간
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="월 연장 근무시간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <label class="cm-field">
+      <span class="cm-label">주휴수당</span>
+      <select class="cm-input" id="weeklyHoliday">
+        <option value="포함">포함</option>
+        <option value="미포함">미포함</option>
+      </select>
+    </label>
+    <label class="cm-field">
+      <span class="cm-label">세금</span>
+      <select class="cm-input" id="taxType">
+        <option value="미적용">미적용</option>
+        <option value="4대보험 9.7%">4대보험 9.7%</option>
+        <option value="소득세 3.3%">소득세 3.3%</option>
+      </select>
+    </label>
+    <label class="cm-field">
+      <span class="cm-label">수습</span>
+      <select class="cm-input" id="probation">
+        <option value="미적용 · 전액 지급">미적용 · 전액 지급</option>
+        <option value="적용 · 예상 급여액 10% 차감">
+          적용 · 예상 급여액 10% 차감
+        </option>
+      </select>
+    </label>
+  </div>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div id="result-detail" class="cm-help-text" mt="3"></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorWon,
+    getCalculatorField,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+  import {
+    calculateHourlyWage,
+    type HourlyPayType,
+    type HourlyTaxType,
+  } from './hourly-wage';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="hourlyWage"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const payTypeMap: Record<string, HourlyPayType> = {
+        시급: 'hourly',
+        일급: 'daily',
+        주급: 'weekly',
+        월급: 'monthly',
+        연봉: 'annual',
+      };
+      const taxTypeMap: Record<string, HourlyTaxType> = {
+        미적용: 'none',
+        '4대보험 9.7%': 'insurance',
+        '소득세 3.3%': 'income',
+      };
+      const result = calculateHourlyWage({
+        payType:
+          payTypeMap[getCalculatorField(root, 'payType')?.value ?? '시급'] ??
+          'hourly',
+        amount: readCalculatorNumber(root, 'amount'),
+        dailyHours: readCalculatorNumber(root, 'dailyHours'),
+        weeklyDays: readCalculatorNumber(root, 'weeklyDays'),
+        monthlyDays: readCalculatorNumber(root, 'monthlyDays'),
+        weeklyOvertimeHours: readCalculatorNumber(root, 'weeklyOvertimeHours'),
+        monthlyOvertimeHours: readCalculatorNumber(
+          root,
+          'monthlyOvertimeHours',
+        ),
+        weeklyHolidayIncluded:
+          getCalculatorField(root, 'weeklyHoliday')?.value === '포함',
+        taxType:
+          taxTypeMap[getCalculatorField(root, 'taxType')?.value ?? '미적용'] ??
+          'none',
+        probation: (
+          getCalculatorField(root, 'probation')?.value ?? ''
+        ).startsWith('적용'),
+      });
+
+      out.textContent = formatCalculatorWon(result.netMonthlyWage);
+      const minimumWageStatus =
+        result.hourlyWage >= 10320
+          ? '2026년 최저임금 이상'
+          : '2026년 최저임금 미만';
+      detail.textContent = `예상 시급: ${formatCalculatorWon(result.hourlyWage)} · 예상 일급: ${formatCalculatorWon(result.dailyWage)} · 예상 주급: ${formatCalculatorWon(result.weeklyWage)} · 기본 월급: ${formatCalculatorWon(result.monthlyBaseWage)} · 주휴수당: ${formatCalculatorWon(result.weeklyHolidayPay)} · 주 연장수당: ${formatCalculatorWon(result.weeklyOvertimePay)} · 월 연장수당: ${formatCalculatorWon(result.monthlyOvertimePay)} · 월 세전: ${formatCalculatorWon(result.grossMonthlyWage)} · 공제: ${formatCalculatorWon(result.tax)} · 월 최종 환산금액: ${formatCalculatorWon(result.netMonthlyWage)} · ${minimumWageStatus}`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc, { change: true });
+    calc();
+  }
+</script>

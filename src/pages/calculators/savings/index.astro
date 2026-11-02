@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import SavingsCalculator from '../../../features/calculators/savings/SavingsCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.savings;
+---
+
+<CalculatorPage definition={definition}>
+  <SavingsCalculator />
+</CalculatorPage>

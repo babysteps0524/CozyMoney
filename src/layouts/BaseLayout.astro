@@ -1,0 +1,103 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { getCanonicalUrl } from '../lib/seo/metadata';
+import WebApplicationJsonLd from '../components/seo/WebApplicationJsonLd.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical = getCanonicalUrl(),
+  noindex = false,
+} = Astro.props;
+const pathname = Astro.url.pathname;
+const isApplicationPage =
+  pathname === '/' ||
+  pathname.startsWith('/calculators/') ||
+  pathname.startsWith('/tools/');
+const applicationCategory = pathname.startsWith('/calculators/')
+  ? 'FinanceApplication'
+  : 'UtilitiesApplication';
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <ClientRouter />
+    <meta charset="UTF-8" />
+    <meta
+      name="naver-site-verification"
+      content="14f9092843ad0446deac0e52ce19648db31d1085"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    {!noindex && canonical ? <link rel="canonical" href={canonical} /> : null}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow'}
+    />
+    <meta property="og:site_name" content="CozyMoney 코지머니" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {!noindex && canonical ? (
+      <meta property="og:url" content={canonical} />
+    ) : null}
+    <meta property="og:image" content="https://cozymoney.kr/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="CozyMoneyCalculator 생활 계산기 서비스"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://cozymoney.kr/og-image.png" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <title>{title}</title>
+    {!noindex && isApplicationPage && (
+      <WebApplicationJsonLd
+        name={title}
+        description={description}
+        url={canonical}
+        category={applicationCategory}
+      />
+    )}
+    {import.meta.env.PUBLIC_ADSENSE_CLIENT && (
+      <meta
+        name="google-adsense-account"
+        content={import.meta.env.PUBLIC_ADSENSE_CLIENT}
+      />
+    )}
+    {import.meta.env.PUBLIC_ADSENSE_CLIENT && (
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.PUBLIC_ADSENSE_CLIENT}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
+  </head>
+
+  <body
+    m="0"
+    min-h="screen"
+    bg="surface dark:dark-surface"
+    text="text dark:dark-text"
+    font="sans"
+    antialiased
+  >
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<div>
+  <p m="0" text="sm" font="700" text-primary>
+    DATE CALCULATOR
+  </p>
+  <h2 m="0" mt="1" text="xl md:2xl" font="800">
+    날짜 계산기
+  </h2>
+  <div grid="~ cols-1 md:cols-2" gap="4" mt="6">
+    <label>
+      <span class="cm-label">시작일</span>
+      <input id="date-start" class="cm-input" type="date" />
+    </label>
+    <label>
+      <span class="cm-label">종료일</span>
+      <input id="date-end" class="cm-input" type="date" />
+    </label>
+  </div>
+  <div
+    id="date-result"
+    mt="5"
+    rounded="2xl"
+    bg="surface-muted dark:dark-surface-subtle"
+    p="5"
+  >
+    두 날짜를 선택하면 차이를 계산합니다.
+  </div>
+  <button id="date-calc" class="cm-button-primary" w="full" mt="4" py="3">
+    계산하기
+  </button>
+</div>

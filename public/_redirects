@@ -1,0 +1,2 @@
+# Keep the legacy sitemap URL working while using Astro's sitemap index as canonical.
+/sitemap.xml /sitemap-index.xml 301

@@ -1,0 +1,24 @@
+# Dependencies
+
+node_modules/
+.bun/
+
+## Build Output
+
+dist/
+build/
+.output/
+.vite/
+
+## Environment / Secret Files
+
+.env
+.env.*
+*.pem
+*.key
+
+## Logs & Cache
+
+*.log
+.cache/
+.DS_Store

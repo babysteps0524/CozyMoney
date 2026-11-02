@@ -1,0 +1,432 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="dti">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="income">
+        연소득
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="연소득 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="income"
+            type="text"
+            inputmode="numeric"
+            value="50000000"
+            data-default-value="50000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="연소득 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="mortgageAmount">
+        주택담보대출 금액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="주택담보대출 금액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="mortgageAmount"
+            type="text"
+            inputmode="numeric"
+            value="300000000"
+            data-default-value="300000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="주택담보대출 금액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="mortgageRate">
+        주택담보대출 금리
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="주택담보대출 금리 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="mortgageRate"
+            type="text"
+            inputmode="decimal"
+            value="4.0"
+            data-default-value="4.0"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="주택담보대출 금리 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="mortgageYears">
+        주택담보대출 기간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="주택담보대출 기간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="mortgageYears"
+            type="text"
+            inputmode="numeric"
+            value="30"
+            data-default-value="30"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            년
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="주택담보대출 기간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <label class="cm-field">
+      <span class="cm-label">주택담보대출 상환방식</span>
+      <select class="cm-input" id="mortgageMethod">
+        <option value="원리금균등">원리금균등</option>
+        <option value="원금균등">원금균등</option>
+        <option value="만기일시">만기일시</option>
+      </select>
+    </label>
+    <div class="cm-field">
+      <label class="cm-label" for="otherDebt">
+        기타 대출 금액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="기타 대출 금액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="otherDebt"
+            type="text"
+            inputmode="numeric"
+            value="50000000"
+            data-default-value="50000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="기타 대출 금액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="otherRate">
+        기타 대출 금리
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="기타 대출 금리 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="otherRate"
+            type="text"
+            inputmode="decimal"
+            value="5.0"
+            data-default-value="5.0"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="기타 대출 금리 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="rate">
+        목표 DTI
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="목표 DTI 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="rate"
+            type="text"
+            inputmode="decimal"
+            value="40"
+            data-default-value="40"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="목표 DTI 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p m="0" class="cm-help-text">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div
+      id="result-detail"
+      mt="3"
+      class="cm-help-text"
+      text="sm"
+      leading="7"
+    ></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorNumber,
+    formatCalculatorWon,
+    getCalculatorField,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+  import { calculateDti, type DtiRepaymentMethod } from './dti';
+
+  const root = document.querySelector<HTMLElement>('[data-calculator="dti"]');
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const methodMap: Record<string, DtiRepaymentMethod> = {
+        원리금균등: 'equalPayment',
+        원금균등: 'equalPrincipal',
+        만기일시: 'maturity',
+      };
+      const methodLabel =
+        getCalculatorField(root, 'mortgageMethod')?.value ?? '원리금균등';
+      const annualIncome = readCalculatorNumber(root, 'income');
+      const mortgageAmount = readCalculatorNumber(root, 'mortgageAmount');
+      const mortgageRate = readCalculatorNumber(root, 'mortgageRate');
+      const mortgageYears = readCalculatorNumber(root, 'mortgageYears');
+      const otherDebtAmount = readCalculatorNumber(root, 'otherDebt');
+      const otherDebtRate = readCalculatorNumber(root, 'otherRate');
+      const targetDti = readCalculatorNumber(root, 'rate');
+      const result = calculateDti({
+        annualIncome,
+        mortgageAmount,
+        mortgageRate,
+        mortgageYears,
+        mortgageMethod: methodMap[methodLabel] ?? 'equalPayment',
+        otherDebtAmount,
+        otherDebtRate,
+        targetDti,
+      });
+      out.textContent = formatCalculatorNumber(result.dti, 2) + '%';
+      const status = result.withinTarget
+        ? `목표 DTI ${formatCalculatorNumber(targetDti, 2)}% 이내`
+        : `목표 DTI ${formatCalculatorNumber(targetDti, 2)}% 초과`;
+      detail.textContent = `주택담보대출 연간 원리금: ${formatCalculatorWon(result.annualMortgagePayment)} · 기타 대출 연간 이자: ${formatCalculatorWon(result.annualOtherInterest)} · 연간 상환부담: ${formatCalculatorWon(result.annualDebtService)} · 상환방식: ${methodLabel} · ${status} · 목표 DTI 기준 연간 여유액: ${formatCalculatorWon(result.headroom)}`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

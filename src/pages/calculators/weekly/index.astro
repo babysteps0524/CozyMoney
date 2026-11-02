@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import WeeklyCalculator from '../../../features/calculators/weekly/WeeklyCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.weekly;
+---
+
+<CalculatorPage definition={definition}>
+  <WeeklyCalculator />
+</CalculatorPage>

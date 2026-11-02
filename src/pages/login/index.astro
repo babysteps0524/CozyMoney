@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="로그인 | CozyMoney 코지머니"
+  description="CozyMoney 계정에 로그인하세요."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        WELCOME BACK
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        로그인
+      </h1>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="6">
+        가입할 때 사용한 이메일과 비밀번호를 입력해 주세요.
+      </p>
+
+      <form id="login-form" mt="6" flex="~ col" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="login-email">
+            이메일
+          </label>
+          <input
+            class="cm-input"
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="254"
+          />
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="login-password">
+            비밀번호
+          </label>
+          <input
+            class="cm-input"
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            maxlength="128"
+          />
+        </div>
+        <button class="cm-button-primary" type="submit" w="full" py="3">
+          로그인
+        </button>
+        <p
+          id="form-status"
+          m="0"
+          text="sm"
+          leading="6"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+
+      <div mt="5" flex="~ col" gap="2" text="sm">
+        <a href="/signup/" text-primary font="700" underline>
+          계정 만들기
+        </a>
+        <a
+          href="/forgot-password/"
+          text="text-muted dark:dark-text-muted"
+          underline
+        >
+          비밀번호를 잊었어요
+        </a>
+        <a
+          href="/verify-email/"
+          text="text-muted dark:dark-text-muted"
+          underline
+        >
+          이메일 인증 안내
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#login-form');
+  const status = document.querySelector<HTMLElement>('#form-status');
+  const submitButton = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !status || !submitButton) return;
+
+    const formData = new FormData(form);
+    status.textContent = '로그인 중입니다.';
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.get('email'),
+          password: formData.get('password'),
+        }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        const requestedRedirect = new URLSearchParams(
+          window.location.search,
+        ).get('redirect');
+        const safeRedirect =
+          requestedRedirect &&
+          requestedRedirect.startsWith('/') &&
+          !requestedRedirect.startsWith('//')
+            ? requestedRedirect
+            : '/account/';
+        window.location.assign(safeRedirect);
+        return;
+      }
+      status.textContent = result.error || '로그인하지 못 했어요.';
+      status.setAttribute('data-error', 'true');
+    } catch {
+      status.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+      status.setAttribute('data-error', 'true');
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>

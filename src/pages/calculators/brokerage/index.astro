@@ -1,0 +1,42 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import BrokerageCalculator from '../../../features/calculators/brokerage/BrokerageCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.brokerage;
+---
+
+<CalculatorPage definition={definition}>
+  <BrokerageCalculator />
+
+  <div slot="after">
+    <section mt="10 md:14">
+      <h2 class="cm-section-title">부동산 중개보수 계산 기준</h2>
+      <div class="cm-card" mt="4" p="5 md:6">
+        <ul
+          m="0"
+          pl="5"
+          text="sm md:base text-muted dark:dark-text-muted"
+          leading="7"
+        >
+          <li>
+            주택 매매·교환은 거래금액에 따라 0.4~0.7% 등의 구간별 상한요율과
+            일부 한도액을 적용합니다.
+          </li>
+          <li>
+            주택 임대차는 거래금액에 따라 0.3~0.6% 등의 구간별 상한요율과 일부
+            한도액을 적용합니다.
+          </li>
+          <li>
+            적용 요율은 법정 상한이며 실제 중개보수는 상한 범위에서 협의할 수
+            있습니다.
+          </li>
+          <li>
+            주택 외 거래와 오피스텔은 거래대상과 시설요건에 따라 별도 기준이
+            적용될 수 있습니다.
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</CalculatorPage>

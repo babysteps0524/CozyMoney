@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+import AdSlot from '../../components/shared/AdSlot.astro';
+
+const categories = [
+  {
+    title: '금융',
+    description: '대출·저축·부채 관리에 필요한 계산기',
+    items: [
+      [
+        '대출 계산기',
+        '월 상환금액과 총 이자를 계산합니다.',
+        '/calculators/loan/',
+      ],
+      [
+        '예적금 계산기',
+        '예금과 적금의 예상 만기금액을 계산합니다.',
+        '/calculators/savings/',
+      ],
+      [
+        '복리 계산기',
+        '복리와 추가납입에 따른 미래 금액을 계산합니다.',
+        '/calculators/compound/',
+      ],
+      [
+        'DSR 계산기',
+        '연소득 대비 연간 원리금 상환비율을 계산합니다.',
+        '/calculators/dsr/',
+      ],
+      [
+        'DTI 계산기',
+        '소득 대비 주택담보대출 관련 상환부담을 계산합니다.',
+        '/calculators/dti/',
+      ],
+    ],
+  },
+  {
+    title: '급여·노동',
+    description: '급여와 근로에 관련된 계산기',
+    items: [
+      [
+        '연봉 계산기',
+        '연봉을 기준으로 월 급여와 시급을 계산합니다.',
+        '/calculators/salary/',
+      ],
+      [
+        '월급 계산기',
+        '연봉이나 월급을 입력해 예상 월 실수령액을 계산합니다.',
+        '/calculators/monthly-salary/',
+      ],
+      [
+        '시급 계산기',
+        '시급·일급·주급·월급·연봉과 주휴·연장수당을 반영합니다.',
+        '/calculators/hourly-wage/',
+      ],
+      [
+        '퇴직금 계산기',
+        '월 평균임금과 근속기간으로 퇴직금을 단순 추정합니다.',
+        '/calculators/severance/',
+      ],
+      [
+        '주휴수당 계산기',
+        '시급과 주 소정근로시간을 기준으로 주휴수당을 계산합니다.',
+        '/calculators/weekly/',
+      ],
+      [
+        '연차수당 계산기',
+        '통상임금과 미사용 연차를 기준으로 연차수당을 계산합니다.',
+        '/calculators/vacation/',
+      ],
+      [
+        '실업급여 계산기',
+        '평균임금과 예상 지급일수로 구직급여를 단순 추정합니다.',
+        '/calculators/unemployment/',
+      ],
+    ],
+  },
+  {
+    title: '생활 계산',
+    description: '일상에서 자주 사용하는 기본 계산',
+    items: [
+      [
+        '퍼센트 계산기',
+        '기준값의 퍼센트 금액을 계산합니다.',
+        '/calculators/percentage/',
+      ],
+    ],
+  },
+  {
+    title: '세금',
+    description: '세금 계산 원리를 간단하게 확인하는 도구',
+    items: [
+      [
+        '부가가치세 계산기',
+        '공급가액과 합계금액을 기준으로 부가세를 계산합니다.',
+        '/calculators/vat/',
+      ],
+      [
+        '종합소득세 계산기',
+        '사업·근로·연금·이자·배당·기타소득과 주요 공제·세액공제를 반영해 종합소득세를 모의 계산합니다.',
+        '/calculators/incomeTax/',
+      ],
+      [
+        '취득세 계산기',
+        '취득원인·주택 수·조정대상지역·생애최초 여부를 반영해 취득세를 모의 계산합니다.',
+        '/calculators/acquisition/',
+      ],
+      [
+        '재산세 계산기',
+        '과세표준과 입력 세율을 기준으로 재산세를 계산합니다.',
+        '/calculators/property/',
+      ],
+      [
+        '양도소득세 계산기',
+        '양도차익과 가정 세율을 이용해 세액을 단순 추정합니다.',
+        '/calculators/capitalGain/',
+      ],
+      [
+        '자동차세 계산기',
+        '차량 용도·연료·배기량·최초 등록연도로 자동차세와 지방교육세, 차령 경감액을 추정합니다.',
+        '/calculators/carTax/',
+      ],
+    ],
+  },
+  {
+    title: '부동산',
+    description: '임대차와 부동산 거래에 필요한 계산기',
+    items: [
+      [
+        '전월세 계산기',
+        '보증금과 월세를 연간 비용 기준으로 비교합니다.',
+        '/calculators/rent/',
+      ],
+      [
+        '부동산 중개보수 계산기',
+        '거래금액과 중개보수율을 기준으로 보수를 계산합니다.',
+        '/calculators/brokerage/',
+      ],
+      [
+        '전세대출 이자 계산기',
+        '보증금과 대출비율, 금리로 1년 이자를 계산합니다.',
+        '/calculators/leaseLoan/',
+      ],
+      [
+        '법무사 보수 계산기',
+        '부동산 등기 과세표준을 기준으로 법무사 기본보수와 인지·증지 비용을 계산합니다.',
+        '/calculators/legal-scrivener/',
+      ],
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="계산기 | CozyMoney 코지머니"
+  description="대출·예적금 이자부터 연봉 실수령액, 주휴수당, 세금, 부동산 거래 비용까지 목적에 맞는 계산기를 찾아 예상 금액과 계산 기준을 확인하세요."
+  canonical="https://cozymoney.kr/calculators/"
+>
+  <Header />
+  <main class="cm-container" py="10 md:14 lg:18">
+    <header max-w="3xl" mb="8 md:10">
+      <p m="0" text="sm" font="700" text-primary>
+        CALCULATORS
+      </p>
+      <h1 m="0" mt="2" text="3xl md:4xl" font="800" tracking-tight>
+        필요한 계산기를 찾아보세요
+      </h1>
+      <p
+        m="0"
+        mt="4"
+        text="base md:lg text-muted dark:dark-text-muted"
+        leading="7"
+      >
+        금융, 급여·노동, 세금, 부동산 계산기를 한곳에서 이용할 수 있습니다.
+      </p>
+    </header>
+    <div flex="~ col" gap="10 md:12">
+      {categories.map((category, index) => (
+        <>
+          <section>
+            <div mb="4 md:5">
+              <h2 m="0" text="xl md:2xl" font="750">
+                {category.title}
+              </h2>
+              <p m="0" mt="1" text="sm text-muted dark:dark-text-muted">
+                {category.description}
+              </p>
+            </div>
+            <div grid="~ cols-1 sm:cols-2 lg:cols-3" gap="3 md:4">
+              {category.items.map(([title, description, href]) => (
+                <a
+                  href={href}
+                  class="cm-card-interactive"
+                  p="5 md:6"
+                  no-underline
+                >
+                  <div flex="~" items-center justify-between gap="3">
+                    <h3 m="0" text="lg text dark:dark-text" font="750">
+                      {title}
+                    </h3>
+                    <span text="text-subtle dark:dark-text-subtle">→</span>
+                  </div>
+                  <p
+                    m="0"
+                    mt="2"
+                    text="sm text-muted dark:dark-text-muted"
+                    leading="6"
+                  >
+                    {description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+          {index === 1 ? (
+            <AdSlot
+              slot={import.meta.env.PUBLIC_ADSENSE_SLOT_LIST_MID || ''}
+              label="광고"
+            />
+          ) : null}
+        </>
+      ))}
+    </div>
+    <AdSlot slot={import.meta.env.PUBLIC_ADSENSE_SLOT_LIST || ''} />
+  </main>
+  <Footer />
+</BaseLayout>

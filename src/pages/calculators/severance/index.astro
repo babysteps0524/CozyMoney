@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import SeveranceCalculator from '../../../features/calculators/severance/SeveranceCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.severance;
+---
+
+<CalculatorPage definition={definition}>
+  <SeveranceCalculator />
+</CalculatorPage>

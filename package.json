@@ -1,0 +1,53 @@
+{
+  "name": "cozymoneycalculator",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && bun run verify:sitemap",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write \"**/*.{astro,ts,tsx,js,jsx}\"",
+    "lint": "eslint .",
+    "lintFix": "eslint . --fix",
+    "check": "astro check && tsc --noEmit",
+    "test": "bun test",
+    "verify:sitemap": "bun scripts/verify-sitemap.ts",
+    "verify": "bun run check && bun run test && bun run build",
+    "auth:local:migrate": "bunx wrangler@4.151.1 d1 migrations apply cozymoney-auth-db-local --local --config wrangler.local.toml",
+    "auth:local:migrations": "bunx wrangler@4.151.1 d1 migrations list cozymoney-auth-db-local --local --config wrangler.local.toml",
+    "dev:pages": "bun run build && bunx wrangler@4.151.1 pages dev --local --config wrangler.local.toml --ip 127.0.0.1 --port 8788"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/rss": "^4.0.19",
+    "astro": "^7.4.4",
+    "@astrojs/sitemap": "^3.7.4"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "@unocss/astro": "^66.12.0",
+    "@unocss/eslint-config": "^66.12.0",
+    "@unocss/preset-attributify": "^66.12.0",
+    "@unocss/preset-icons": "^66.12.0",
+    "@unocss/preset-typography": "^66.12.0",
+    "@unocss/preset-wind4": "^66.12.0",
+    "@unocss/transformer-attributify-jsx": "^66.12.0",
+    "@unocss/transformer-compile-class": "^66.12.0",
+    "@unocss/transformer-directives": "^66.12.0",
+    "@unocss/transformer-variant-group": "^66.12.0",
+    "eslint": "^10.14.0",
+    "jiti": "^2.7.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "prettier-plugin-embed": "^0.8.2",
+    "typescript": "6",
+    "unocss": "^66.12.0"
+  }
+}

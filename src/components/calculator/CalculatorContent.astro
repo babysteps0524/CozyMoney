@@ -1,0 +1,21 @@
+---
+import AdSlot from '../shared/AdSlot.astro';
+import CalculatorDetails from './CalculatorDetails.astro';
+import FaqJsonLd from '../seo/FaqJsonLd.astro';
+import type { CalculatorDetailsContent } from '../../features/calculators/types';
+
+interface Props {
+  guidance: CalculatorDetailsContent;
+  canonical: string;
+}
+
+const { guidance, canonical } = Astro.props;
+---
+
+<section aria-label="계산기 상세 정보" w="full" mt="10 md:14">
+  <AdSlot slot={import.meta.env.PUBLIC_ADSENSE_SLOT_CALCULATOR || ''} />
+  {guidance.faqs?.length ? (
+    <FaqJsonLd faqs={guidance.faqs} url={canonical} />
+  ) : null}
+  <CalculatorDetails content={guidance} />
+</section>

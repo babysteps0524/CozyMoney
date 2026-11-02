@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import RentCalculator from '../../../features/calculators/rent/RentCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.rent;
+---
+
+<CalculatorPage definition={definition}>
+  <RentCalculator />
+</CalculatorPage>

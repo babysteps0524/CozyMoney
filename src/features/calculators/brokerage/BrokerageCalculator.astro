@@ -1,0 +1,323 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-brokerage>
+  <div grid="~ cols-1 md:cols-2" gap="4">
+    <label>
+      <span class="cm-label">거래 유형</span>
+      <select id="transaction" class="cm-input">
+        <option value="sale">매매·교환</option>
+        <option value="jeonse">전세</option>
+        <option value="monthly">월세</option>
+      </select>
+    </label>
+
+    <label>
+      <span class="cm-label">중개대상물</span>
+      <select id="property" class="cm-input">
+        <option value="house">주택</option>
+        <option value="officetel">오피스텔</option>
+        <option value="presale">주택 분양권</option>
+        <option value="other">주택 외</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="main-fields" mt="4"></div>
+  <div id="extra-fields" mt="4"></div>
+
+  <div mt="6" rounded="2xl" bg="primary/10 dark:dark-primary-surface" p="5">
+    <p m="0" text="sm text-muted dark:dark-text-muted">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div
+      id="result-detail"
+      mt="3"
+      text="sm text-muted dark:dark-text-muted"
+      leading="7"
+    ></div>
+  </div>
+  <CalculatorResultCopy targets="#result-value, #result-detail" />
+
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+
+  <div mt="8" grid="~ cols-1 lg:cols-2" gap="4">
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        계산 기준
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        주택은 거래금액 구간별 상한요율과 한도액을 적용합니다. 오피스텔과 주택
+        외 거래는 법령상 요건에 따라 별도 요율을 적용합니다.
+      </p>
+    </section>
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        월세 거래금액
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        월세는 보증금 + 월차임 × 100을 기본으로 환산하며, 환산금액이 5천만원
+        미만이면 보증금 + 월차임 × 70을 적용합니다.
+      </p>
+    </section>
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        분양권 거래금액
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        거래 당시까지 불입한 금액(융자 포함)과 프리미엄을 합산해 중개보수 계산의
+        기준금액으로 사용합니다.
+      </p>
+    </section>
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        부가가치세
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        계산된 중개보수에 입력한 부가가치세율을 별도로 더합니다. 실제 세금계산서
+        발급 여부와 과세 여부는 거래 상대방의 사업자 조건을 확인하세요.
+      </p>
+    </section>
+  </div>
+
+  <section
+    mt="4"
+    rounded="2xl"
+    border="1 danger dark:dark-border"
+    bg="danger-surface dark:dark-danger-surface"
+    p="5"
+  >
+    <h3 m="0" text="sm" font="750">
+      주의사항
+    </h3>
+    <ul
+      m="0"
+      mt="3"
+      pl="5"
+      text="sm text-muted dark:dark-text-muted"
+      leading="7"
+    >
+      <li>중개보수는 법정 상한 범위에서 협의해 결정할 수 있습니다.</li>
+      <li>
+        주택 중개보수는 시·도 조례의 요율한도가 함께 적용될 수 있으므로
+        거래지역을 확인해야 합니다.
+      </li>
+      <li>
+        이 계산기는 서울 기준 주택 요율표와 현행 법령의 기본 구조를 중심으로
+        계산합니다.
+      </li>
+      <li>
+        실제 계약서 작성 및 지급 전에는 관할 시·도와 공인중개사에게 적용 요율을
+        확인하세요.
+      </li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  import { calculateBrokerage, getMonthlyLeaseAmount } from './brokerage';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  const root = document.querySelector<HTMLElement>('[data-brokerage]');
+  if (root) {
+    const mainFields = root.querySelector<HTMLElement>('#main-fields')!;
+    const extraFields = root.querySelector<HTMLElement>('#extra-fields')!;
+    const resultValue = root.querySelector<HTMLElement>('#result-value')!;
+    const resultDetail = root.querySelector<HTMLElement>('#result-detail')!;
+    const transaction = root.querySelector<HTMLSelectElement>('#transaction')!;
+    const property = root.querySelector<HTMLSelectElement>('#property')!;
+
+    const won = (value: number) =>
+      Math.round(value).toLocaleString('ko-KR') + '원';
+
+    const numberField = (
+      id: string,
+      label: string,
+      value: string,
+      suffix = '원',
+    ) => `
+      <label>
+        <span class="cm-label">${label}</span>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+          <button type="button" data-step-direction="-1" aria-label="${label} 감소" class="cm-step-button">−</button>
+          <div relative>
+            <input
+              id="${id}"
+              class="cm-input ${suffix ? 'pr-14' : ''}"
+              type="text"
+              inputmode="numeric"
+              value="${value}"
+              data-default-value="${value}"
+              data-number-input
+              data-step="100000"
+              data-min="0"
+            />
+            <span absolute right-4 top="[50%]" translate-y="[-50%]" text="sm text-muted dark:dark-text-muted">${suffix}</span>
+          </div>
+          <button type="button" data-step-direction="1" aria-label="${label} 증가" class="cm-step-button">+</button>
+        </div>
+      </label>`;
+
+    const percentField = (id: string, label: string, value: string) => `
+      <label>
+        <span class="cm-label">${label}</span>
+        <div relative>
+          <input id="${id}" class="cm-input pr-12" type="text" inputmode="decimal" value="${value}" data-default-value="${value}" data-number-input data-step="0.1" data-min="0" data-decimal="true" />
+          <span absolute right-4 top="[50%]" translate-y="[-50%]" text="sm text-muted dark:dark-text-muted">%</span>
+        </div>
+      </label>`;
+
+    const checkbox = (id: string, label: string) => `
+      <label flex="inline" items-center gap="2" cursor-pointer>
+        <input id="${id}" type="checkbox" class="accent-primary" />
+        <span text="sm text-muted dark:dark-text-muted">${label}</span>
+      </label>`;
+
+    const renderFields = () => {
+      const isMonthly = transaction.value === 'monthly';
+      const isPresale = property.value === 'presale';
+      const isOfficetel = property.value === 'officetel';
+
+      if (isMonthly) {
+        mainFields.innerHTML =
+          numberField('deposit', '보증금', '100000000') +
+          numberField('monthlyRent', '월세', '700000');
+      } else if (isPresale) {
+        mainFields.innerHTML =
+          numberField(
+            'paidAmount',
+            '거래 당시까지 불입한 금액(융자 포함)',
+            '200000000',
+          ) + numberField('premium', '프리미엄', '30000000');
+      } else {
+        mainFields.innerHTML = numberField(
+          'amount',
+          transaction.value === 'sale' ? '매매가' : '전세보증금',
+          '500000000',
+        );
+      }
+
+      let extra = '';
+      if (isOfficetel) {
+        extra += checkbox(
+          'officetelEligible',
+          '전용면적 85㎡ 이하 + 시행규칙상 시설요건 충족',
+        );
+      }
+      extra += '<div mt="4" grid="~ cols-1 md:cols-2" gap="4">';
+      extra += percentField(
+        'customRate',
+        '요율 직접 입력(선택)',
+        property.value === 'other' ? '0.9' : '',
+      );
+      extra += percentField('vatRate', '부가가치세율', '10');
+      extra += '</div>';
+      extraFields.innerHTML = extra;
+    };
+
+    const valueOf = (id: string) => {
+      const input = root.querySelector<HTMLInputElement>('#' + id);
+      return Number((input?.value ?? '').replace(/,/g, '') || 0);
+    };
+
+    const calculate = () => {
+      const type = transaction.value as 'sale' | 'jeonse' | 'monthly';
+      const kind = property.value as
+        'house' | 'officetel' | 'presale' | 'other';
+      const vatRate = valueOf('vatRate');
+      const customInput = root.querySelector<HTMLInputElement>('#customRate');
+      const customRate =
+        customInput && customInput.value.trim() !== ''
+          ? valueOf('customRate')
+          : undefined;
+
+      let amount = 0;
+      let monthlyRent = 0;
+      let paidAmount = 0;
+      let premium = 0;
+
+      if (type === 'monthly') {
+        const deposit = valueOf('deposit');
+        monthlyRent = valueOf('monthlyRent');
+        amount = getMonthlyLeaseAmount(deposit, monthlyRent);
+      } else if (kind === 'presale') {
+        paidAmount = valueOf('paidAmount');
+        premium = valueOf('premium');
+        amount = paidAmount + premium;
+      } else {
+        amount = valueOf('amount');
+      }
+
+      const result = calculateBrokerage({
+        transaction: type,
+        property: kind,
+        amount,
+        paidAmount,
+        premium,
+        officetelEligible:
+          root.querySelector<HTMLInputElement>('#officetelEligible')?.checked ??
+          false,
+        customRate,
+        vatRate,
+      });
+
+      resultValue.textContent = won(result.total);
+      resultDetail.innerHTML = [
+        `기준 거래금액: <strong>${won(result.transactionAmount)}</strong>`,
+        `적용 상한요율: <strong>${result.rate.toFixed(2)}%</strong>`,
+        `중개보수: <strong>${won(result.brokerageFee)}</strong>`,
+        `부가가치세: <strong>${won(result.vat)}</strong>`,
+        result.capped ? '한도액이 적용되어 계산금액이 제한되었습니다.' : '',
+        result.explanation,
+      ]
+        .filter(Boolean)
+        .join('<br />');
+    };
+
+    const reset = () => {
+      transaction.value = 'sale';
+      property.value = 'house';
+      renderFields();
+      calculate();
+    };
+
+    transaction.addEventListener('change', renderFields);
+    property.addEventListener('change', renderFields);
+    root.querySelector('#calculate')?.addEventListener('click', calculate);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    renderFields();
+    bindCalculatorInputs(root, calculate, { change: true });
+    calculate();
+  }
+</script>

@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import DtiCalculator from '../../../features/calculators/dti/DtiCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.dti;
+---
+
+<CalculatorPage definition={definition}>
+  <DtiCalculator />
+</CalculatorPage>

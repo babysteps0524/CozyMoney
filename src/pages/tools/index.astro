@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+import AdSlot from '../../components/shared/AdSlot.astro';
+import { tools } from '../../features/tools/catalog';
+---
+
+<BaseLayout
+  title="생활도구 | CozyMoney 코지머니"
+  description="로또 번호 생성기, 랜덤 숫자 생성기, 추첨기, 비밀번호, 날짜, D-Day, 나이, 단위, 퍼센트, 글자 수 세기 등 무료 생활도구를 제공합니다."
+  canonical="https://cozymoney.kr/tools/"
+>
+  <Header />
+  <main class="cm-container" py="10 md:14 lg:18">
+    <header max-w="3xl" mb="8 md:10">
+      <p m="0" text="sm" font="700" text-primary>
+        LIFE TOOLS
+      </p>
+      <h1 m="0" mt="2" text="3xl md:4xl" font="800" tracking-tight>
+        생활에 필요한 도구
+      </h1>
+      <p
+        m="0"
+        mt="4"
+        text="base md:lg"
+        leading="7"
+        text="text-muted dark:dark-text-muted"
+      >
+        일상에서 자주 사용하는 랜덤, 날짜, 나이, 단위, 퍼센트와 글자 수 도구를
+        간단하게 이용할 수 있습니다.
+      </p>
+    </header>
+    <div grid="~ cols-1 sm:cols-2 lg:cols-3" gap="3 md:4">
+      {tools.map(({ title, description, href }) => (
+        <a href={href} class="cm-card-interactive" p="5 md:6" no-underline>
+          <div flex="~" items-center justify-between>
+            <h2 m="0" text="lg text dark:dark-text" font="750">
+              {title}
+            </h2>
+            <span text="text-subtle dark:dark-text-subtle">→</span>
+          </div>
+          <p m="0" mt="2" text="sm text-muted dark:dark-text-muted" leading="6">
+            {description}
+          </p>
+        </a>
+      ))}
+    </div>
+    <AdSlot slot={import.meta.env.PUBLIC_ADSENSE_SLOT_LIST || ''} />
+  </main>
+  <Footer />
+</BaseLayout>

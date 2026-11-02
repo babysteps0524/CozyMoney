@@ -1,0 +1,29 @@
+---
+import type { CalculatorFaq } from '../../features/calculators/types';
+
+interface Props {
+  faqs: CalculatorFaq[];
+  url: string;
+}
+
+const { faqs, url } = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${url}#faq`,
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+const jsonLd = JSON.stringify(structuredData)
+  .replace(/</g, '\\u003c')
+  .replace(/>/g, '\\u003e')
+  .replace(/&/g, '\\u0026');
+---
+
+<script type="application/ld+json" is:inline set:html={jsonLd} />

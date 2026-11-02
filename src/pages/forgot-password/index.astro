@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="비밀번호 찾기 | CozyMoney 코지머니"
+  description="CozyMoney 계정의 비밀번호 재설정 이메일을 요청합니다."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        PASSWORD RESET
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        비밀번호 찾기
+      </h1>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="6">
+        가입한 이메일 주소를 입력하면 비밀번호 재설정 안내를 보낼게.
+      </p>
+      <form id="forgot-form" mt="6" flex="~ col" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="forgot-email">
+            이메일
+          </label>
+          <input
+            class="cm-input"
+            id="forgot-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="254"
+          />
+        </div>
+        <button class="cm-button-primary" type="submit" py="3">
+          재설정 이메일 요청
+        </button>
+        <p
+          id="forgot-status"
+          m="0"
+          text="sm"
+          leading="6"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+      <p m="0" mt="5" text="sm">
+        <a href="/login/" text-primary font="700" underline>
+          로그인으로 돌아가기
+        </a>
+      </p>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#forgot-form');
+  const status = document.querySelector<HTMLElement>('#forgot-status');
+  const button = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !status || !button) return;
+    const formData = new FormData(form);
+    button.disabled = true;
+    status.textContent = '요청을 처리하고 있어요.';
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.get('email') }),
+      });
+      const result = await response.json();
+      status.textContent =
+        result.error || result.message || '요청을 처리하지 못 했어요.';
+      if (response.ok) form.reset();
+    } catch {
+      status.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

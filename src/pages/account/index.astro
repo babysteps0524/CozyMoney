@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="내 계정 | CozyMoney 코지머니"
+  description="CozyMoney 계정 상태를 확인합니다."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        YOUR ACCOUNT
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        내 계정
+      </h1>
+      <p
+        id="account-status"
+        m="0"
+        mt="4"
+        text="sm text-muted dark:dark-text-muted"
+        leading="7"
+        role="status"
+        aria-live="polite"
+      >
+        로그인 상태를 확인하고 있어요.
+      </p>
+      <a
+        id="account-login"
+        href="/login/"
+        class="cm-button-primary"
+        mt="5"
+        inline-flex
+        px="5"
+        py="3"
+        hidden
+        no-underline
+      >
+        로그인
+      </a>
+      <div id="account-details" mt="5" hidden>
+        <p m="0" text="sm text-muted dark:dark-text-muted">
+          로그인 이메일
+        </p>
+        <p id="account-email" m="0" mt="1" font="700"></p>
+        <button
+          id="logout-button"
+          class="cm-button-secondary"
+          mt="5"
+          px="5"
+          py="3"
+          type="button"
+        >
+          로그아웃
+        </button>
+        <details mt="8" border="t border dark:dark-border" pt="5">
+          <summary cursor-pointer text="sm text-danger" font="700">
+            계정 삭제
+          </summary>
+          <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="6">
+            계정을 삭제하면 로그인 정보와 연결된 인증 토큰이 삭제됩니다. 이
+            작업은 되돌릴 수 없습니다.
+          </p>
+          <form id="delete-account-form" mt="4" flex="~ col" gap="3">
+            <label class="cm-label" for="delete-password">
+              현재 비밀번호
+            </label>
+            <input
+              class="cm-input"
+              id="delete-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="128"
+            />
+            <label flex="~" items-start gap="2" text="sm">
+              <input name="confirm" type="checkbox" required mt="1" />
+              계정 삭제가 되돌릴 수 없다는 점을 확인했습니다.
+            </label>
+            <button class="cm-button-secondary" type="submit" py="3">
+              계정 영구 삭제
+            </button>
+            <p
+              id="delete-status"
+              m="0"
+              text="sm"
+              leading="6"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+        </details>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  function initializeAccountPage() {
+    const status = document.querySelector<HTMLElement>('#account-status');
+    const details = document.querySelector<HTMLElement>('#account-details');
+    const loginLink = document.querySelector<HTMLElement>('#account-login');
+    const email = document.querySelector<HTMLElement>('#account-email');
+    const logoutButton =
+      document.querySelector<HTMLButtonElement>('#logout-button');
+    const deleteForm = document.querySelector<HTMLFormElement>(
+      '#delete-account-form',
+    );
+    const deleteStatus = document.querySelector<HTMLElement>('#delete-status');
+    const deleteButton = deleteForm?.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    );
+
+    async function loadSession() {
+      if (!status || !details || !loginLink || !email) return;
+      try {
+        const response = await fetch('/api/auth/session', {
+          credentials: 'same-origin',
+        });
+        const result = await response.json();
+        if (!result.user) {
+          status.textContent =
+            '로그인 상태가 아닙니다. 로그인한 뒤 다시 방문해 주세요.';
+          loginLink.hidden = false;
+          return;
+        }
+        status.textContent = '로그인되어 있습니다.';
+        email.textContent = result.user.email;
+        details.hidden = false;
+      } catch {
+        status.textContent =
+          '계정 정보를 불러오지 못 했어요. 잠시 후 다시 시도해 주세요.';
+      }
+    }
+
+    logoutButton?.addEventListener('click', async () => {
+      if (!logoutButton || !status || !details) return;
+      logoutButton.disabled = true;
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'same-origin',
+        });
+        if (!response.ok) throw new Error('Logout failed');
+        window.location.assign('/login/');
+      } catch {
+        status.textContent = '로그아웃하지 못 했어요. 다시 시도해 주세요.';
+        logoutButton.disabled = false;
+      }
+    });
+
+    deleteForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!deleteForm || !deleteStatus || !deleteButton) return;
+      const formData = new FormData(deleteForm);
+      if (formData.get('confirm') !== 'on') {
+        deleteStatus.textContent = '계정 삭제 확인란을 선택해 주세요.';
+        return;
+      }
+      deleteButton.disabled = true;
+      deleteStatus.textContent = '계정을 삭제하고 있어요.';
+      try {
+        const response = await fetch('/api/auth/account', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ password: formData.get('password') }),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          deleteStatus.textContent =
+            result.error || '계정을 삭제하지 못 했어요.';
+          deleteButton.disabled = false;
+          return;
+        }
+        window.location.assign('/signup/?account-deleted=1');
+      } catch {
+        deleteStatus.textContent =
+          '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+        deleteButton.disabled = false;
+      }
+    });
+
+    void loadSession();
+  }
+
+  document.addEventListener('astro:page-load', initializeAccountPage);
+</script>

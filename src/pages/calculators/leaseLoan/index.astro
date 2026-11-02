@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import LeaseLoanCalculator from '../../../features/calculators/lease-loan/LeaseLoanCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.leaseLoan;
+---
+
+<CalculatorPage definition={definition}>
+  <LeaseLoanCalculator />
+</CalculatorPage>

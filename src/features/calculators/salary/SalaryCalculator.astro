@@ -1,0 +1,568 @@
+---
+---
+
+<div grid="~ cols-1 lg:cols-2" gap="4 md:6" items-start>
+  <section class="cm-card" p="5 md:7">
+    <h2 m="0" text="lg md:xl" font="750">
+      급여 입력
+    </h2>
+    <p m="0" mt="1" text="sm text-muted dark:dark-text-muted">
+      실제 급여명세서와 계약조건에 맞춰 입력하면 더 현실적인 추정값을 확인할 수
+      있습니다.
+    </p>
+
+    <form id="salary-form" mt="6">
+      <div
+        grid="~ cols-2"
+        gap="2"
+        p="1"
+        rounded="xl"
+        bg="surface-subtle dark:dark-surface-subtle"
+      >
+        <label>
+          <input
+            id="salary-type-annual"
+            type="radio"
+            name="salaryType"
+            value="annual"
+            checked
+            sr-only
+          />
+          <span
+            id="salary-type-annual-label"
+            class="cm-button-secondary"
+            block
+            py="2.5"
+            text="center sm"
+          >
+            연봉 입력
+          </span>
+        </label>
+        <label>
+          <input
+            id="salary-type-monthly"
+            type="radio"
+            name="salaryType"
+            value="monthly"
+            sr-only
+          />
+          <span
+            id="salary-type-monthly-label"
+            class="cm-button-secondary"
+            block
+            py="2.5"
+            text="center sm"
+          >
+            월급 입력
+          </span>
+        </label>
+      </div>
+
+      <label class="cm-label" for="salary" mt="5">
+        연봉 또는 월급
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="급여 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input"
+            id="salary"
+            type="text"
+            inputmode="numeric"
+            value="40,000,000"
+            data-number-input
+            data-step="100000"
+            data-min="1"
+            data-decimal="false"
+            pr="12"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="급여 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+
+      <fieldset mt="5" border="0" p="0">
+        <legend class="cm-label">퇴직금</legend>
+        <div grid="~ cols-2" gap="2">
+          <label>
+            <input
+              id="retirement-separate"
+              type="radio"
+              name="retirement"
+              value="separate"
+              checked
+              sr-only
+            />
+            <span
+              id="retirement-separate-label"
+              class="cm-button-secondary"
+              block
+              py="2.5"
+              text="center sm"
+            >
+              별도
+            </span>
+          </label>
+          <label>
+            <input
+              id="retirement-included"
+              type="radio"
+              name="retirement"
+              value="included"
+              sr-only
+            />
+            <span
+              id="retirement-included-label"
+              class="cm-button-secondary"
+              block
+              py="2.5"
+              text="center sm"
+            >
+              포함
+            </span>
+          </label>
+        </div>
+        <p m="0" mt="2" text="xs text-subtle dark:dark-text-subtle" leading="6">
+          퇴직금 포함을 선택하면 연봉 입력 시 연봉을 13으로 나누고, 월급 입력 시
+          입력한 월급을 계약상 월 지급액으로 봅니다.
+        </p>
+      </fieldset>
+
+      <label class="cm-label" for="tax-free" mt="5">
+        비과세액(월)
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="비과세액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input"
+            id="tax-free"
+            type="text"
+            inputmode="numeric"
+            value="200,000"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+            pr="12"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="비과세액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+
+      <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+        <div>
+          <label class="cm-label" for="dependents">
+            부양가족 수(본인 포함)
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="부양가족 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <input
+              class="cm-input"
+              id="dependents"
+              type="text"
+              inputmode="numeric"
+              value="1"
+              data-number-input
+              data-step="1"
+              data-min="1"
+              data-decimal="false"
+              text="center"
+            />
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="부양가족 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="cm-label" for="children">
+            8~20세 자녀 수
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="자녀 수 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <input
+              class="cm-input"
+              id="children"
+              type="text"
+              inputmode="numeric"
+              value="0"
+              data-number-input
+              data-step="1"
+              data-min="0"
+              data-decimal="false"
+              text="center"
+            />
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="자녀 수 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div grid="~ cols-1 sm:cols-2" gap="3" mt="6">
+        <button type="submit" class="cm-button-primary" py="3.5">
+          계산하기
+        </button>
+        <button id="reset" type="button" class="cm-button-secondary" py="3.5">
+          초기화
+        </button>
+      </div>
+      <p
+        id="error"
+        hidden
+        m="0"
+        mt="4"
+        rounded="xl"
+        bg="danger-surface dark:dark-danger-surface"
+        px="4"
+        py="3"
+        text="sm danger-text dark:dark-danger-text"
+      ></p>
+    </form>
+  </section>
+
+  <section
+    id="result"
+    class="cm-card"
+    aria-live="polite"
+    aria-atomic="true"
+    p="5 md:7"
+    lg="sticky top-24"
+  >
+    <div flex="~" items-center justify-between gap="3" mb="5">
+      <div>
+        <p m="0" text="xs" font="700" text-primary>
+          RESULT
+        </p>
+        <h2 m="0" mt="1" text="lg md:xl" font="750">
+          예상 실수령액
+        </h2>
+      </div>
+      <button
+        id="copy"
+        type="button"
+        class="cm-button-secondary"
+        px="3"
+        py="2"
+        text="xs sm:sm"
+      >
+        결과 복사
+      </button>
+    </div>
+
+    <div rounded="2xl" bg="primary/10 dark:dark-primary-surface" p="5">
+      <p m="0" text="sm text-muted dark:dark-text-muted">
+        예상 월 실수령액
+      </p>
+      <strong
+        id="take-home"
+        block
+        mt="2"
+        text="2xl md:3xl"
+        font="800"
+        text-primary
+      >
+        -
+      </strong>
+    </div>
+
+    <div grid="~ cols-2" gap="3" mt="3">
+      <div class="cm-result">
+        <p m="0" text="sm text-muted dark:dark-text-muted">
+          1일 8시간 기준 일급
+        </p>
+        <strong id="daily-wage-8h" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+      <div class="cm-result">
+        <p m="0" text="sm text-muted dark:dark-text-muted">
+          예상 시급
+        </p>
+        <strong id="hourly-wage" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+    </div>
+
+    <div grid="~ cols-2" gap="3" mt="3">
+      <div class="cm-result">
+        <p m="0" text="sm text-muted dark:dark-text-muted">
+          세전 월 급여
+        </p>
+        <strong id="monthly" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+      <div class="cm-result">
+        <p m="0" text="sm text-muted dark:dark-text-muted">
+          예상 연간 실수령
+        </p>
+        <strong id="annual-take-home" block mt="2" text="lg">
+          -
+        </strong>
+      </div>
+    </div>
+
+    <div mt="3" rounded="xl" border="1 border-border dark:dark-border" p="4">
+      <div flex="~" justify-between gap="3" text="sm">
+        <span>국민연금</span>
+        <strong id="pension">-</strong>
+      </div>
+      <div flex="~" justify-between gap="3" mt="2" text="sm">
+        <span>건강보험</span>
+        <strong id="health">-</strong>
+      </div>
+      <div flex="~" justify-between gap="3" mt="2" text="sm">
+        <span>장기요양</span>
+        <strong id="care">-</strong>
+      </div>
+      <div flex="~" justify-between gap="3" mt="2" text="sm">
+        <span>고용보험</span>
+        <strong id="employment">-</strong>
+      </div>
+      <div flex="~" justify-between gap="3" mt="2" text="sm">
+        <span>소득세</span>
+        <strong id="income-tax">-</strong>
+      </div>
+      <div flex="~" justify-between gap="3" mt="2" text="sm">
+        <span>지방소득세</span>
+        <strong id="local-tax">-</strong>
+      </div>
+      <div
+        flex="~"
+        justify-between
+        gap="3"
+        mt="3"
+        pt="3"
+        border-t="1 border dark:dark-border"
+        font="750"
+      >
+        <span>공제액 합계</span>
+        <strong id="total-deductions">-</strong>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  import { calculateSalary, formatWon } from './salary';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+
+  const form = document.querySelector<HTMLFormElement>('#salary-form');
+  const salary = document.querySelector<HTMLInputElement>('#salary');
+  const taxFree = document.querySelector<HTMLInputElement>('#tax-free');
+  const dependents = document.querySelector<HTMLInputElement>('#dependents');
+  const children = document.querySelector<HTMLInputElement>('#children');
+  const takeHome = document.querySelector<HTMLElement>('#take-home');
+  const monthly = document.querySelector<HTMLElement>('#monthly');
+  const annualTakeHome =
+    document.querySelector<HTMLElement>('#annual-take-home');
+  const dailyWage8h = document.querySelector<HTMLElement>('#daily-wage-8h');
+  const hourlyWage = document.querySelector<HTMLElement>('#hourly-wage');
+  const pension = document.querySelector<HTMLElement>('#pension');
+  const health = document.querySelector<HTMLElement>('#health');
+  const care = document.querySelector<HTMLElement>('#care');
+  const employment = document.querySelector<HTMLElement>('#employment');
+  const incomeTax = document.querySelector<HTMLElement>('#income-tax');
+  const localTax = document.querySelector<HTMLElement>('#local-tax');
+  const totalDeductions =
+    document.querySelector<HTMLElement>('#total-deductions');
+  const error = document.querySelector<HTMLElement>('#error');
+  const reset = document.querySelector<HTMLButtonElement>('#reset');
+  const copy = document.querySelector<HTMLButtonElement>('#copy');
+
+  const radio = (id: string) => document.querySelector<HTMLInputElement>(id);
+  const fmt = (value: number) => formatWon(value);
+
+  const render = () => {
+    if (!salary || !taxFree || !dependents || !children) return;
+    error!.hidden = true;
+    try {
+      const result = calculateSalary({
+        salary: readCalculatorNumber(form!, 'salary'),
+        salaryType: radio('#salary-type-monthly')?.checked
+          ? 'monthly'
+          : 'annual',
+        retirementType: radio('#retirement-included')?.checked
+          ? 'included'
+          : 'separate',
+        taxFreeMonthly: readCalculatorNumber(form!, 'tax-free'),
+        dependents: readCalculatorNumber(form!, 'dependents'),
+        children8To20: readCalculatorNumber(form!, 'children'),
+      });
+
+      takeHome!.textContent = fmt(result.monthlyTakeHome);
+      monthly!.textContent = fmt(result.monthlyGross);
+      annualTakeHome!.textContent = fmt(result.annualTakeHome);
+
+      const estimatedHourlyWage = result.monthlyGross / 209;
+      const estimatedDailyWage8h = estimatedHourlyWage * 8;
+      hourlyWage!.textContent = fmt(estimatedHourlyWage);
+      dailyWage8h!.textContent = fmt(estimatedDailyWage8h);
+      pension!.textContent = fmt(result.nationalPension);
+      health!.textContent = fmt(result.healthInsurance);
+      care!.textContent = fmt(result.longTermCare);
+      employment!.textContent = fmt(result.employmentInsurance);
+      incomeTax!.textContent = fmt(result.incomeTax);
+      localTax!.textContent = fmt(result.localIncomeTax);
+      totalDeductions!.textContent = fmt(result.totalDeductions);
+    } catch (e) {
+      error!.textContent =
+        e instanceof Error ? e.message : '계산 중 오류가 발생했습니다.';
+      error!.hidden = false;
+    }
+  };
+
+  const syncSalaryType = () => {
+    const monthlyMode = radio('#salary-type-monthly')?.checked ?? false;
+    if (salary) {
+      salary.dataset.step = monthlyMode ? '10000' : '100000';
+      salary.value = monthlyMode ? '3,333,333' : '40,000,000';
+    }
+  };
+
+  const setSelectedStyles = () => {
+    const pairs = [
+      ['#salary-type-annual', '#salary-type-annual-label'],
+      ['#salary-type-monthly', '#salary-type-monthly-label'],
+      ['#retirement-separate', '#retirement-separate-label'],
+      ['#retirement-included', '#retirement-included-label'],
+    ];
+    pairs.forEach(([input, label]) => {
+      const checked = document.querySelector<HTMLInputElement>(input)?.checked;
+      const el = document.querySelector<HTMLElement>(label);
+      if (el) {
+        el.classList.toggle('bg-primary', !!checked);
+        el.classList.toggle('text-white', !!checked);
+        el.classList.toggle('border-primary', !!checked);
+        el.classList.toggle('bg-surface', !checked);
+        el.classList.toggle('dark:bg-dark-surface-muted', !checked);
+      }
+    });
+  };
+
+  if (form && salary && taxFree && dependents && children && reset && copy) {
+    document
+      .querySelectorAll<HTMLInputElement>('input[name="salaryType"]')
+      .forEach((input) => {
+        input.addEventListener('change', () => {
+          syncSalaryType();
+          setSelectedStyles();
+        });
+      });
+    document
+      .querySelectorAll<HTMLInputElement>('input[name="retirement"]')
+      .forEach((input) => {
+        input.addEventListener('change', () => {
+          setSelectedStyles();
+        });
+      });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      render();
+    });
+
+    reset.addEventListener('click', () => {
+      radio('#salary-type-annual')!.checked = true;
+      radio('#retirement-separate')!.checked = true;
+      salary.value = '40,000,000';
+      taxFree.value = '200,000';
+      dependents.value = '1';
+      children.value = '0';
+      setSelectedStyles();
+      render();
+    });
+
+    copy.addEventListener('click', async () => {
+      const text = [
+        `연봉/월급: ${salary.value}원`,
+        `월 실수령액: ${takeHome?.textContent}`,
+        `세전 월 급여: ${monthly?.textContent}`,
+        `공제액 합계: ${totalDeductions?.textContent}`,
+      ].join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        copy.textContent = '복사 완료';
+        setTimeout(() => (copy.textContent = '결과 복사'), 1000);
+      } catch {
+        copy.textContent = '복사 실패';
+      }
+    });
+
+    bindCalculatorInputs(form, render, { change: true });
+    setSelectedStyles();
+    render();
+  }
+</script>

@@ -1,0 +1,296 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-acquisition-tax min-w="0" w="full">
+  <div id="acquisition-fields" grid="~ cols-1 md:cols-2" gap="4" mt="6"></div>
+
+  <div
+    id="acquisition-result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="6"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p m="0" class="cm-help-text">
+      예상 취득 관련 세금
+    </p>
+    <div
+      id="acquisition-total"
+      mt="2"
+      text="2xl md:3xl"
+      font="800"
+      text-primary
+    >
+      -
+    </div>
+    <div
+      id="acquisition-detail"
+      mt="3"
+      class="cm-help-text"
+      text="sm"
+      leading="7"
+    ></div>
+    <CalculatorResultCopy targets="#acquisition-result" />
+  </div>
+
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button
+      id="acquisition-calculate"
+      type="button"
+      class="cm-button-primary"
+      py="3"
+    >
+      계산하기
+    </button>
+    <button
+      id="acquisition-reset"
+      type="button"
+      class="cm-button-secondary"
+      py="3"
+    >
+      초기화
+    </button>
+  </div>
+
+  <div mt="8" grid="~ cols-1 lg:cols-2" gap="4">
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        이 계산기의 특징
+      </h3>
+      <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="7">
+        기존의 ‘취득가액 × 임의 세율’ 방식 대신 취득원인과 주택 여부를 구분하고,
+        주택은 6억원·9억원 구간과 주택 수·조정대상지역에 따른 대표적인
+        중과세율을 반영합니다.
+      </p>
+    </section>
+    <section
+      rounded="2xl"
+      border="1 border dark:dark-border"
+      bg="surface-muted dark:dark-surface-muted"
+      p="5"
+    >
+      <h3 m="0" text="sm" font="750">
+        계산 순서
+      </h3>
+      <ol
+        m="0"
+        mt="3"
+        pl="5"
+        text="sm text-muted dark:dark-text-muted"
+        leading="7"
+      >
+        <li>취득 당시 과세표준을 확인합니다.</li>
+        <li>취득원인과 부동산 종류에 따른 기본세율을 적용합니다.</li>
+        <li>주택이면 주택 수와 조정대상지역 여부를 반영합니다.</li>
+        <li>생애최초 감면 등 입력한 감면요건을 반영합니다.</li>
+        <li>지방교육세·농어촌특별세를 별도로 추정해 합산합니다.</li>
+      </ol>
+    </section>
+  </div>
+
+  <section
+    mt="4"
+    rounded="2xl"
+    border="1 danger-text/20 dark:dark-border"
+    bg="danger-surface dark:dark-danger-surface"
+    p="5"
+  >
+    <h3 m="0" text="sm" font="750">
+      주의사항
+    </h3>
+    <ul
+      m="0"
+      mt="3"
+      pl="5"
+      text="sm text-muted dark:dark-text-muted"
+      leading="7"
+    >
+      <li>
+        실제 과세표준은 취득 당시 가액에 법정 포함비용 등을 반영해 결정될 수
+        있습니다.
+      </li>
+      <li>
+        일시적 2주택, 저가주택, 중과 배제 주택, 임대사업자, 법인, 증여 중과 등은
+        개별 요건에 따라 결과가 달라질 수 있습니다.
+      </li>
+      <li>
+        지방교육세와 농어촌특별세는 취득원인·세율·면적 등에 따라 계산방법이
+        달라질 수 있어 참고용으로 표시합니다.
+      </li>
+      <li>
+        실제 신고 전에는 취득일 현재의 지방세법·지방세특례제한법과 관할
+        지방자치단체의 안내를 확인하세요.
+      </li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+  import {
+    calculateAcquisitionTax,
+    type AcquisitionAsset,
+    type AcquisitionCause,
+  } from './acquisition';
+
+  const root = document.querySelector<HTMLElement>('[data-acquisition-tax]');
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#acquisition-fields')!;
+    const total = root.querySelector<HTMLElement>('#acquisition-total')!;
+    const detail = root.querySelector<HTMLElement>('#acquisition-detail')!;
+    const $ = (id: string) =>
+      root.querySelector<HTMLInputElement | HTMLSelectElement>('#' + id);
+    const n = (id: string) => readCalculatorNumber(root, id);
+    const won = (v: number) => Math.round(v).toLocaleString('ko-KR') + '원';
+
+    const field = (
+      id: string,
+      label: string,
+      value: string,
+      suffix = '원',
+    ) => /* html */ `<div class="cm-field">
+      <label class="cm-label" for="${id}">${label}</label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="${label} 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="${id}"
+            type="text"
+            inputmode="numeric"
+            value="${value}"
+            data-default-value="${value}"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+          />${suffix
+            ? /* html */ `<span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+                >${suffix}</span
+              >`
+            : ''}
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="${label} 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>`;
+    const select = (
+      id: string,
+      label: string,
+      options: string[],
+    ) => /* html */ `<label class="cm-field"
+      ><span class="cm-label">${label}</span
+      ><select class="cm-input" id="${id}">
+        ${options.map((x) => `<option>${x}</option>`).join('')}
+      </select></label
+    >`;
+    const checkbox = (id: string, label: string) => /* html */ `<label
+      flex="~"
+      items-center
+      gap="3"
+      rounded="xl"
+      border="1 border dark:dark-border"
+      p="4"
+      ><input id="${id}" type="checkbox" /><span text="sm"
+        >${label}</span
+      ></label
+    >`;
+
+    fields.innerHTML =
+      field('price', '취득가액·과세표준', '500000000') +
+      select('cause', '취득원인', ['매매', '증여', '상속', '원시취득']) +
+      select('asset', '부동산 종류', [
+        '주택',
+        '오피스텔',
+        '농지',
+        '주택 외 부동산',
+      ]) +
+      select('houseCount', '취득 후 주택 수', [
+        '1주택',
+        '2주택',
+        '3주택',
+        '4주택 이상',
+      ]) +
+      checkbox('regulated', '조정대상지역 주택') +
+      checkbox('over85', '전용면적 85㎡ 초과') +
+      checkbox('corporation', '법인 취득') +
+      checkbox('firstHome', '생애최초 주택 구입') +
+      checkbox('populationDecline', '인구감소지역 생애최초');
+
+    const calc = () => {
+      const causeMap: Record<string, AcquisitionCause> = {
+        매매: 'purchase',
+        증여: 'gift',
+        상속: 'inheritance',
+        원시취득: 'original',
+      };
+      const assetMap: Record<string, AcquisitionAsset> = {
+        주택: 'house',
+        오피스텔: 'officetel',
+        농지: 'farmland',
+        '주택 외 부동산': 'other',
+      };
+      const result = calculateAcquisitionTax({
+        price: n('price'),
+        cause: causeMap[$('cause')?.value ?? '매매'] ?? 'purchase',
+        asset: assetMap[$('asset')?.value ?? '주택'] ?? 'house',
+        houseCount:
+          Number(($('houseCount')?.value ?? '1주택').replace(/\D/g, '')) >= 4
+            ? 4
+            : (Number(
+                ($('houseCount')?.value ?? '1주택').replace(/\D/g, ''),
+              ) as 1 | 2 | 3),
+        regulatedArea: ($('regulated') as HTMLInputElement)?.checked ?? false,
+        areaOver85: ($('over85') as HTMLInputElement)?.checked ?? false,
+        corporation: ($('corporation') as HTMLInputElement)?.checked ?? false,
+        firstHome: ($('firstHome') as HTMLInputElement)?.checked ?? false,
+        firstHomePopulationDecline:
+          ($('populationDecline') as HTMLInputElement)?.checked ?? false,
+      });
+      total.textContent = won(result.totalTax);
+      detail.innerHTML = `취득세 ${won(result.acquisitionTax)} · 지방교육세 ${won(result.localEducationTax)} · 농어촌특별세 ${won(result.ruralSpecialTax)}<br />적용 취득세율 ${(result.acquisitionRate * 100).toFixed(2)}% · 과세표준 ${won(result.taxableBase)}<br />${result.firstHomeReduction > 0 ? `생애최초 감면 ${won(result.firstHomeReduction)} 반영 · ` : ''}${result.explanation}`;
+    };
+    const reset = () => {
+      fields.querySelectorAll<HTMLInputElement>('input').forEach((input) => {
+        if (input.type === 'checkbox') input.checked = false;
+        else input.value = input.dataset.defaultValue ?? '';
+      });
+      fields
+        .querySelectorAll<HTMLSelectElement>('select')
+        .forEach((select) => (select.selectedIndex = 0));
+      calc();
+    };
+    root
+      .querySelector('#acquisition-calculate')
+      ?.addEventListener('click', calc);
+    root.querySelector('#acquisition-reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc, { change: true });
+    calc();
+  }
+</script>

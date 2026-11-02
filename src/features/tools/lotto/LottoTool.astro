@@ -1,0 +1,36 @@
+<div>
+  <div flex="~ wrap" items-center justify-between gap="3" mb="5">
+    <div>
+      <p m="0" text="sm" font="700" text-primary>
+        RANDOM TOOL
+      </p>
+      <h2 m="0" mt="1" text="xl md:2xl" font="800">
+        로또 번호 생성
+      </h2>
+    </div>
+    <select
+      id="lotto-count"
+      class="cm-input"
+      w="auto"
+      min-w="32"
+      aria-label="게임 수"
+    >
+      <option value="1">1게임</option>
+      <option value="3">3게임</option>
+      <option value="5">5게임</option>
+      <option value="10">10게임</option>
+    </select>
+  </div>
+  <div id="lotto-results" grid="~ cols-1 md:cols-2" gap="3"></div>
+  <div flex="~ wrap" gap="2" mt="5">
+    <button id="lotto-generate" class="cm-button-primary" px="5" py="3">
+      새 번호 생성
+    </button>
+    <button id="lotto-copy" class="cm-button-secondary" px="5" py="3">
+      결과 복사
+    </button>
+  </div>
+  <p id="lotto-note" m="0" mt="4" text="sm text-muted dark:dark-text-muted">
+    무작위로 1~45에서 6개를 선택합니다. 당첨 확률을 높이는 기능은 아닙니다.
+  </p>
+</div>

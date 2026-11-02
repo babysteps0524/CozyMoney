@@ -1,0 +1,681 @@
+---
+---
+
+<div
+  id="legal-scrivener-calculator"
+  class="cm-card overflow-hidden"
+  data-calculator
+>
+  <div
+    bg="surface-muted dark:dark-surface"
+    p="4 sm:6 md:7"
+    border="0 b solid border dark:dark-border"
+  >
+    <div>
+      <div
+        grid="~ cols-2"
+        gap="2"
+        p="1"
+        rounded="xl"
+        bg="surface-subtle dark:dark-surface-subtle"
+        border="1 solid border dark:dark-border"
+      >
+        <button
+          type="button"
+          data-property="house"
+          aria-pressed="true"
+          class="cm-button-primary"
+          p="3"
+          text="sm"
+          sm="text-base"
+        >
+          주택
+        </button>
+        <button
+          type="button"
+          data-property="building"
+          aria-pressed="false"
+          class="cm-button-secondary"
+          p="3"
+          text="sm"
+          sm="text-base"
+        >
+          그 외 건물
+        </button>
+      </div>
+      <p
+        m="0"
+        mt="3"
+        text="xs sm:sm text-muted dark:dark-text-muted"
+        leading="6"
+      >
+        등기 대상 부동산의 종류를 선택하면 인지세 비과세 기준을 반영합니다.
+      </p>
+    </div>
+
+    <div grid="~ cols-1 md:cols-2" gap="3 sm:4" mt="5">
+      <div flex="~ col" gap="2" class="cm-field">
+        <label text="sm" font="700" for="legal-taxable-base">
+          과세표준
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items="center" gap="2">
+          <button
+            type="button"
+            id="legal-taxable-decrease"
+            class="cm-step-button"
+            data-step-direction="-1"
+            aria-label="과세표준 100만원 감소"
+            title="100만원 감소"
+          >
+            −
+          </button>
+          <div relative>
+            <input
+              id="legal-taxable-base"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="예: 400,000,000"
+              value="400000000"
+              class="cm-input"
+              pl="2 sm:4"
+              pr="10 sm:14"
+              aria-describedby="legal-taxable-help"
+              data-number-input
+              data-step="1000000"
+              data-min="0"
+              data-decimal="false"
+            />
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-text-muted dark:text-dark-text-muted">
+              원
+            </span>
+          </div>
+          <button
+            type="button"
+            id="legal-taxable-increase"
+            class="cm-step-button"
+            data-step-direction="1"
+            aria-label="과세표준 100만원 증가"
+            title="100만원 증가"
+          >
+            +
+          </button>
+        </div>
+        <span
+          id="legal-taxable-help"
+          text="xs text-subtle dark:dark-text-subtle"
+          leading="5"
+        >
+          법무사 기본보수 계산 기준
+        </span>
+      </div>
+
+      <div flex="~ col" gap="2" class="cm-field">
+        <label text="sm" font="700" for="legal-stated-amount">
+          기재금액
+        </label>
+        <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items="center" gap="2">
+          <button
+            type="button"
+            id="legal-stated-decrease"
+            class="cm-step-button"
+            data-step-direction="-1"
+            aria-label="기재금액 100만원 감소"
+            title="100만원 감소"
+          >
+            −
+          </button>
+          <div relative>
+            <input
+              id="legal-stated-amount"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="예: 600,000,000"
+              value="600000000"
+              class="cm-input"
+              pl="2 sm:4"
+              pr="10 sm:14"
+              aria-describedby="legal-stated-help"
+              data-number-input
+              data-step="1000000"
+              data-min="0"
+              data-decimal="false"
+            />
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-text-muted dark:text-dark-text-muted">
+              원
+            </span>
+          </div>
+          <button
+            type="button"
+            id="legal-stated-increase"
+            class="cm-step-button"
+            data-step-direction="1"
+            aria-label="기재금액 100만원 증가"
+            title="100만원 증가"
+          >
+            +
+          </button>
+        </div>
+        <span
+          id="legal-stated-help"
+          text="xs text-subtle dark:dark-text-subtle"
+          leading="5"
+        >
+          인지세 계산 기준 계약서 금액
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div p="4 sm:6 md:7">
+    <div class="cm-divider" mb="5 sm:6" />
+
+    <section aria-labelledby="legal-fee-title">
+      <div flex="~ items-start sm:items-center justify-between" gap="3">
+        <div min-w="0">
+          <h2 id="legal-fee-title" m="0" text="lg" font="750">
+            등기 보수 항목
+          </h2>
+          <p
+            m="0"
+            mt="1"
+            text="xs sm:sm text-muted dark:dark-text-muted"
+            leading="5 sm:6"
+          >
+            여러 등기를 한 번에 계산할 수 있습니다.
+          </p>
+        </div>
+        <button
+          id="legal-add-fee"
+          type="button"
+          class="cm-button-secondary"
+          p="2.5 3"
+          text="sm"
+          whitespace-nowrap
+          shrink-0
+        >
+          + 항목 추가
+        </button>
+      </div>
+      <div id="legal-fee-list" mt="3" flex="~ col" gap="2.5"></div>
+    </section>
+
+    <div grid="~ cols-1 sm:cols-2" gap="2 sm:3" mt="5">
+      <label
+        class="cm-option"
+        p="3"
+        rounded="xl"
+        border="border 1 solid dark:dark-border"
+        bg="surface dark:dark-surface"
+        cursor="pointer"
+      >
+        <input id="legal-public-costs" type="checkbox" checked />
+        <span text="sm" font="600">
+          공공비용(인지·증지) 포함
+        </span>
+      </label>
+      <label
+        class="cm-option"
+        p="3"
+        rounded="xl"
+        border="border 1 solid dark:dark-border"
+        bg="surface dark:dark-surface"
+        cursor="pointer"
+      >
+        <input id="legal-vat" type="checkbox" checked />
+        <span text="sm" font="600">
+          부가가치세 10% 포함
+        </span>
+      </label>
+    </div>
+
+    <div flex="~ flex-col gap-2 justify-between" mt="5">
+      <div flex="~ items-center">
+        <button
+          id="legal-calculate"
+          type="button"
+          class="cm-button-primary"
+          p="3.5"
+          w="full sm:w-96"
+          text="base sm:lg"
+          font="750"
+        >
+          계산하기
+        </button>
+      </div>
+      <div flex="~ justify-end" gap="2">
+        <button
+          id="legal-reset"
+          type="button"
+          class="cm-button-secondary"
+          p="3"
+          w="auto"
+        >
+          초기화
+        </button>
+        <button
+          id="legal-copy"
+          type="button"
+          class="cm-button-secondary"
+          p="3"
+          w="auto"
+        >
+          결과 복사
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="legal-toast"
+      role="status"
+      aria-live="polite"
+      text="xs sm:sm"
+      text-primary
+      min-h="5"
+      text-align="right"
+    ></div>
+
+    <section
+      id="legal-result"
+      class="cm-surface"
+      mt="1"
+      p="4 sm:5"
+      aria-live="polite"
+      aria-labelledby="legal-result-title"
+    >
+      <div flex="~ items-start sm:items-center justify-between" gap="3">
+        <h2 id="legal-result-title" m="0" text="lg" font="750">
+          계산 결과
+        </h2>
+        <strong
+          id="legal-total"
+          text="xl sm:2xl md:3xl"
+          font="800"
+          text-primary
+          whitespace-nowrap
+        >
+          0원
+        </strong>
+      </div>
+      <div
+        id="legal-lines"
+        mt="4"
+        flex="~ col"
+        gap="2"
+        text="sm"
+        leading="6"
+      ></div>
+      <p
+        id="legal-explanation"
+        m="0"
+        mt="4"
+        pt="4"
+        border="0 t solid border dark:dark-border"
+        text="xs sm:sm text-muted dark:dark-text-muted"
+        leading="6"
+      ></p>
+    </section>
+
+    <div class="cm-divider" my="5 sm:6" />
+
+    <section>
+      <h2 m="0" text="lg" font="750">
+        계산 기준
+      </h2>
+      <ul
+        m="0"
+        mt="3"
+        pl="5"
+        text="sm text-muted dark:dark-text-muted"
+        leading="7"
+      >
+        <li>
+          부동산등기 기본보수는 과세표준액 구간별 누진 방식으로 계산합니다.
+        </li>
+        <li>담보권 추가 설정등기는 별도의 보수표를 적용합니다.</li>
+        <li>인지세는 계약서 기재금액과 주택 여부에 따라 달라집니다.</li>
+        <li>
+          취득세, 국민주택채권, 실제 교통비·일당 등은 이 계산기에 포함하지
+          않습니다.
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script>
+  import { readCalculatorNumber } from '../../../lib/calculator/dom';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  type FeeType =
+    | 'ownership'
+    | 'preservation'
+    | 'collateral'
+    | 'additionalCollateral'
+    | 'change'
+    | 'nameChange'
+    | 'cancellation'
+    | 'trust'
+    | 'trustCancellation';
+
+  type PropertyType = 'house' | 'building';
+
+  const root = document.querySelector<HTMLElement>('[data-calculator]');
+
+  if (root) {
+    const options: Array<[FeeType, string]> = [
+      ['ownership', '소유권 이전등기'],
+      ['preservation', '소유권 보존등기'],
+      ['collateral', '담보권 설정등기'],
+      ['additionalCollateral', '담보권 추가 설정등기'],
+      ['change', '권리의 변경·경정·회복등기'],
+      ['nameChange', '부동산·등기명의인 표시 변경·경정'],
+      ['cancellation', '말소등기'],
+      ['trust', '신탁등기'],
+      ['trustCancellation', '신탁등기 말소'],
+    ];
+
+    const taxableInput = root.querySelector<HTMLInputElement>(
+      '#legal-taxable-base',
+    )!;
+    const statedInput = root.querySelector<HTMLInputElement>(
+      '#legal-stated-amount',
+    )!;
+    const feeList = root.querySelector<HTMLElement>('#legal-fee-list')!;
+    const totalEl = root.querySelector<HTMLElement>('#legal-total')!;
+    const linesEl = root.querySelector<HTMLElement>('#legal-lines')!;
+    const explanationEl =
+      root.querySelector<HTMLElement>('#legal-explanation')!;
+    const toastEl = root.querySelector<HTMLElement>('#legal-toast')!;
+    const publicCostsInput = root.querySelector<HTMLInputElement>(
+      '#legal-public-costs',
+    )!;
+    const vatInput = root.querySelector<HTMLInputElement>('#legal-vat')!;
+    let property: PropertyType = 'house';
+    let items: Array<{ id: string; type: FeeType }> = [
+      { id: '1', type: 'ownership' },
+    ];
+    let nextId = 2;
+
+    const won = (value: number) =>
+      new Intl.NumberFormat('ko-KR').format(Math.round(value)) + '원';
+
+    const numberValue = (input: HTMLInputElement) =>
+      readCalculatorNumber(root, input.id);
+
+    const progressive = (
+      amount: number,
+      brackets: Array<{ limit: number; base: number; rate: number }>,
+      lastRate: number,
+    ) => {
+      const value = Math.max(0, amount);
+      for (let index = 0; index < brackets.length; index += 1) {
+        const bracket = brackets[index];
+        const previous = index === 0 ? 0 : brackets[index - 1].limit;
+        if (value <= bracket.limit) {
+          return Math.round(
+            bracket.base + Math.max(0, value - previous) * bracket.rate,
+          );
+        }
+      }
+      const last = brackets[brackets.length - 1];
+      return Math.round(last.base + (value - last.limit) * lastRate);
+    };
+
+    const calculateBasicFee = (type: FeeType, amount: number) => {
+      if (
+        type === 'ownership' ||
+        type === 'preservation' ||
+        type === 'collateral'
+      ) {
+        return progressive(
+          amount,
+          [
+            { limit: 50_000_000, base: 210_000, rate: 0 },
+            { limit: 100_000_000, base: 210_000, rate: 0.001 },
+            { limit: 300_000_000, base: 260_000, rate: 0.0009 },
+            { limit: 500_000_000, base: 440_000, rate: 0.0008 },
+            { limit: 1_000_000_000, base: 600_000, rate: 0.0007 },
+            { limit: 2_000_000_000, base: 950_000, rate: 0.0005 },
+            { limit: 20_000_000_000, base: 1_450_000, rate: 0.0004 },
+          ],
+          0.0001,
+        );
+      }
+
+      if (type === 'additionalCollateral') {
+        return progressive(
+          amount,
+          [
+            { limit: 50_000_000, base: 105_000, rate: 0 },
+            { limit: 200_000_000, base: 105_000, rate: 0.0005 },
+            { limit: 1_000_000_000, base: 180_000, rate: 0.0002 },
+            { limit: 10_000_000_000, base: 340_000, rate: 0.0001 },
+          ],
+          0.00005,
+        );
+      }
+
+      const fixed: Record<FeeType, number> = {
+        ownership: 0,
+        preservation: 0,
+        collateral: 0,
+        additionalCollateral: 0,
+        change: 120_000,
+        nameChange: 40_000,
+        cancellation: 80_000,
+        trust: 150_000,
+        trustCancellation: 50_000,
+      };
+      return fixed[type];
+    };
+
+    const stampTax = (amount: number) => {
+      if (property === 'house' && amount <= 100_000_000) return 0;
+      if (amount <= 10_000_000) return 0;
+      if (amount <= 30_000_000) return 20_000;
+      if (amount <= 50_000_000) return 40_000;
+      if (amount <= 100_000_000) return 70_000;
+      if (amount <= 1_000_000_000) return 150_000;
+      return 350_000;
+    };
+
+    const showToast = (message: string) => {
+      toastEl.textContent = message;
+      window.setTimeout(() => {
+        if (toastEl.textContent === message) toastEl.textContent = '';
+      }, 1800);
+    };
+
+    const renderItems = () => {
+      feeList.replaceChildren();
+
+      items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className =
+          'cm-surface p-3 sm:p-4 rounded-xl border border-border dark:border-dark-border';
+
+        const wrap = document.createElement('div');
+        wrap.className =
+          'grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-2 sm:gap-3 items-end';
+
+        const label = document.createElement('label');
+        label.className = 'flex flex-col gap-2 min-w-0';
+
+        const title = document.createElement('span');
+        title.className = 'text-xs font-700';
+        title.textContent = '보수 항목 ' + (index + 1);
+
+        const select = document.createElement('select');
+        select.className = 'cm-input';
+        select.dataset.id = item.id;
+
+        options.forEach(([value, text]) => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = text;
+          option.selected = value === item.type;
+          select.appendChild(option);
+        });
+
+        select.addEventListener('change', () => {
+          const target = items.find((entry) => entry.id === item.id);
+          if (target) target.type = select.value as FeeType;
+        });
+
+        label.append(title, select);
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'cm-button-secondary px-4 py-3';
+        remove.textContent = '삭제';
+        remove.disabled = items.length === 1;
+        remove.addEventListener('click', () => {
+          items = items.filter((entry) => entry.id !== item.id);
+          renderItems();
+        });
+
+        wrap.append(label, remove);
+        row.appendChild(wrap);
+        feeList.appendChild(row);
+      });
+    };
+
+    const calculate = () => {
+      const taxableBase = numberValue(taxableInput);
+      const statedAmount = numberValue(statedInput);
+      const feeLines = items.map((item) => ({
+        label: options.find(([value]) => value === item.type)?.[1] ?? '',
+        fee: calculateBasicFee(item.type, taxableBase),
+      }));
+
+      const baseFee = feeLines.reduce((sum, line) => sum + line.fee, 0);
+      const vat = vatInput.checked ? Math.round(baseFee * 0.1) : 0;
+      const stamp = publicCostsInput.checked ? stampTax(statedAmount) : 0;
+      const hasRegistration = items.some(
+        (item) => item.type !== 'trust' && item.type !== 'trustCancellation',
+      );
+      const registration =
+        publicCostsInput.checked && hasRegistration ? 18_000 : 0;
+      const total = baseFee + vat + stamp + registration;
+
+      linesEl.replaceChildren();
+
+      feeLines.forEach((line) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between gap-3';
+        const label = document.createElement('span');
+        label.textContent = line.label;
+        const value = document.createElement('strong');
+        value.textContent = won(line.fee);
+        row.append(label, value);
+        linesEl.appendChild(row);
+      });
+
+      const summary = [
+        ['법무사 보수 합계', baseFee],
+        ['부가가치세', vat],
+        ['인지세', stamp],
+        ['등기신청수수료', registration],
+      ];
+
+      summary.forEach(([labelText, value]) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between gap-3';
+        const label = document.createElement('span');
+        label.textContent = String(labelText);
+        const valueEl = document.createElement('span');
+        valueEl.textContent = won(Number(value));
+        row.append(label, valueEl);
+        linesEl.appendChild(row);
+      });
+
+      totalEl.textContent = won(total);
+      explanationEl.textContent =
+        '2024년 9월 12일 시행 법무사 보수기준의 부동산등기 기본보수 상한을 기준으로 계산했습니다. 실제 견적은 사건의 난이도, 가산보수, 대행료와 교통비·일당 등에 따라 달라질 수 있습니다.';
+    };
+
+    root
+      .querySelectorAll<HTMLButtonElement>('[data-property]')
+      .forEach((button) => {
+        button.addEventListener('click', () => {
+          property = button.dataset.property as PropertyType;
+          root
+            .querySelectorAll<HTMLButtonElement>('[data-property]')
+            .forEach((candidate) => {
+              const active = candidate.dataset.property === property;
+              candidate.setAttribute('aria-pressed', String(active));
+              candidate.className = active
+                ? 'cm-button-primary p-3 text-sm sm:text-base'
+                : 'cm-button-secondary p-3 text-sm sm:text-base';
+            });
+          calculate();
+        });
+      });
+
+    bindCalculatorInputs(root, calculate, { change: true });
+
+    root
+      .querySelector<HTMLButtonElement>('#legal-add-fee')
+      ?.addEventListener('click', () => {
+        items.push({ id: String(nextId), type: 'ownership' });
+        nextId += 1;
+        renderItems();
+      });
+
+    root
+      .querySelector<HTMLButtonElement>('#legal-calculate')
+      ?.addEventListener('click', () => {
+        calculate();
+        showToast('계산되었습니다.');
+      });
+
+    const reset = () => {
+      property = 'house';
+      items = [{ id: String(nextId), type: 'ownership' }];
+      nextId += 1;
+      taxableInput.value = '400,000,000';
+      statedInput.value = '600,000,000';
+      publicCostsInput.checked = true;
+      vatInput.checked = true;
+
+      root
+        .querySelectorAll<HTMLButtonElement>('[data-property]')
+        .forEach((button) => {
+          const active = button.dataset.property === property;
+          button.setAttribute('aria-pressed', String(active));
+          button.className = active
+            ? 'cm-button-primary p-3 text-sm sm:text-base'
+            : 'cm-button-secondary p-3 text-sm sm:text-base';
+        });
+
+      renderItems();
+      calculate();
+      showToast('초기화되었습니다.');
+    };
+
+    root
+      .querySelector<HTMLButtonElement>('#legal-reset')
+      ?.addEventListener('click', reset);
+
+    root
+      .querySelector<HTMLButtonElement>('#legal-copy')
+      ?.addEventListener('click', async () => {
+        const text = [
+          'CozyMoney 법무사 보수 계산 결과',
+          '과세표준: ' + won(numberValue(taxableInput)),
+          '기재금액: ' + won(numberValue(statedInput)),
+          '합계: ' + totalEl.textContent,
+        ].join('\n');
+
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('복사되었습니다.');
+        } catch {
+          showToast('복사에 실패했습니다.');
+        }
+      });
+
+    renderItems();
+    calculate();
+  }
+</script>

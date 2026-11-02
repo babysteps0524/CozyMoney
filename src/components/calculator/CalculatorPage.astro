@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../shared/Header.astro';
+import Footer from '../shared/Footer.astro';
+import CalculatorLayout from './CalculatorLayout.astro';
+import type { CalculatorDefinition } from '../../features/calculators/types';
+
+interface Props {
+  definition: CalculatorDefinition;
+}
+
+const { definition } = Astro.props;
+const { title, description, canonical } = definition;
+const pageTitle = title.includes('CozyMoney')
+  ? title
+  : `${title} | CozyMoney 코지머니`;
+---
+
+<BaseLayout title={pageTitle} description={description} canonical={canonical}>
+  <Header />
+  <CalculatorLayout definition={definition}>
+    <slot />
+    <slot name="after" slot="after" />
+  </CalculatorLayout>
+  <Footer />
+</BaseLayout>

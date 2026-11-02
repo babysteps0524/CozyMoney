@@ -1,0 +1,545 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="rent">
+  <div id="fields" gap="4">
+    <div
+      role="group"
+      aria-label="전월세 계산 유형"
+      grid="~ cols-1 sm:cols-3"
+      gap="2"
+      mb="5"
+    >
+      <button
+        type="button"
+        data-rent-mode="cost"
+        aria-pressed="true"
+        class="cm-button-primary"
+        py="3"
+      >
+        환산 주거비
+      </button>
+      <button
+        type="button"
+        data-rent-mode="jeonse-to-wolse"
+        aria-pressed="false"
+        class="cm-button-secondary"
+        py="3"
+      >
+        전세 → 월세
+      </button>
+      <button
+        type="button"
+        data-rent-mode="wolse-to-jeonse"
+        aria-pressed="false"
+        class="cm-button-secondary"
+        py="3"
+      >
+        월세 → 전세
+      </button>
+    </div>
+
+    <div data-mode-panel="cost">
+      <div grid="~ cols-1 md:cols-2" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="depositCost">
+            보증금
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="보증금 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="depositCost"
+                type="text"
+                inputmode="numeric"
+                value="10000000"
+                data-default-value="10000000"
+                data-number-input
+                data-step="100000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="보증금 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="monthlyCost">
+            월세
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="월세 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="monthlyCost"
+                type="text"
+                inputmode="numeric"
+                value="700000"
+                data-default-value="700000"
+                data-number-input
+                data-step="10000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="월세 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-mode-panel="jeonse-to-wolse" hidden>
+      <div grid="~ cols-1 md:cols-2" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="jeonseDeposit">
+            기존 전세 보증금
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="기존 전세 보증금 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="jeonseDeposit"
+                type="text"
+                inputmode="numeric"
+                value="200000000"
+                data-default-value="200000000"
+                data-number-input
+                data-step="1000000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="기존 전세 보증금 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="monthlyDeposit">
+            변경 후 월세 보증금
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="변경 후 보증금 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="monthlyDeposit"
+                type="text"
+                inputmode="numeric"
+                value="100000000"
+                data-default-value="100000000"
+                data-number-input
+                data-step="1000000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="변경 후 보증금 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-mode-panel="wolse-to-jeonse" hidden>
+      <div grid="~ cols-1 md:cols-2" gap="4">
+        <div class="cm-field">
+          <label class="cm-label" for="currentDeposit">
+            현재 보증금
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="현재 보증금 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="currentDeposit"
+                type="text"
+                inputmode="numeric"
+                value="50000000"
+                data-default-value="50000000"
+                data-number-input
+                data-step="1000000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="현재 보증금 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="currentMonthlyRent">
+            현재 월세
+          </label>
+          <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+            <button
+              type="button"
+              data-step-direction="-1"
+              aria-label="현재 월세 감소"
+              class="cm-step-button"
+            >
+              −
+            </button>
+            <div relative>
+              <input
+                class="cm-input pr-12"
+                id="currentMonthlyRent"
+                type="text"
+                inputmode="numeric"
+                value="500000"
+                data-default-value="500000"
+                data-number-input
+                data-step="10000"
+                data-min="0"
+                data-decimal="false"
+              />
+              <span
+                absolute
+                right-4
+                top="[50%]"
+                translate-y="[-50%]"
+                text="sm text-muted dark:dark-text-muted"
+              >
+                원
+              </span>
+            </div>
+            <button
+              type="button"
+              data-step-direction="1"
+              aria-label="현재 월세 증가"
+              class="cm-step-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="rate">
+        연 전월세 전환율
+      </label>
+      <div
+        grid="~ cols-[auto_minmax(0,1fr)_auto]"
+        items-center
+        gap="2"
+        max-w="md"
+      >
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="전월세 전환율 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="rate"
+            type="text"
+            inputmode="decimal"
+            value="5.5"
+            data-default-value="5.5"
+            data-number-input
+            data-step="0.1"
+            data-min="0"
+            data-decimal="true"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            %
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="전월세 전환율 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+      <p class="cm-help-text" text="sm" mt="1">
+        비교하려는 연간 전환율을 입력하세요. 법정 기준과 계약 조건은 별도로
+        확인해야 합니다.
+      </p>
+    </div>
+  </div>
+
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p id="result-label" class="cm-help-text" text="sm">
+      연간 환산 주거비
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div id="result-detail" class="cm-help-text" mt="3"></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import {
+    calculateJeonseToWolse,
+    calculateRentCost,
+    calculateWolseToJeonse,
+  } from './rent';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import {
+    formatCalculatorNumber,
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>('[data-calculator="rent"]');
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const label = root.querySelector<HTMLElement>('#result-label')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+    const modeButtons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-rent-mode]'),
+    );
+    const modePanels = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-mode-panel]'),
+    );
+    let mode = 'cost';
+
+    const setMode = (nextMode: string) => {
+      mode = nextMode;
+      modeButtons.forEach((button) => {
+        const active = button.dataset.rentMode === mode;
+        button.setAttribute('aria-pressed', String(active));
+        button.classList.toggle('cm-button-primary', active);
+        button.classList.toggle('cm-button-secondary', !active);
+      });
+      modePanels.forEach((panel) => {
+        panel.hidden = panel.dataset.modePanel !== mode;
+      });
+      calc();
+    };
+
+    const showError = (message: string) => {
+      out.textContent = '계산할 수 없습니다.';
+      detail.textContent = message;
+    };
+
+    const calc = () => {
+      const rate = readCalculatorNumber(root, 'rate');
+
+      if (mode === 'jeonse-to-wolse') {
+        label.textContent = '예상 월세';
+        const jeonseDeposit = readCalculatorNumber(root, 'jeonseDeposit');
+        const monthlyDeposit = readCalculatorNumber(root, 'monthlyDeposit');
+        const monthlyRent = calculateJeonseToWolse({
+          jeonseDeposit,
+          monthlyDeposit,
+          conversionRate: rate,
+        });
+
+        if (monthlyRent === null) {
+          showError(
+            '변경 후 보증금은 0 이상이어야 하며 기존 전세 보증금을 초과할 수 없습니다. 전환율은 0 이상으로 입력해 주세요.',
+          );
+          return;
+        }
+
+        out.textContent = formatCalculatorWon(monthlyRent);
+        detail.textContent = `전환 대상 금액: ${formatCalculatorWon(jeonseDeposit - monthlyDeposit)} · 연간 전환율: ${formatCalculatorNumber(rate, 2)}% · 연간 월세: ${formatCalculatorWon(monthlyRent * 12)} · 공식: (기존 전세 보증금 − 변경 후 보증금) × 전환율 ÷ 1,200`;
+        return;
+      }
+
+      if (mode === 'wolse-to-jeonse') {
+        label.textContent = '전세 전환 예상 보증금';
+        const deposit = readCalculatorNumber(root, 'currentDeposit');
+        const monthlyRent = readCalculatorNumber(root, 'currentMonthlyRent');
+        const jeonseDeposit = calculateWolseToJeonse({
+          deposit,
+          monthlyRent,
+          conversionRate: rate,
+        });
+
+        if (jeonseDeposit === null) {
+          showError(
+            '보증금과 월세는 0 이상이어야 합니다. 월세를 보증금으로 환산하려면 전환율을 0보다 크게 입력해 주세요.',
+          );
+          return;
+        }
+
+        out.textContent = formatCalculatorWon(jeonseDeposit);
+        detail.textContent = `현재 보증금: ${formatCalculatorWon(deposit)} · 현재 월세: ${formatCalculatorWon(monthlyRent)} · 연간 전환율: ${formatCalculatorNumber(rate, 2)}% · 공식: 현재 보증금 + (월세 × 1,200 ÷ 전환율)`;
+        return;
+      }
+
+      label.textContent = '연간 환산 주거비';
+      const {
+        annualDepositReturn,
+        annualizedMonthlyRent,
+        monthlyDepositReturn,
+        monthlyEquivalentCost,
+        annualCost,
+      } = calculateRentCost({
+        deposit: readCalculatorNumber(root, 'depositCost'),
+        depositRate: rate,
+        monthlyRent: readCalculatorNumber(root, 'monthlyCost'),
+      });
+
+      out.textContent = formatCalculatorWon(annualCost);
+      detail.textContent = `월 환산 주거비: ${formatCalculatorWon(monthlyEquivalentCost)} · 보증금 월 환산액: ${formatCalculatorWon(monthlyDepositReturn)} · 연간 월세: ${formatCalculatorWon(annualizedMonthlyRent)} · 보증금 연 환산액: ${formatCalculatorWon(annualDepositReturn)}`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      setMode('cost');
+    };
+
+    modeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.rentMode) setMode(button.dataset.rentMode);
+      });
+    });
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

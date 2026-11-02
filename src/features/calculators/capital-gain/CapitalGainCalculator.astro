@@ -1,0 +1,379 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="capitalGain">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="sale">
+        양도가액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="양도가액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="sale"
+            type="text"
+            inputmode="numeric"
+            value="700000000"
+            data-default-value="700000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="양도가액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="buy">
+        취득가액
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="취득가액 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="buy"
+            type="text"
+            inputmode="numeric"
+            value="500000000"
+            data-default-value="500000000"
+            data-number-input
+            data-step="100000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="취득가액 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="cost">
+        필요경비
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="필요경비 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="cost"
+            type="text"
+            inputmode="numeric"
+            value="10000000"
+            data-default-value="10000000"
+            data-number-input
+            data-step="10000"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="필요경비 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+  <div mt="5" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="acquisitionDate">
+        취득일
+      </label>
+      <input
+        class="cm-input"
+        id="acquisitionDate"
+        type="date"
+        value="2018-01-01"
+        data-default-value="2018-01-01"
+      />
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="saleDate">
+        양도일(예정일)
+      </label>
+      <input
+        class="cm-input"
+        id="saleDate"
+        type="date"
+        value="2026-10-16"
+        data-default-value="2026-10-16"
+      />
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="residenceYears">
+        실제 거주기간(년)
+      </label>
+      <input
+        class="cm-input"
+        id="residenceYears"
+        type="number"
+        min="0"
+        step="1"
+        value="2"
+        data-default-value="2"
+      />
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="houseCount">
+        양도일 현재 세대 보유 주택 수
+      </label>
+      <select class="cm-input" id="houseCount" data-default-value="1">
+        <option value="1">1주택</option>
+        <option value="2">2주택</option>
+        <option value="3">3주택 이상</option>
+      </select>
+    </div>
+
+    <div class="cm-field">
+      <label class="cm-label" for="isSingleHouseholdHome">
+        세대의 1주택인가요?
+      </label>
+      <select
+        class="cm-input"
+        id="isSingleHouseholdHome"
+        data-default-value="yes"
+      >
+        <option value="yes">예</option>
+        <option value="no">아니요</option>
+      </select>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="isRegulatedArea">
+        조정대상지역인가요?
+      </label>
+      <select class="cm-input" id="isRegulatedArea" data-default-value="no">
+        <option value="no">아니요</option>
+        <option value="yes">예</option>
+      </select>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="acquiredInRegulatedAreaAfter2017">
+        2017.8.3. 이후 조정대상지역에서 취득했나요?
+      </label>
+      <select
+        class="cm-input"
+        id="acquiredInRegulatedAreaAfter2017"
+        data-default-value="no"
+      >
+        <option value="no">아니요</option>
+        <option value="yes">예</option>
+      </select>
+    </div>
+  </div>
+  <p mt="4" class="cm-help-text" text="sm">
+    2026년 법령 규칙을 바탕으로 계산한 참고값입니다. 특례·경과규정은 별도 확인이
+    필요하며 실제 신고세액과 다를 수 있습니다.
+  </p>
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      계산 결과
+    </p>
+    <div id="result-value" mt="2" text="2xl md:3xl" font="800" text-primary>
+      -
+    </div>
+    <div id="result-detail" class="cm-help-text" mt="3"></div>
+    <div id="result-breakdown" mt="4" grid="~ cols-1 md:cols-2" gap="3"></div>
+  </div>
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { calculateCapitalGain } from './capital-gain';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+
+  import {
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="capitalGain"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const out = root.querySelector<HTMLElement>('#result-value')!;
+    const detail = root.querySelector<HTMLElement>('#result-detail')!;
+
+    const calc = () => {
+      const sale = readCalculatorNumber(root, 'sale');
+      const buy = readCalculatorNumber(root, 'buy');
+      const cost = readCalculatorNumber(root, 'cost');
+      const selected = (id: string) =>
+        root.querySelector<HTMLSelectElement>('#' + id)!.value;
+      let result: ReturnType<typeof calculateCapitalGain>;
+      try {
+        result = calculateCapitalGain({
+          salePrice: sale,
+          purchasePrice: buy,
+          costs: cost,
+          acquisitionDate:
+            root.querySelector<HTMLInputElement>('#acquisitionDate')!.value,
+          saleDate: root.querySelector<HTMLInputElement>('#saleDate')!.value,
+          residenceYears: readCalculatorNumber(root, 'residenceYears'),
+          householdHomeCount: Number(selected('houseCount')),
+          isDomesticHome: true,
+          isSingleHouseholdHome: selected('isSingleHouseholdHome') === 'yes',
+          isRegulatedArea: selected('isRegulatedArea') === 'yes',
+          acquiredInRegulatedAreaAfter2017:
+            selected('acquiredInRegulatedAreaAfter2017') === 'yes',
+          hasSpecialExemption: false,
+        });
+      } catch (error) {
+        out.textContent = '계산할 수 없습니다.';
+        detail.textContent =
+          error instanceof Error ? error.message : '입력값을 확인해 주세요.';
+        root.querySelector<HTMLElement>('#result-breakdown')?.replaceChildren();
+        return;
+      }
+      out.textContent = formatCalculatorWon(result.totalEstimatedTax);
+      detail.textContent = result.exemptAsSingleHome
+        ? '입력 조건상 1세대 1주택 비과세로 추정됩니다.'
+        : `양도차익: ${formatCalculatorWon(result.gain)} · 보유기간: ${result.holdingYears}년 · ${result.rateLabel} · 규칙 버전: ${result.ruleVersion}`;
+      const breakdown = root.querySelector<HTMLElement>('#result-breakdown')!;
+      const rows: Array<[string, string]> = [
+        [
+          '과세대상 양도차익',
+          formatCalculatorWon(result.taxableGainBeforeDeduction),
+        ],
+        [
+          '장기보유특별공제율',
+          `${(result.longTermDeductionRate * 100).toFixed(1)}%`,
+        ],
+        ['장기보유특별공제액', formatCalculatorWon(result.longTermDeduction)],
+        ['과세표준', formatCalculatorWon(result.taxableIncome)],
+        ['양도소득세', formatCalculatorWon(result.capitalGainsTax)],
+        ['지방소득세', formatCalculatorWon(result.localIncomeTax)],
+        [
+          '다주택 중과',
+          result.multiHomeSurchargeApplied ? '적용 추정' : '미적용 추정',
+        ],
+      ];
+      breakdown.replaceChildren(
+        ...rows.map(([label, value]) => {
+          const card = document.createElement('div');
+          card.className =
+            'rounded-xl border border-border p-4 dark:border-dark-border';
+          const heading = document.createElement('div');
+          heading.className =
+            'text-xs text-text-muted dark:text-dark-text-muted';
+          heading.textContent = label;
+          const amount = document.createElement('div');
+          amount.className = 'mt-1 font-700';
+          amount.textContent = value;
+          card.append(heading, amount);
+          return card;
+        }),
+      );
+      detail.textContent += `. ${result.warnings.join(' ')}`;
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      root
+        .querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+          '#acquisitionDate, #saleDate, #residenceYears, #houseCount, #isSingleHouseholdHome, #isRegulatedArea, #acquiredInRegulatedAreaAfter2017',
+        )
+        .forEach((input) => {
+          if (input.dataset.defaultValue !== undefined)
+            input.value = input.dataset.defaultValue;
+        });
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc, { change: true });
+    root
+      .querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+        '#acquisitionDate, #saleDate, #residenceYears, #houseCount, #isDomesticHome, #isSingleHouseholdHome, #isRegulatedArea, #acquiredInRegulatedAreaAfter2017',
+      )
+      .forEach((input) => input.addEventListener('change', calc));
+    calc();
+  }
+</script>

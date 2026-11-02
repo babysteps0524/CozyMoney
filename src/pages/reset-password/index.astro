@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+---
+
+<BaseLayout
+  title="비밀번호 재설정 | CozyMoney 코지머니"
+  description="CozyMoney 계정의 비밀번호를 안전하게 재설정합니다."
+  noindex={true}
+>
+  <Header />
+  <main class="cm-container" py="10 md:14">
+    <section class="cm-card" mx="auto" max-w="lg" p="6 md:8">
+      <p m="0" text="sm" font="700" text-primary>
+        SET A NEW PASSWORD
+      </p>
+      <h1 m="0" mt="2" text="2xl md:3xl" font="800">
+        비밀번호 재설정
+      </h1>
+      <p
+        id="reset-status"
+        m="0"
+        mt="3"
+        text="sm text-muted dark:dark-text-muted"
+        leading="6"
+        role="status"
+        aria-live="polite"
+      >
+        재설정 링크를 확인하고 있어요.
+      </p>
+      <form id="reset-form" mt="6" flex="~ col" gap="4" hidden>
+        <div class="cm-field">
+          <label class="cm-label" for="reset-password">
+            새 비밀번호
+          </label>
+          <input
+            class="cm-input"
+            id="reset-password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="12"
+            maxlength="128"
+          />
+          <p class="cm-help-text" mt="2">
+            12자 이상 128자 이하
+          </p>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="reset-password-confirm">
+            새 비밀번호 확인
+          </label>
+          <input
+            class="cm-input"
+            id="reset-password-confirm"
+            name="passwordConfirm"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="12"
+            maxlength="128"
+          />
+        </div>
+        <button class="cm-button-primary" type="submit" py="3">
+          비밀번호 변경
+        </button>
+      </form>
+      <div mt="5" flex="~ col" gap="2" text="sm">
+        <a
+          id="reset-login-link"
+          href="/login/"
+          text-primary
+          font="700"
+          underline
+          hidden
+        >
+          로그인으로 이동
+        </a>
+        <a
+          href="/forgot-password/"
+          text="text-muted dark:dark-text-muted"
+          underline
+        >
+          새 재설정 링크 요청
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const status = document.querySelector<HTMLElement>('#reset-status');
+  const form = document.querySelector<HTMLFormElement>('#reset-form');
+  const loginLink = document.querySelector<HTMLElement>('#reset-login-link');
+  const token = new URLSearchParams(window.location.search).get('token');
+  const button = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+
+  if (token && form) {
+    status && (status.textContent = '새 비밀번호를 입력해 주세요.');
+    form.hidden = false;
+  } else if (status) {
+    status.textContent =
+      '재설정 링크가 없거나 만료됐습니다. 비밀번호 찾기에서 새 링크를 요청해 주세요.';
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !status || !button || !token) return;
+    const formData = new FormData(form);
+    const password = String(formData.get('password') || '');
+    const confirmation = String(formData.get('passwordConfirm') || '');
+    if (password !== confirmation) {
+      status.textContent = '비밀번호가 서로 일치하지 않습니다.';
+      return;
+    }
+    button.disabled = true;
+    status.textContent = '비밀번호를 변경하고 있어요.';
+    try {
+      const response = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password }),
+      });
+      const result = await response.json();
+      status.textContent =
+        result.error || result.message || '비밀번호를 변경하지 못 했어요.';
+      if (response.ok) {
+        form.hidden = true;
+        if (loginLink) loginLink.hidden = false;
+      }
+    } catch {
+      status.textContent =
+        '서버에 연결하지 못 했어요. 잠시 후 다시 시도해 주세요.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

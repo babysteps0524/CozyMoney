@@ -1,0 +1,84 @@
+<div>
+  <p m="0" text="sm" font="700" text-primary>
+    TEXT COUNTER
+  </p>
+  <h2 m="0" mt="1" text="xl md:2xl" font="800">
+    글자 수 세기
+  </h2>
+  <p m="0" mt="3" text="sm text-muted dark:dark-text-muted" leading="6">
+    텍스트를 입력하거나 붙여넣으면 글자 수와 UTF-8 바이트가 바로 갱신됩니다.
+  </p>
+
+  <label block mt="5">
+    <span class="cm-label">텍스트 입력</span>
+    <textarea
+      id="text-counter-input"
+      class="cm-input"
+      rows="8"
+      placeholder="글자 수를 확인할 텍스트를 입력하거나 붙여넣으세요."
+      aria-describedby="text-counter-privacy"
+    ></textarea>
+  </label>
+
+  <p
+    id="text-counter-privacy"
+    m="0"
+    mt="2"
+    text="xs text-muted dark:dark-text-muted"
+    leading="5"
+  >
+    입력한 텍스트는 브라우저 안에서만 계산하며 별도로 저장하거나 전송하지
+    않습니다.
+  </p>
+
+  <div
+    id="text-counter-result"
+    grid="~ cols-2 sm:cols-3"
+    gap="3"
+    mt="5"
+    aria-live="polite"
+    aria-atomic="false"
+  >
+    {[
+      { label: '공백 포함 글자 수', id: 'text-counter-characters' },
+      { label: '공백 제외 글자 수', id: 'text-counter-no-space' },
+      { label: '단어 수', id: 'text-counter-words' },
+      { label: '줄 수', id: 'text-counter-lines' },
+      { label: '문단 수', id: 'text-counter-paragraphs' },
+      { label: 'UTF-8 바이트', id: 'text-counter-bytes' },
+      { label: '한글 음절 수', id: 'text-counter-korean' },
+    ].map(({ label, id }) => (
+      <div class="cm-card p-3 md:p-4">
+        <p m="0" text="xs text-muted dark:dark-text-muted" leading="5">
+          {label}
+        </p>
+        <p m="0" mt="2" text="xl md:2xl" font="800" tabular-nums>
+          <span id={id}>0</span>
+        </p>
+      </div>
+    ))}
+  </div>
+
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button
+      id="text-counter-copy"
+      type="button"
+      class="cm-button-primary"
+      py="3"
+    >
+      입력 내용 복사
+    </button>
+    <button
+      id="text-counter-clear"
+      type="button"
+      class="cm-button-secondary"
+      py="3"
+    >
+      초기화
+    </button>
+  </div>
+  <p m="0" mt="3" text="xs text-muted dark:dark-text-muted" leading="5">
+    문자 수는 유니코드 코드 포인트 기준입니다. UTF-8 바이트는 실제 인코딩 길이를
+    기준으로 계산합니다.
+  </p>
+</div>

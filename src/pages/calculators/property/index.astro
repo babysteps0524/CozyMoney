@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import PropertyTaxCalculator from '../../../features/calculators/property/PropertyTaxCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.property;
+---
+
+<CalculatorPage definition={definition}>
+  <PropertyTaxCalculator />
+</CalculatorPage>

@@ -1,0 +1,37 @@
+<div>
+  <p m="0" text="sm" font="700" text-primary>
+    RANDOM PICKER
+  </p>
+  <h2 m="0" mt="1" text="xl md:2xl" font="800">
+    랜덤 추첨기
+  </h2>
+  <label block mt="6">
+    <span class="cm-label">추첨할 항목</span>
+    <textarea
+      id="picker-items"
+      class="cm-input"
+      rows="8"
+      placeholder="한 줄에 하나씩 입력하세요.&#10;김철수&#10;이영희&#10;박민수"
+    ></textarea>
+  </label>
+  <div
+    id="picker-result"
+    mt="5"
+    rounded="2xl"
+    bg="surface-muted dark:dark-surface-subtle"
+    p="6"
+    text="center"
+  >
+    <span text="2xl" font="800">
+      추첨 결과가 여기에 표시됩니다.
+    </span>
+  </div>
+  <div grid="~ cols-2" gap="2" mt="4">
+    <button id="picker-draw" class="cm-button-primary" py="3">
+      1명 추첨
+    </button>
+    <button id="picker-copy" class="cm-button-secondary" py="3">
+      결과 복사
+    </button>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+---
+import AdSlot from '../shared/AdSlot.astro';
+import type { ToolDefinition } from '../../features/tools/catalog';
+import ToolPanel from './ToolPanel.astro';
+import ToolInfo from './ToolInfo.astro';
+import ToolRuntime from './ToolRuntime.astro';
+import ToolRelatedLinks from './ToolRelatedLinks.astro';
+
+interface Props {
+  kind: ToolDefinition['kind'];
+  title: string;
+  description: string;
+}
+
+const { kind, title, description } = Astro.props;
+---
+
+<section class="cm-tool-shell" data-tool={kind}>
+  <div class="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
+    <div min-w="0">
+      <div class="cm-card p-5 md:p-7">
+        <ToolPanel kind={kind} />
+      </div>
+    </div>
+    <ToolInfo kind={kind} title={title} description={description} />
+  </div>
+
+  <ToolRuntime kind={kind} />
+
+  <AdSlot slot={import.meta.env.PUBLIC_ADSENSE_SLOT_TOOL || ''} />
+
+  <ToolRelatedLinks />
+</section>

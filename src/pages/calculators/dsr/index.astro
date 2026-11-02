@@ -1,0 +1,11 @@
+---
+import CalculatorPage from '../../../components/calculator/CalculatorPage.astro';
+import DsrCalculator from '../../../features/calculators/dsr/DsrCalculator.astro';
+import { calculatorDefinitions } from '../../../features/calculators/catalog';
+
+const definition = calculatorDefinitions.dsr;
+---
+
+<CalculatorPage definition={definition}>
+  <DsrCalculator />
+</CalculatorPage>

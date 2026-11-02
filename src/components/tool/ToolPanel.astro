@@ -1,0 +1,30 @@
+---
+import type { ToolDefinition } from '../../features/tools/catalog';
+import LottoTool from '../../features/tools/lotto/LottoTool.astro';
+import RandomNumberTool from '../../features/tools/random/RandomNumberTool.astro';
+import PickerTool from '../../features/tools/picker/PickerTool.astro';
+import PasswordTool from '../../features/tools/password/PasswordTool.astro';
+import DateTool from '../../features/tools/date/DateTool.astro';
+import DdayTool from '../../features/tools/dday/DdayTool.astro';
+import AgeTool from '../../features/tools/age/AgeTool.astro';
+import UnitConverterTool from '../../features/tools/unit/UnitConverterTool.astro';
+import PercentTool from '../../features/tools/percent/PercentTool.astro';
+import TextCounterTool from '../../features/tools/text-counter/TextCounterTool.astro';
+
+interface Props {
+  kind: ToolDefinition['kind'];
+}
+
+const { kind } = Astro.props;
+---
+
+{kind === 'lotto' && <LottoTool />}
+{kind === 'random' && <RandomNumberTool />}
+{kind === 'picker' && <PickerTool />}
+{kind === 'password' && <PasswordTool />}
+{kind === 'date' && <DateTool />}
+{kind === 'dday' && <DdayTool />}
+{kind === 'age' && <AgeTool />}
+{kind === 'unit' && <UnitConverterTool />}
+{kind === 'percent' && <PercentTool />}
+{kind === 'text-counter' && <TextCounterTool />}

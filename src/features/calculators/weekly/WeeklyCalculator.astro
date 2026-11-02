@@ -1,0 +1,208 @@
+---
+import CalculatorResultCopy from '../../../components/calculator/CalculatorResultCopy.astro';
+---
+
+<div data-calculator="weekly">
+  <div id="fields" grid="~ cols-1 md:cols-2" gap="4">
+    <div class="cm-field">
+      <label class="cm-label" for="hourly">
+        시급
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="시급 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-12"
+            id="hourly"
+            type="text"
+            inputmode="numeric"
+            value="12000"
+            data-default-value="12000"
+            data-number-input
+            data-step="100"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            원
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="시급 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="cm-field">
+      <label class="cm-label" for="hours">
+        주 소정근로시간
+      </label>
+      <div grid="~ cols-[auto_minmax(0,1fr)_auto]" items-center gap="2">
+        <button
+          type="button"
+          data-step-direction="-1"
+          aria-label="주 소정근로시간 감소"
+          class="cm-step-button"
+        >
+          −
+        </button>
+        <div relative>
+          <input
+            class="cm-input pr-14"
+            id="hours"
+            type="text"
+            inputmode="numeric"
+            value="40"
+            data-default-value="40"
+            data-number-input
+            data-step="1"
+            data-min="0"
+            data-decimal="false"
+          />
+          <span
+            absolute
+            right-4
+            top="[50%]"
+            translate-y="[-50%]"
+            text="sm text-muted dark:dark-text-muted"
+          >
+            시간
+          </span>
+        </div>
+        <button
+          type="button"
+          data-step-direction="1"
+          aria-label="주 소정근로시간 증가"
+          class="cm-step-button"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="result"
+    aria-live="polite"
+    aria-atomic="true"
+    mt="5"
+    rounded="2xl"
+    bg="primary/10 dark:dark-primary-surface"
+    p="5"
+  >
+    <p class="cm-help-text" text="sm">
+      계산 결과
+    </p>
+    <dl mt="3" grid="~ cols-1" gap="3">
+      <div
+        flex="~ items-center justify-between"
+        gap="4"
+        border="b border-default"
+        pb="3"
+      >
+        <dt class="cm-help-text">주급</dt>
+        <dd
+          id="weekly-wage-value"
+          font="600"
+          text="lg text-text dark:dark-text"
+        >
+          0원
+        </dd>
+      </div>
+      <div
+        flex="~ items-center justify-between"
+        gap="4"
+        border="b border-default"
+        pb="3"
+      >
+        <dt class="cm-help-text">주휴수당</dt>
+        <dd
+          id="weekly-holiday-value"
+          font="600"
+          text="lg text-text dark:dark-text"
+        >
+          0원
+        </dd>
+      </div>
+      <div flex="~ items-center justify-between" gap="4">
+        <dt font="600" text="text dark:dark-text">
+          합산 금액
+        </dt>
+        <dd id="total-weekly-value" font="800" text="2xl md:3xl" text-primary>
+          0원
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <CalculatorResultCopy targets="#result" />
+  <div grid="~ cols-1 sm:cols-2" gap="3" mt="5">
+    <button id="calculate" type="button" class="cm-button-primary" py="3">
+      계산하기
+    </button>
+    <button id="reset" type="button" class="cm-button-secondary" py="3">
+      초기화
+    </button>
+  </div>
+</div>
+
+<script>
+  import { calculateWeeklyPay } from './weekly';
+  import { bindCalculatorInputs } from '../../../lib/calculator/runtime';
+  import {
+    formatCalculatorWon,
+    readCalculatorNumber,
+    resetCalculatorFields,
+  } from '../../../lib/calculator/dom';
+
+  const root = document.querySelector<HTMLElement>(
+    '[data-calculator="weekly"]',
+  );
+  if (root) {
+    const fields = root.querySelector<HTMLElement>('#fields')!;
+    const weeklyWageOut =
+      root.querySelector<HTMLElement>('#weekly-wage-value')!;
+    const holidayPayOut = root.querySelector<HTMLElement>(
+      '#weekly-holiday-value',
+    )!;
+    const totalPayOut = root.querySelector<HTMLElement>('#total-weekly-value')!;
+
+    const calc = () => {
+      const result = calculateWeeklyPay({
+        hourlyWage: readCalculatorNumber(root, 'hourly'),
+        weeklyHours: readCalculatorNumber(root, 'hours'),
+      });
+
+      weeklyWageOut.textContent = formatCalculatorWon(result.weeklyWage);
+      holidayPayOut.textContent = formatCalculatorWon(result.weeklyHolidayPay);
+      totalPayOut.textContent = formatCalculatorWon(result.totalWeeklyPay);
+    };
+
+    const reset = () => {
+      resetCalculatorFields(fields);
+      calc();
+    };
+
+    root.querySelector('#calculate')?.addEventListener('click', calc);
+    root.querySelector('#reset')?.addEventListener('click', reset);
+    bindCalculatorInputs(fields, calc);
+    calc();
+  }
+</script>

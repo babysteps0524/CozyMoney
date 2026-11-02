@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/shared/Header.astro';
+import Footer from '../../../components/shared/Footer.astro';
+import ToolShell from '../../../components/tool/ToolShell.astro';
+---
+
+<BaseLayout
+  title="날짜 계산기 | CozyMoney 코지머니"
+  description="두 날짜 사이의 기간을 일수로 계산합니다."
+  canonical="https://cozymoney.kr/tools/date/"
+>
+  <Header />
+  <main class="cm-container" py="10 md:14 lg:18">
+    <header max-w="3xl" mb="8 md:10">
+      <p m="0" text="sm" font="700" text-primary>
+        TOOLS
+      </p>
+      <h1 m="0" mt="2" text="3xl md:4xl" font="800" tracking-tight>
+        날짜 계산기
+      </h1>
+      <p
+        m="0"
+        mt="4"
+        text="base md:lg text-muted dark:dark-text-muted"
+        leading="7"
+      >
+        두 날짜 사이의 기간을 일수로 계산합니다.
+      </p>
+    </header>
+    <ToolShell
+      kind="date"
+      title="날짜 계산기"
+      description="시작일과 종료일을 입력해 날짜 차이와 포함 일수를 확인합니다."
+    />
+  </main>
+  <Footer />
+</BaseLayout>
